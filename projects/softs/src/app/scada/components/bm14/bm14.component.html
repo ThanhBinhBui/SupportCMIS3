@@ -1,0 +1,103 @@
+<p-toast key="tst"></p-toast>
+<p-confirmDialog header="Xác nhận" icon="pi pi-exclamation-triangle" acceptButtonStyleClass="ui-button-info"
+    acceptLabel="Đồng ý" rejectLabel="Hủy bỏ">
+</p-confirmDialog>
+<p-toolbar>
+    <div class="p-toolbar-group-left">
+        <span class="p-input-icon-left p-mb-2">
+            <i class="pi pi-search"></i>
+            <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                placeholder="Lọc..." />
+        </span>
+    </div>
+    <div class="p-toolbar-group-right">
+        <div class="p-formgroup-inline">
+            <div class="p-field">
+                <p-dropdown [options]="lstORG" [(ngModel)]="MA_DVIQLY" optionLabel="TEN_DVIQLY" optionValue="MA_DVIQLY"
+                    filter="true">
+                </p-dropdown>
+            </div>
+            <div class="p-field">
+                <p-calendar dateFormat="dd/mm/yy" dataType="string" [showIcon]="true" placeholder="Ngày bắt đầu"
+                    [selectOtherMonths]="true" [(ngModel)]="FROM_DATE" firstDayOfWeek=1 inputStyleClass="calendarInput">
+                </p-calendar>
+            </div>
+            <div class="p-field">
+                <p-calendar dateFormat="dd/mm/yy" dataType="string" [showIcon]="true" placeholder="Ngày kết thúc"
+                    [selectOtherMonths]="true" [(ngModel)]="TO_DATE" firstDayOfWeek=1 inputStyleClass="calendarInput">
+                </p-calendar>
+            </div>
+            <button pButton pRipple (click)="search()" icon="pi pi-search"
+                class="p-button-success p-mt-1 p-mr-2"></button>
+            <button pButton pRipple (click)="exportExcel()" icon="pi pi-file-excel" class="p-button-help p-mt-1"
+                label="Xuất excel"></button>
+        </div>
+    </div>
+</p-toolbar>
+<p-table #dt [value]="lstMain" [rowHover]="true" [rows]="10" [paginator]="true" [filterDelay]="0" [loading]="loading"
+    [globalFilterFields]="['STT','TEN_DVI','B2','B3','TIME_OPEN','TIME_CLOSE','TIME_DIFF']"
+    currentPageReportTemplate="Hiển thị từ {first} đến {last} trên {totalRecords}" [responsive]="true"
+    [showCurrentPageReport]="true">
+    <ng-template pTemplate="header">
+        <tr class="trHeader">
+            <th pSortableColumn="STT" class="headerSTT">STT
+                <p-sortIcon field="STT"></p-sortIcon>
+            </th>
+            <th pSortableColumn="TEN_DVI">Đơn vị quản lý
+                <p-sortIcon field="TEN_DVI"></p-sortIcon>
+            </th>
+            <th pSortableColumn="B2">Tên thiết bị (B2)
+                <p-sortIcon field="B2"></p-sortIcon>
+            </th>
+            <th pSortableColumn="B3">Tên thiết bị (B3)
+                <p-sortIcon field="B3"></p-sortIcon>
+            </th>
+            <th pSortableColumn="TIME_OPEN">Mất kết nối
+                <p-sortIcon field="TIME_OPEN"></p-sortIcon>
+            </th>
+            <th pSortableColumn="TIME_CLOSE">Khôi phục kết nối
+                <p-sortIcon field="TIME_CLOSE"></p-sortIcon>
+            </th>
+            <th pSortableColumn="TIME_DIFF">Thời gian mất kết nối
+                <p-sortIcon field="TIME_DIFF"></p-sortIcon>
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-main>
+        <tr class="p-selectable-row">
+            <td class="bodySTT">
+                <span class="p-column-title">STT</span>
+                {{main.STT}}
+            </td>
+            <td>
+                <span class="p-column-title">Đơn vị quản lý</span>
+                {{main.TEN_DVI}}
+            </td>
+            <td>
+                <span class="p-column-title">Tên thiết bị (B2)</span>
+                {{main.B2}}
+            </td>
+            <td>
+                <span class="p-column-title">Tên thiết bị (B3)</span>
+                {{main.B3}}
+            </td>
+            <td>
+                <span class="p-column-title">Mất kết nối</span>
+                {{main.TIME_OPEN | date: 'dd/MM/yyyy HH:mm:ss'}}
+            </td>
+            <td>
+                <span class="p-column-title">Khôi phục kết nối</span>
+                {{main.TIME_CLOSE | date: 'dd/MM/yyyy HH:mm:ss'}}
+            </td>
+            <td>
+                <span class="p-column-title">Thời gian mất kết nối</span>
+                {{main.TIME_DIFF}}
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+        <tr>
+            <td colspan="7" style="text-align: center;">Không có dữ liệu</td>
+        </tr>
+    </ng-template>
+</p-table>

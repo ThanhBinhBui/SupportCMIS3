@@ -1,0 +1,54 @@
+/* You can add global styles to this file, and also import other style files */
+:host ::ng-deep .p-datatable .p-datatable-thead > tr > th {
+    /* background: #1E88E5 !important;
+    border: 1px solid #e0e0e0 !important;
+    text-align: center !important;
+    color: white; */
+
+    border: 1px solid #e0e0e0 !important;
+    text-align: center !important;
+    /* color: white; */
+    font-weight: bold;
+    /* position: -webkit-sticky;
+    position: sticky;
+    top: 70px; */
+    /* position: -webkit-sticky;
+    position: sticky;
+    top: 70px; */
+}
+
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+    border: 1px solid #e0e0e0 !important;    
+}
+
+:host ::ng-deep .p-datatable .p-sortable-column .p-highlight .p-sortable-column-icon{
+    /* color: white; */
+}
+
+:host ::ng-deep .p-datatable .p-sortable-column .p-sortable-column-icon{
+    /*color: white;*/
+}
+
+:host ::ng-deep .headerSTT{
+    width: 4rem;
+}
+
+:host ::ng-deep .headerText{
+    width: 20rem;
+}
+
+:host ::ng-deep .trHeader{
+   height: 0px;
+}
+
+:host ::ng-deep .headerRow2 {
+    top: 115px !important;
+}
+
+:host ::ng-deep .bodySTT {
+    text-align: center !important;
+}
+:host ::ng-deep .calendarInput {
+    padding-right: unset;
+    width: 82px !important;
+}

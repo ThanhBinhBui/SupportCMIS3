@@ -1,0 +1,145 @@
+<p-toast key="tst"></p-toast>
+<p-confirmDialog header="Xác nhận" icon="pi pi-exclamation-triangle" acceptButtonStyleClass="ui-button-info"
+    acceptLabel="Đồng ý" rejectLabel="Hủy bỏ">
+</p-confirmDialog>
+
+<div class="card">
+    <div class="p-grid">
+        <div class="p-md-4 p-sm-4 p-d-flex p-jc-start">
+            <span class="p-input-icon-left">
+                <!-- <i class="pi pi-search"></i> -->
+                <!-- <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                            placeholder="Tìm kiếm..." /> -->
+                <!-- <button pButton pRipple label="Thêm" icon="pi pi-plus" class="p-button-success p-mr-2 p-mb-2"
+                    (click)="openNew()"></button> -->
+            </span>
+        </div>
+        <!-- <div class="p-md-4 p-sm-4 p-d-flex p-jc-end">
+                    <p-dropdown inputId="ORG_CODE" [options]="lstORG" [(ngModel)]="selectedORG_CODE"
+                        optionLabel="ORG_NAME" optionValue="ORG_CODE" filter="true" (onChange)="search()">
+                    </p-dropdown>
+                </div> -->
+
+                <div class="p-md-8 p-sm-8 p-d-flex p-jc-end">
+                    <div class="p-mb-2 p-mr-2">
+                        <!-- <p-calendar view="month" dateFormat="mm/yy" [yearNavigator]="true" yearRange="2018:2040"
+                            dataType="string" [showIcon]="true" placeholder="Chọn tháng" [selectOtherMonths]="true"
+                            [(ngModel)]="FROM_DATE" inputStyleClass="calendarInput" >
+                        </p-calendar> -->
+                        <p-calendar view="month" dateFormat="mm/yy" [yearNavigator]="true" yearRange="2018:2040"
+                            dataType="string" [showIcon]="true" placeholder="Chọn tháng" [selectOtherMonths]="true"
+                            [(ngModel)]="FROM_DATE" inputStyleClass="calendarInput">
+                        </p-calendar>
+                    </div>
+                    <div class="p-mb-2 p-mr-2">
+                        <button pButton pRipple (click)="search()" icon="pi pi-search"
+                            class="p-button-success p-mt-1"></button>
+                            
+
+                    </div>
+                    <div class="p-mb-2 p-mr-2">
+                        <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help p-mt-1"
+                            (click)="exportExcel()"></button>
+                    </div>
+                </div>
+    </div>
+    <p-table #dt [value]="listMain" dataKey="STT" [rowHover]="true" [rows]="50" [paginator]="true" [loading]="loading"
+        [filterDelay]="0"
+        [loading]="loading"
+        [globalFilterFields]="['MA_DVIQLY','TEN_DVIQLY']"
+        currentPageReportTemplate="Hiển thị từ {first} đến {last} trên {totalRecords}" [responsive]="true"
+        [showCurrentPageReport]="true" [rowsPerPageOptions]="[5, 10, 20, { showAll: 'Tất cả' }]">
+        <ng-template pTemplate="caption">
+            
+        </ng-template>
+
+        <ng-template pTemplate="headergrouped">
+            <tr class="trHeader">
+                <th rowspan="2">STT</th>
+                <th rowspan="2">Đơn vị</th>
+                <th colspan="3">Tổ thao tác lưu động (TTLĐ)</th>
+                <th colspan="3">Tổ thao tác tại trạm (TTTT)</th>
+                <th rowspan="2">Ghi chú</th>
+                <th rowspan="2"></th>
+            </tr>
+            <tr class="trHeader">
+                <th>Số tổ</th>
+                <th>Số nhân viên</th>
+                <th>Số phạm vi quản lý</th>
+                <th>Số tổ</th>
+                <th>Số nhân viên</th>
+                <th>Số phạm vi quản lý</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-main>
+            <tr class="p-selectable-row">
+                <td class="bodySTT">{{main.STT}}</td>
+                <td  style=" text-align: left">{{main.TEN_DVIQLY}}</td>
+                <td  style=" text-align: right">{{main.LD_SO_TO}}</td>
+                <td  style=" text-align: right">{{main.LD_SO_NV}}</td>
+                <td  style=" text-align: right">{{main.LD_PHAM_VI}}</td>
+                <td  style=" text-align: right">{{main.TT_SO_TO}}</td>
+                <td  style=" text-align: right">{{main.TT_SO_NV}}</td>
+                <td  style=" text-align: right">{{main.TT_PHAM_VI}}</td>
+                <td  style=" text-align: left">{{main.GHI_CHU}}</td>
+                <td class="bodySTT">
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2"
+                        (click)="editItem(main)"></button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="12" style="text-align: center;">Không có dữ liệu</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+<p-dialog [(visible)]="dialog" [style]="{height:'70%',width: '450px'}"
+    [header]="isUpdate?'Cập Nhật Thông Tin Sự Kiện':'Thêm Mới Thông Tin Sự Kiện'" (onHide)="hideDialog()" [modal]="true"
+    styleClass="p-fluid">
+    <ng-template pTemplate="content">
+
+        <div class="p-field">
+            <label for="name">Đơn vị quản lý</label>
+            <p-autoComplete [(ngModel)]="selectedTinh" [suggestions]="filterTinhs" (completeMethod)="filterTinh($event)"
+                field="TEN_DVIQLY" [dropdown]="true" disabled>
+            </p-autoComplete>
+        </div>
+        <div class="p-field">
+            <label for="name">Số tổ thao tác lưu động</label>
+            <input type="text" pInputText [(ngModel)]="mainCurrent.LD_SO_TO"/>
+        </div>
+        <div class="p-field">
+            <label for="name">Số nhân viên mỗi tổ thao tác lưu động</label>
+            <input type="text" pInputText [(ngModel)]="mainCurrent.LD_SO_NV" />
+        </div>
+        <div class="p-field">
+            <label for="name">Phạm vi quản lý thao tác lưu động</label>
+            <input type="text" pInputText [(ngModel)]="mainCurrent.LD_PHAM_VI" />
+        </div>
+        <div class="p-field">
+            <label for="name">Số tổ thao tác tại trạm</label>
+            <input type="text" pInputText [(ngModel)]="mainCurrent.TT_SO_TO" />
+        </div>
+        <div class="p-field">
+            <label for="name">Số nhân viên mỗi tổ thao tác tại trạm</label>
+            <input type="text" pInputText [(ngModel)]="mainCurrent.TT_SO_NV" />
+        </div>
+        <div class="p-field">
+            <label for="name">Phạm vi quản lý thao tác tại trạm </label>
+            <input type="text" pInputText [(ngModel)]="mainCurrent.TT_PHAM_VI" />
+        </div>
+        <div class="p-field">
+            <label for="name">Ghi chú</label>
+            <input type="text" pInputText [(ngModel)]="mainCurrent.GHI_CHU" />
+        </div>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Hủy" icon="pi pi-times" class="p-button-secondary"
+            (click)="hideDialog()"></button>
+        <button pButton pRipple label="Lưu" icon="pi pi-check" class="p-button-info" (click)="saveItem()"></button>
+    </ng-template>
+</p-dialog>

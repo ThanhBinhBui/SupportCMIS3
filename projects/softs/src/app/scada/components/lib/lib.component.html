@@ -1,0 +1,78 @@
+<div class="p-grid">
+    <div class="p-col-12">
+
+        <p-toast></p-toast>
+
+        <div class="card">
+            <p-toolbar styleClass="p-mb-4">
+                <ng-template pTemplate="left">
+
+                    <div class="p-mr-2 p-mb-2">
+                        <label for="name">Giá trị: </label>
+                        <input type="text" pInputText [(ngModel)]="maDD" />
+                    </div>
+                    <div class="p-mr-2 p-mb-2">
+                        <p-checkbox name="IS_ACTIVE" [binary]="true" label="Đầu nguồn" [(ngModel)]="isDauNguon">
+                        </p-checkbox>
+                    </div>
+                    <div class="p-mr-2 p-mb-2" style="padding-bottom:5pt;padding-left: 2pt;">
+
+                        <button pButton pRipple (click)="search()" label="Tìm kiếm" icon="pi pi-search"
+                            class="p-button-success p-mt-1"></button>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="right">
+                    <div class="p-field">
+                        <span class="p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                                placeholder="Lọc..." />
+                        </span>
+                    </div>
+
+
+                </ng-template>
+            </p-toolbar>
+
+
+            <p-table #dt [value]="lstMain" [rows]="20" [paginator]="true" [loading]="loading"
+                [globalFilterFields]="['MO_TA','KET_QUA']" [rowHover]="true" dataKey="id"
+                styleClass="p-datatable-customers"
+                currentPageReportTemplate="Hiển thị từ {first} đến {last} trên {totalRecords}"
+                [showCurrentPageReport]="true">
+                <ng-template pTemplate="header">
+                    <tr>
+
+                        <th pSortableColumn="MO_TA">Mô tả <p-sortIcon field="MO_TA"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="KET_QUA">Kết quả<p-sortIcon field="KET_QUA"></p-sortIcon>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-item>
+                    <tr>
+                        <td style=" text-align: left">
+                            {{item.MO_TA}}
+                        </td>
+                        <td style=" text-align: left">
+                            <p-badge [style]="{cursor: 'pointer'}"
+                                value="{{item.KET_QUA}}"
+                                size="large"
+                                [severity]="item.KET_QUA==='sRight'?'success':'warning'">
+                            </p-badge>
+
+                            
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="summary">
+                    <div class="p-d-flex p-ai-center p-jc-between">
+                        Số lượng: {{lstMain ? lstMain.length : 0 }} dữ liệu.
+                    </div>
+                </ng-template>
+            </p-table>
+        </div>
+
+        <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+    </div>
+</div>

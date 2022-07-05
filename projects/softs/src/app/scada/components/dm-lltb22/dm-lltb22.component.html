@@ -1,0 +1,395 @@
+<div class="p-grid">
+    <div class="p-col-12">
+        <p-toast></p-toast>
+        <div class="card" *ngIf="dialog">
+            <p-fieldset legend="Thông tin thiết bị" class="p-field p-col-12 p-md-4" [toggleable]="true">
+                <div class="p-fluid p-grid p-formgrid">
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name">Tỉnh (*):</label>
+                        <!-- <p-autoComplete [(ngModel)]="selectedTinh" [suggestions]="filterTinhs"
+                            (completeMethod)="filterTinh($event)" field="TEN_TINH" [dropdown]="true">
+                        </p-autoComplete> -->
+                        <p-dropdown [options]="tinhs" [(ngModel)]="selectedTinh" placeholder="Chọn tỉnh"
+                            optionLabel="TEN_TINH" optionValue="MA_TINH" [showClear]="true"></p-dropdown>
+                    </div>
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name"> Tên trạm 110kV (*):</label>
+                        <input type="text" pInputText id="TEN_TRAM_110" [(ngModel)]="llTB22.TEN_TRAM_110" required
+                            autofocus />
+                    </div>
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name"> Ngăn lộ 22kV (*):</label>
+                        <input type="text" pInputText id="NGAN_LO" [(ngModel)]="llTB22.NGAN_LO" required autofocus />
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name"> Tên thiết bị (*):</label>
+                        <input type="text" pInputText id="TEN_THIETBI" [(ngModel)]="llTB22.TEN_THIETBI" required
+                            autofocus />
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name"> Vị trí thiết bị (*):</label>
+                        <input type="text" pInputText id="VITRI_THIETBI" [(ngModel)]="llTB22.VITRI_THIETBI" required
+                            autofocus />
+                    </div>
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name"> Loại thiết bị:</label>
+                        <input type="text" pInputText id="LOAI_THIETBI" [(ngModel)]="llTB22.LOAI_THIETBI" required
+                            autofocus />
+                    </div>
+                </div>
+            </p-fieldset>
+            <p-fieldset legend="Thông tin tủ điều khiển" class="p-field p-col-12 p-md-4" [toggleable]="true">
+                <div class="p-fluid p-grid p-formgrid">
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name"> Hiệu loại tủ điều kiển:</label>
+                        <input type="text" pInputText id="TDK_HIEULOAI" [(ngModel)]="llTB22.TDK_HIEULOAI" required
+                            autofocus />
+                    </div>
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name"> Nhà sản xuất tủ điều kiển:</label>
+                        <input type="text" pInputText id="TDK_NHASANXUAT" [(ngModel)]="llTB22.TDK_NHASANXUAT" required
+                            autofocus />
+                    </div>
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name"> Số No tủ điều kiển:</label>
+                        <input type="text" pInputText id="TDK_SONO" [(ngModel)]="llTB22.TDK_SONO" required autofocus />
+                    </div>
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name"> Năm vận hành tủ điều kiển:</label>
+                        <input type="text" pInputText id="llTB22.TDK_NAMVANHANH" [(ngModel)]="llTB22.TDK_NAMVANHANH"
+                            required autofocus />
+                    </div>
+                </div>
+            </p-fieldset>
+            <p-fieldset legend="Thông tin kết nối SCADA" class="p-field p-col-12 p-md-4" [toggleable]="true">
+                <div class="p-fluid p-grid p-formgrid">
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name"> Kết nối SCADA:</label>
+                        <input type="text" pInputText id="SCADA_KETNOI" [(ngModel)]="llTB22.SCADA_KETNOI" required
+                            autofocus />
+                    </div>
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name"> Năm:</label>
+                        <input type="text" pInputText id="SCADA_MODEM" [(ngModel)]="llTB22.SCADA_NAM" required
+                            autofocus />
+                    </div>
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name"> Modem SCADA:</label>
+                        <input type="text" pInputText id="SCADA_MODEM" [(ngModel)]="llTB22.SCADA_MODEM" required
+                            autofocus />
+                    </div>
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name"> Tên SCADA:</label>
+                        <input type="text" pInputText id="SCADA_TEN" [(ngModel)]="llTB22.SCADA_TEN" required
+                            autofocus />
+                    </div>
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name"> ASDU:</label>
+                        <input type="text" pInputText id="SCADA_ASDU" [(ngModel)]="llTB22.SCADA_ASDU" required
+                            autofocus />
+                    </div>
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name"> Số Imei của modem:</label>
+                        <input type="text" pInputText id="SCADA_IMEI" [(ngModel)]="llTB22.SCADA_IMEI" required
+                            autofocus />
+                    </div>
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name"> Số điện thoại:</label>
+                        <input type="text" pInputText id="SCADA_SODIENTHOAI" [(ngModel)]="llTB22.SCADA_SODIENTHOAI"
+                            required autofocus />
+                    </div>
+                </div>
+            </p-fieldset>
+            <p-fieldset legend="Thông tin giao thức kết nối" class="p-field p-col-12 p-md-4" [toggleable]="true">
+                <div class="p-fluid p-grid p-formgrid">
+                    <div class="p-field p-col-12 p-md-12">
+                        <label for="name"> Giao thức kết nối:</label>
+                        <div class="p-field-radiobutton">
+                            <div class="p-md-2">
+                                <p-radioButton value="IEC-101" [(ngModel)]="llTB22.GIAOTHUCKETNOI"></p-radioButton>
+                                <label> IEC-101</label>
+                            </div>
+                            <div class="p-md-2">
+                                <p-radioButton value="IEC-104" [(ngModel)]="llTB22.GIAOTHUCKETNOI"></p-radioButton>
+                                <label> IEC-104</label>
+                            </div>
+                            <div class="p-md-2">
+                                <p-radioButton value="ICCP" [(ngModel)]="llTB22.GIAOTHUCKETNOI"></p-radioButton>
+                                <label> ICCP</label>
+                            </div>
+                            <div class="p-md-2">
+                                <p-radioButton value="DNP3" [(ngModel)]="llTB22.GIAOTHUCKETNOI"></p-radioButton>
+                                <label> DNP3</label>
+                            </div>
+                            <div class="p-md-2">
+                                <p-radioButton value="KHAC" [(ngModel)]="llTB22.GIAOTHUCKETNOI"></p-radioButton>
+                                <label> Khác</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </p-fieldset>
+            <p-fieldset legend="Thông tin thông tin khách hàng" class="p-field p-col-12 p-md-4" [toggleable]="true">
+                <div class="p-fluid p-grid p-formgrid">
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name"> Thông tin khách hàng:</label>
+                        <!-- <input type="text" pInputText id="TT_KHACHHANG" [(ngModel)]="llTB22.TT_KHACHHANG" required
+                            autofocus /> -->
+                        <textarea [rows]="5" pInputTextarea [(ngModel)]="llTB22.TT_KHACHHANG"></textarea>
+                    </div>
+                </div>
+            </p-fieldset>
+            <p-fieldset legend="Thông tin kết nối" class="p-field p-col-12 p-md-4" [toggleable]="true">
+                <div class="p-fluid p-grid p-formgrid">
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name">Trạng thái kết nối:</label>
+                        <div class="p-field-radiobutton">
+                            <div class="p-md-6">
+                                <p-radioButton value="True" [(ngModel)]="llTB22.DANGKETNOI"></p-radioButton>
+                                <label> Đang kết nối</label>
+                            </div>
+                            <div class="p-md-6">
+                                <p-radioButton value="False" [(ngModel)]="llTB22.DANGKETNOI"></p-radioButton>
+                                <label for="city2"> Mất kết nối</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </p-fieldset>
+            <div class="p-field p-col-12 p-md-12">
+                <button pButton pRipple label="Hủy" icon="pi pi-times" class="p-button-secondary"
+                    (click)="hideDialog()"></button>
+                <button pButton pRipple label="Lưu" icon="pi pi-check" class="p-button-info" style="margin-left: 20px;"
+                    (click)="saveItem()"></button>
+            </div>
+        </div>
+        <div class="card" *ngIf="!dialog">
+            <p-toolbar styleClass="p-mb-4">
+                <ng-template pTemplate="left">
+                    <button pButton pRipple label="Thêm" icon="pi pi-plus" class="p-button-success p-mr-2 p-mb-2"
+                        (click)="openNew()"></button>
+                    <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help p-mb-2"
+                        (click)="exportExcel()"></button>
+
+                    <p-fileUpload class="p-mr-2 p-mb-2" style="padding-left: 5pt;" #fileInput
+                        mode="basic" chooseLabel="Import" cancelLabel="Hủy" uploadLabel="Tải lên" name="FILE_NAME[]"
+                        accept=".xlsx,.xls" maxFileSize="1000000" (onUpload)="uploadFileDaChon()"
+                        (onBeforeUpload)="uploadFileDaChon()">
+                    </p-fileUpload>
+
+                </ng-template>
+                <ng-template pTemplate="right">
+
+                    <div class="p-field">
+                        <span class="p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                                placeholder="Lọc..." />
+                        </span>
+                    </div>
+
+
+                </ng-template>
+            </p-toolbar>
+            <p-table #dt [value]="llTB22s" [loading]="loading" [columns]="cols" [rows]="5" [paginator]="true"
+                [globalFilterFields]="[
+                'id',  'TEN_TINH',  'TEN_TRAM_110',  'NGAN_LO',  'TEN_THIETBI',  'VITRI_THIETBI',  'LOAI_THIETBI',
+                'TDK_HIEULOAI', 'TDK_NHASANXUAT', 'TDK_SONO', 'TDK_NAMVANHANH',  'SCADA_KETNOI',  'SCADA_NAM',  'SCADA_MODEM',
+               'SCADA_TEN', 'SCADA_ASDU', 'SCADA_IMEI',  'SCADA_SODIENTHOAI',  'GIAOTHUCKETNOI',  'TT_KHACHHANG',  'DANGKETNOI', 'MATKETNOI',   
+                ]" [rowHover]="true" dataKey="id"
+                currentPageReportTemplate="Hiển thị từ {first} đến {last} trên {totalRecords}"
+                [showCurrentPageReport]="true" [scrollable]="true" [style]="{'width':'100%'}" scrollHeight="100%">
+
+                <!-- <ng-template pTemplate="caption">
+                    <div class="p-grid">
+                        <div class="p-md-4 p-sm-4 p-d-flex p-jc-start">
+                            <span class="p-input-icon-left">
+                                <i class="pi pi-search"></i>
+                                <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                                    placeholder="Lọc..." />
+                            </span>
+                        </div>
+                        <div class="p-md-4 p-sm-4 p-d-flex p-jc-start"></div>
+                        <div class="p-md-4 p-sm-4 p-d-flex p-jc-end">
+                             <button pButton pRipple label="Thêm" icon="pi pi-plus" class="p-button-success p-mr-2 p-mb-2"
+                            (click)="openNew()"></button> 
+                        </div>
+                    </div>
+
+                </ng-template> -->
+                <ng-template pTemplate="headergrouped">
+                    <tr class="trHeader">
+                        <th style="width: 150px;" class="headerText" rowspan="2" pFrozenColumn
+                            pSortableColumn="TEN_TINH"> Tên đơn vị
+                            <p-sortIcon field="TEN_TINH"> </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" class="headerText" rowspan="2" pFrozenColumn
+                            pSortableColumn="TEN_TRAM_110"> Tên trạm 110kV<p-sortIcon field="TEN_TRAM_110">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" class="headerText" rowspan="2" pSortableColumn="NGAN_LO"> Ngăn lộ 22kV
+                            <p-sortIcon field="NGAN_LO"> </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" class="headerText" rowspan="2" pSortableColumn="TEN_THIETBI"> Tên
+                            thiết bị<p-sortIcon field="TEN_THIETBI"> </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" class="headerText" rowspan="2" pSortableColumn="VITRI_THIETBI"> Vị trí
+                            thiết bị <p-sortIcon field="VITRI_THIETBI"> </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" class="headerText" rowspan="2" pSortableColumn="LOAI_THIETBI"> Loại
+                            thiết bị<p-sortIcon field="LOAI_THIETBI"> </p-sortIcon>
+                        </th>
+                        <th style="width: 600px;" class="headerText" colspan="4">Tủ điều kiển</th>
+                        <th style="width: 1050px;" class="headerText" colspan="7">Kết nối SCADA</th>
+                        <th style="width: 150px;" class="headerText" rowspan="2"> Giao thức kết nối</th>
+                        <th style="width: 150px;" class="headerText" rowspan="2"> Thông tin khách hàng</th>
+                        <th style="width: 150px;" class="headerText" rowspan="2"> Đang kết nối </th>
+                        <th style="width: 150px;" class="headerText" rowspan="2"> Đang mất kết nối </th>
+                        <th style="width: 150px;" class="headerText" rowspan="2"></th>
+                    </tr>
+                    <tr class="trHeader">
+                        <!-- <th [style.transform]="'translateX('+scrollXColumn  + 'px)'"></th>
+                        <th [style.transform]="'translateX('+scrollXColumn  + 'px)'" pSortableColumn="TEN_TINH"> Tên đơn vị <p-sortIcon field="TEN_TINH"></p-sortIcon>
+                        </th>
+                        <th [style.transform]="'translateX('+scrollXColumn  + 'px)'" pSortableColumn="TEN_TRAM_110"> Tên trạm 110kV <p-sortIcon field="TEN_TRAM_110">
+                            </p-sortIcon>
+                        </th> -->
+
+                        <th style="width: 150px;" class="headerText" pSortableColumn="TDK_HIEULOAI"> Hiệu loại
+                            <p-sortIcon field="TDK_HIEULOAI"> </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" class="headerText" pSortableColumn="TDK_NHASANXUAT"> Nhà sản xuất
+                            <p-sortIcon field="TDK_NHASANXUAT"> </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" class="headerText" pSortableColumn="TDK_SONO"> Số No <p-sortIcon
+                                field="TDK_SONO"> </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" class="headerText" pSortableColumn="TDK_NAMVANHANH"> Năm vận hành
+                            <p-sortIcon field="TDK_NAMVANHANH"> </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" class="headerText" pSortableColumn="SCADA_KETNOI"> Kết nối SCADA
+                            <p-sortIcon field="SCADA_KETNOI"> </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" class="headerText" pSortableColumn="SCADA_NAM"> Năm <p-sortIcon
+                                field="SCADA_NAM"> </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" class="headerText" pSortableColumn="SCADA_MODEM"> Modem
+                            <p-sortIcon field="SCADA_MODEM"> </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" class="headerText" pSortableColumn="SCADA_TEN"> Tên SCADA <p-sortIcon
+                                field="SCADA_TEN"> </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" class="headerText" pSortableColumn="SCADA_ASDU"> ASDU
+                            <p-sortIcon field="SCADA_ASDU"> </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" class="headerText" pSortableColumn="SCADA_IMEI"> Số Imei của modem
+                            <p-sortIcon field="SCADA_IMEI"> </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" class="headerText" pSortableColumn="SCADA_SODIENTHOAI"> Số điện thoại
+                            <p-sortIcon field="SCADA_SODIENTHOAI"> </p-sortIcon>
+                        </th>
+
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-llTB22>
+                    <tr>
+                        <!-- <td class="bodySTT" [style.transform]="'translateX('+scrollXColumn  + 'px)'">
+                            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2"
+                                (click)="editItem(llTB22)"></button>
+                            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                                (click)="deleteItem(llTB22)"></button>
+                        </td>
+                        <td class="bodySTT" [style.transform]="'translateX('+scrollXColumn  + 'px)'">
+                            {{llTB22.TEN_TINH}}
+                        </td>
+                        <td class="bodySTT" [style.transform]="'translateX('+scrollXColumn  + 'px)'"> 
+                            {{llTB22.TEN_TRAM_110}}
+                        </td> -->
+
+                        <td class="bodySTT" pFrozenColumn
+                            style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTB22.TEN_TINH}}
+                        </td>
+                        <td class="bodySTT" pFrozenColumn
+                            style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTB22.TEN_TRAM_110}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTB22.NGAN_LO}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTB22.TEN_THIETBI}}
+                        </td>
+
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTB22.VITRI_THIETBI}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTB22.LOAI_THIETBI}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTB22.TDK_HIEULOAI}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTB22.TDK_NHASANXUAT}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTB22.TDK_SONO}}
+                        </td>
+
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTB22.TDK_NAMVANHANH }}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTB22.SCADA_KETNOI}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTB22.SCADA_NAM }}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTB22.SCADA_MODEM}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTB22.SCADA_TEN}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-end;">
+                            {{llTB22.SCADA_ASDU}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-end;">
+                            {{llTB22.SCADA_IMEI}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-end;">
+                            {{llTB22.SCADA_SODIENTHOAI}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTB22.GIAOTHUCKETNOI}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTB22.TT_KHACHHANG}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: center;">
+                            {{llTB22.DANGKETNOI==='True'?'x':''}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: center;">
+                            {{llTB22.DANGKETNOI==='False'?'x':''}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: center;">
+                            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2"
+                                (click)="editItem(llTB22)"></button>
+                            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                                (click)="deleteItem(llTB22)"></button>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="summary">
+                    <div class="p-d-flex p-ai-center p-jc-between">
+                        Tổng số lượng: {{llTB22s ? llTB22s.length : 0 }} lý lịch thiết bị 22.
+                    </div>
+                </ng-template>
+            </p-table>
+        </div>
+        <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+    </div>
+</div>

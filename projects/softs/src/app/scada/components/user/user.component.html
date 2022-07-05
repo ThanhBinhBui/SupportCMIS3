@@ -1,0 +1,162 @@
+<div class="p-grid">
+    <div class="p-col-12">
+
+        <p-toast></p-toast>
+
+        <div class="card">
+            <p-toolbar styleClass="p-mb-4">
+                <ng-template pTemplate="left">
+                    <button pButton pRipple label="Thêm" icon="pi pi-plus" class="p-button-success p-mr-2 p-mb-2"
+                        (click)="openNew()"></button>
+                </ng-template>
+                <ng-template pTemplate="right">
+                    <!-- <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help p-mb-2" (click)="exportExcel()"></button> -->
+                </ng-template>
+            </p-toolbar>
+            <p-table #dt [value]="listMain" [columns]="cols" [rows]="20" [paginator]="true"
+                [globalFilterFields]="['USERNAME']" 
+                [(selection)]="selectedTinhs"
+                [rowHover]="true" dataKey="id" styleClass="p-datatable-customers"
+                currentPageReportTemplate="Hiển thị từ {first} đến {last} trên {totalRecords}"
+                [showCurrentPageReport]="true"
+
+                >
+                <ng-template pTemplate="caption">
+                    <div class="p-grid">
+                    <div class="p-md-4 p-sm-4 p-d-flex p-jc-start">
+                        <span class="p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                                placeholder="Lọc..." />
+                        </span>
+                    </div>
+                    <div class="p-md-4 p-sm-4 p-d-flex p-jc-start"></div>
+                    <div class="p-md-4 p-sm-4 p-d-flex p-jc-end">
+                        <!-- <button pButton pRipple label="Thêm" icon="pi pi-plus" class="p-button-success p-mr-2 p-mb-2"
+                            (click)="openNew()"></button> -->
+                    </div>
+                    </div>
+                    
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pSortableColumn="TEN_DVIQLY">Tên đơn vị quản lý<p-sortIcon field="TEN_DVIQLY"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="USERNAME">Username<p-sortIcon field="USERNAME"></p-sortIcon>
+                        </th>
+                        <th >Tên đầy đủ<p-sortIcon field="FULLNAME"></p-sortIcon>
+                        </th>
+                        <th >Trạng thái<p-sortIcon field="STATUS"></p-sortIcon>
+                        </th>
+                        <th >Phân quyền<p-sortIcon field="STATUS"></p-sortIcon>
+                        </th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-main>
+                    <tr>
+                        
+                        <td class="bodySTT">
+                            {{main.TEN_DVIQLY}}
+                        </td>
+                        <td class="bodySTT">
+                            {{main.USERNAME}}
+                        </td>
+                        <td class="bodySTT">
+                            {{main.FULLNAME}}
+                        </td>
+                        <td class="bodySTT">
+                            {{main.STATUS}}
+                        </td>
+                        <td class="bodySTT">
+                            {{getDataRole(main.ROLES)}}
+                        </td>
+                        <td class="bodySTT">
+                            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2"
+                                (click)="editItem(main)"></button>
+                            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                                (click)="deleteItem(main)"></button>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="summary">
+                    <div class="p-d-flex p-ai-center p-jc-between">
+                        Số lượng: {{listMain ? listMain.length : 0 }} tài khoản.
+                    </div>
+                </ng-template>
+            </p-table>
+        </div>
+
+        <p-dialog [(visible)]="tinhDialog" [style]="{height: '70%' ,width: '450px'}" (onHide)="hideDialog()" [header]="isUpdate?'Cập Nhật Thông Tin Tài Khoản':'Thêm Mới Tài Khoản'"
+            [modal]="true" styleClass="p-fluid">
+            <ng-template pTemplate="content">
+                <div class="p-field">
+                    <label for="name">Đơn vị quản lý</label>
+                    <p-autoComplete [(ngModel)]="selectedTinh" [suggestions]="filterTinhs"
+                        (completeMethod)="filterTinh($event)" field="TEN_TINH" 
+                        [dropdown]="true" 
+                        [disabled]="isUpdate?true:false"
+                        (onSelect)="getAllUserHRMS($event)">
+                    </p-autoComplete>
+                    <!-- <small class="p-invalid" *ngIf="submitted && !tbaSPC.TEN_TINH">Tên tỉnh bắt buộc nhập.</small> -->
+                </div>
+                <div class="p-field" *ngIf="!isUpdate">
+                    <label for="name">Tài khoản HRMS</label>
+                    <p-autoComplete [(ngModel)]="userSelected" [suggestions]="filterListUser"
+                        (completeMethod)="filterUser($event)" field="EMPLOYEE_NAME" [dropdown]="true">
+                    </p-autoComplete>
+                    <!-- <small class="p-invalid" *ngIf="submitted && !tbaSPC.TEN_TINH">Tên tỉnh bắt buộc nhập.</small> -->
+                </div>
+                <div class="p-field">
+                    <label for="name">Username </label>
+                    <input type="text" pInputText [(ngModel)]="mainCurrent.USERNAME" required autofocus [disabled]="isUpdate?true:false"/>
+                    <small class="p-invalid" *ngIf="submitted && !mainCurrent.USERNAME">Username bắt buộc nhập.</small>
+                </div>
+                <div class="p-field">
+                    <label for="name">Password</label>
+                    <input type="text" pInputText [(ngModel)]="mainCurrent.PASSWORD" required autofocus />
+                    <small class="p-invalid" *ngIf="submitted && !mainCurrent.PASSWORD">Mật khẩu bắt buộc nhập</small>
+                </div>
+                <div class="p-field">
+                    <label for="name">Role</label>
+                    <p-multiSelect [options]="listRole" [(ngModel)]="mainCurrent.ROLES" defaultLabel="Chọn role" optionLabel="ROLE" class="multiselect-custom">
+                        <ng-template let-item pTemplate="item">
+                            <div class="country-item">
+                                <!-- <img src="assets/demo/flags/flag_placeholder.png" [class]="'flag flag-' + country.code.toLowerCase()" /> -->
+                                <div>{{item.ROLE}}</div>
+                            </div>
+                        </ng-template>
+                    </p-multiSelect>
+                </div>
+                <div class="p-field">
+                    <label for="name">Tên đầy đủ</label>
+                    <input type="text" pInputText  [(ngModel)]="mainCurrent.FULLNAME" required
+                        autofocus />
+                    <small class="p-invalid" *ngIf="submitted && !mainCurrent.FULLNAME">Tên đầy đủ bắt buộc nhập</small>
+                </div>
+                
+                <div class="p-field">
+                    <label for="name">Trạng thái</label>
+                        <div class="p-field-radiobutton">
+                            <p-radioButton name="city" value="ACTIVE" [(ngModel)]="mainCurrent.STATUS" ></p-radioButton>
+                            <label for="city1">Hoạt động</label>
+                        </div>
+                        <div class="p-field-radiobutton">
+                            <p-radioButton name="city" value="DISABLE" [(ngModel)]="mainCurrent.STATUS"
+                                           ></p-radioButton>
+                            <label for="city2">Khóa</label>
+                        </div>
+                </div>
+            </ng-template>
+
+            <ng-template pTemplate="footer">
+                <button pButton pRipple label="Hủy" icon="pi pi-times" class="p-button-secondary"
+                    (click)="hideDialog()"></button>
+                <button pButton pRipple label="Lưu" icon="pi pi-check" class="p-button-info"
+                    (click)="saveItem()"></button>
+            </ng-template>
+        </p-dialog>
+        
+        <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+    </div>
+</div>

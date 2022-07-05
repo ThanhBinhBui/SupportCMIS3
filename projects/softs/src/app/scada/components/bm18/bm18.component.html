@@ -1,0 +1,133 @@
+<p-toast key="tst"></p-toast>
+<p-confirmDialog header="Xác nhận" icon="pi pi-exclamation-triangle" acceptButtonStyleClass="ui-button-info"
+    acceptLabel="Đồng ý" rejectLabel="Hủy bỏ">
+</p-confirmDialog>
+<p-toolbar>
+    <div class="p-toolbar-group-left">
+        <span class="p-input-icon-left p-mb-2">
+            <i class="pi pi-search"></i>
+            <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                placeholder="Lọc..." />
+        </span>
+    </div>
+    <div class="p-toolbar-group-right">
+        <div class="p-formgroup-inline">
+            <div class="p-field">
+                <p-dropdown [options]="lstORG" [(ngModel)]="MA_DVIQLY" optionLabel="TEN_DVIQLY" optionValue="MA_DVIQLY"
+                    filter="true">
+                </p-dropdown>
+            </div>
+            <div class="p-field">
+                <p-calendar dateFormat="dd/mm/yy" dataType="string" [showIcon]="true" placeholder="Đến ngày"
+                    [selectOtherMonths]="true" [(ngModel)]="TO_DATE" firstDayOfWeek=1 inputStyleClass="calendarInput">
+                </p-calendar>
+            </div>
+            <button pButton pRipple (click)="search()" icon="pi pi-search"
+                class="p-button-success p-mt-1 p-mr-2"></button>
+            <button pButton pRipple (click)="exportExcel()" icon="pi pi-file-excel" class="p-button-help p-mt-1"
+                label="Xuất excel"></button>
+        </div>
+    </div>
+</p-toolbar>
+<div class="p-grid">
+    <div class="p-col-12 p-md-12 p-lg-6">
+        <div class="card">
+            <p-table #dt [value]="lstMain" dataKey="STT" [rowHover]="true" [rows]="10" [paginator]="true"
+                [filterDelay]="0" [loading]="loading"
+                [globalFilterFields]="['STT','MA_DVIQLY','TEN_DVIQLY','MA_TINH','TEN_TINH','SPC_Rec_104','SPC_Rec_101','SPC_Rec_101_DA','SPC_Rec_DNP3','SPC_Rec_RTU_CMIC','SPC_LBS_104','KH_Rec_104']"
+                currentPageReportTemplate="Hiển thị từ {first} đến {last} trên {totalRecords}" [responsive]="true"
+                [showCurrentPageReport]="true" [rowsPerPageOptions]="[5, 10, 20, { showAll: 'Tất cả' }]">
+                <ng-template pTemplate="header">
+                    <tr class="trHeader">
+                        <th pSortableColumn="STT" rowspan="3" class="headerSTT">STT
+                            <p-sortIcon field="STT"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="TEN_TINH" rowspan="3">Đơn vị
+                            <p-sortIcon field="TEN_TINH"></p-sortIcon>
+                        </th>
+                        <th colspan="6">SPC quản lý</th>
+                        <th>KH</th>
+                    </tr>
+                    <tr>
+                        <th class="headerRow2" colspan="5">Recloser</th>
+                        <th class="headerRow2">LBS</th>
+                        <th class="headerRow2">Recloser</th>
+                    </tr>
+                    <tr class="trHeader">
+                        <th pSortableColumn="SPC_Rec_104" class="headerRow3">SPC-Rec-104
+                            <p-sortIcon field="SPC_Rec_104"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="SPC_Rec_101" class="headerRow3">SPC-Rec-101
+                            <p-sortIcon field="SPC_Rec_101"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="SPC_Rec_101_DA" class="headerRow3">SPC-Rec-101-DA
+                            <p-sortIcon field="SPC_Rec_101_DA"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="SPC_Rec_DNP3" class="headerRow3">SPC-Rec-DNP3
+                            <p-sortIcon field="SPC_Rec_DNP3"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="SPC_Rec_RTU_CMIC" class="headerRow3">SPC-Rec-RTU-CMIC
+                            <p-sortIcon field="SPC_Rec_RTU_CMIC"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="SPC_LBS_104" class="headerRow3">SPC-LBS-104
+                            <p-sortIcon field="SPC_LBS_104"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="KH_Rec_104" class="headerRow3">KH-Rec-104
+                            <p-sortIcon field="KH_Rec_104"></p-sortIcon>
+                        </th>
+                </ng-template>
+                <ng-template pTemplate="body" let-main>
+                    <tr class="p-selectable-row" [style]="main.TEN_TINH.includes('Miền') ? 'font-weight: bold' : ''">
+                        <td class="bodySTT">
+                            <span class="p-column-title">STT</span>
+                            {{main.STT}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">Đơn vị</span>
+                            {{main.TEN_TINH}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">SPC-Rec-104</span>
+                            {{main.SPC_Rec_104 | number:'0.0-3':'vi'}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">SPC-Rec-101</span>
+                            {{main.SPC_Rec_101 | number:'0.0-3':'vi'}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">SPC-Rec-101-DA</span>
+                            {{main.SPC_Rec_101_DA | number:'0.0-3':'vi'}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">SPC-Rec-DNP3</span>
+                            {{main.SPC_Rec_DNP3 | number:'0.0-3':'vi'}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">SPC-Rec-RTU-CMIC</span>
+                            {{main.SPC_Rec_RTU_CMIC | number:'0.0-3':'vi'}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">SPC-LBS-104</span>
+                            {{main.SPC_LBS_104 | number:'0.0-3':'vi'}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">KH-Rec-104</span>
+                            {{main.KH_Rec_104 | number:'0.0-3':'vi'}}
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="9" style="text-align: center;">Không có dữ liệu</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+    <div class="p-col-12 p-md-12 p-lg-6">
+        <div class="card">
+            <h5 style="text-align: center;">BIỂU ĐỒ 21 TỈNH CÓ THIẾT BỊ 22kV KẾT NỐI SCADA</h5>
+            <p-chart #chart type="bar" [data]="basicData" [options]="basicOptions"></p-chart>
+        </div>
+    </div>
+</div>

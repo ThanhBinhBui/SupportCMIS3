@@ -1,0 +1,94 @@
+<p-toast key="tst"></p-toast>
+<p-confirmDialog header="Xác nhận" icon="pi pi-exclamation-triangle" acceptButtonStyleClass="ui-button-info"
+    acceptLabel="Đồng ý" rejectLabel="Hủy bỏ" rejectButtonStyleClass="p-button-secondary">
+</p-confirmDialog>
+<p-toolbar>
+    <div class="p-toolbar-group-left">
+        <button pButton pRipple label="Thêm mới" icon="pi pi-plus" class="p-button-success p-mr-2"
+            (click)="openNew()"></button>
+    </div>
+    <div class="p-toolbar-group-right">
+        <div class="p-formgroup-inline">
+            <div class="p-field">
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                        placeholder="Lọc..." />
+                </span>
+            </div>
+        </div>
+    </div>
+</p-toolbar>
+<p-table #dt [value]="lstMain" [rowHover]="true" [rows]="10" [paginator]="true" [filterDelay]="0" [loading]="loading"
+    [globalFilterFields]="['STT','CATEGORY_NAME']"
+    currentPageReportTemplate="Hiển thị từ {first} đến {last} trên {totalRecords}" [showCurrentPageReport]="true"
+    [rowsPerPageOptions]="[5, 10, 20, { showAll: 'Tất cả' }]">
+    <ng-template pTemplate="header">
+        <tr class="trHeader">
+            <th pSortableColumn="ORD" class="headerSTT">STT
+                <p-sortIcon field="ORD"></p-sortIcon>
+            </th>
+            <th pSortableColumn="CATEGORY_NAME">Tên chủ đề
+                <p-sortIcon field="CATEGORY_NAME"></p-sortIcon>
+            </th>
+            <th pSortableColumn="IS_ACTIVE">Trạng thái
+                <p-sortIcon field="IS_ACTIVE"></p-sortIcon>
+            </th>
+            <th class="headerText10"></th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-main>
+        <tr>
+            <td>
+                <span class="p-column-title">STT</span>
+                {{main.ORD}}
+            </td>
+            <td>
+                <span class="p-column-title">Tên chủ đề</span>
+                {{main.CATEGORY_NAME}}
+            </td>
+            <td>
+                <span class="p-column-title">Trạng thái</span>
+                <p-badge [value]="main.IS_ACTIVE ? 'Còn hiệu lực' : 'Hết hiệu lực'" size="large"
+                    [severity]="main.IS_ACTIVE?'success':'danger'">
+                </p-badge>
+            </td>
+            <td style="text-align: center;">
+                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2"
+                    (click)="editDoc(main)"></button>
+                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                    (click)="deleteDoc(main)"></button>
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+        <tr>
+            <td colspan="5" style="text-align: center;">Không có dữ liệu</td>
+        </tr>
+    </ng-template>
+</p-table>
+<p-dialog [(visible)]="docDialog" [style]="{width: '50rem'}" [header]="isUpdate?'Cập nhật chủ đề':'Thêm mới chủ đề'"
+    [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <div class="p-field">
+            <label for="ORD">STT (*)</label>
+            <p-inputNumber id="ORD" [(ngModel)]="doc.ORD" ngDefaultControl></p-inputNumber>
+            <small class="p-error" *ngIf="submitted && !doc.ORD">Vui lòng nhập STT</small>
+        </div>
+        <div class="p-field">
+            <label for="CATEGORY_NAME">Tên chủ đề (*)</label>
+            <textarea id="CATEGORY_NAME" pInputTextarea [(ngModel)]="doc.CATEGORY_NAME" required rows="3"
+                cols="20"></textarea>
+            <small class="p-error" *ngIf="submitted && !doc.CATEGORY_NAME">Vui lòng nhập tên chủ đề</small>
+        </div>
+        <div class="p-field">
+            <p-checkbox name="IS_ACTIVE" [binary]="true" label="Còn hiệu lực" [(ngModel)]="doc.IS_ACTIVE">
+            </p-checkbox>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Hủy" icon="pi pi-times" class="p-button-secondary"
+            (click)="hideDialog()"></button>
+        <button pButton pRipple label="Lưu" icon="pi pi-check" class="p-button-info" (click)="saveDoc()"></button>
+    </ng-template>
+</p-dialog>

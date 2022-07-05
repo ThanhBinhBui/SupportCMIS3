@@ -1,0 +1,204 @@
+<p-toast key="tst"></p-toast>
+<p-confirmDialog header="Xác nhận" icon="pi pi-exclamation-triangle" acceptButtonStyleClass="ui-button-info"
+    acceptLabel="Đồng ý" rejectLabel="Hủy bỏ">
+</p-confirmDialog>
+<div class="p-grid">
+    <div class="p-col-12">
+        <div class="card">
+            <div class="p-grid">
+                <div class="p-md-4 p-sm-4 p-d-flex p-jc-start">
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                            placeholder="Lọc..." />
+                    </span>
+                </div>
+                <!-- <div class="p-md-4 p-sm-4 p-d-flex p-jc-end">
+                    <p-dropdown inputId="ORG_CODE" [options]="lstORG" [(ngModel)]="selectedORG_CODE"
+                        optionLabel="ORG_NAME" optionValue="ORG_CODE" filter="true" (onChange)="search()">
+                    </p-dropdown>
+                </div> -->
+
+                <div class="p-md-8 p-sm-8 p-d-flex p-jc-end">
+                    <div class="p-mb-2 p-mr-2">
+                        <p-calendar view="month" dateFormat="mm/yy" [yearNavigator]="true" yearRange="2018:2040"
+                            dataType="string" [showIcon]="true" placeholder="Chọn tháng"
+                            [selectOtherMonths]="true" [(ngModel)]="FROM_DATE" firstDayOfWeek=1 inputStyleClass="calendarInput">
+                        </p-calendar>
+                    </div>
+                    <div class="p-mb-2 p-mr-2">
+                        <button pButton pRipple (click)="search()" icon="pi pi-search"
+                            class="p-button-success p-mt-1"></button>
+
+                    </div>
+                    <div class="p-mb-2 p-mr-2">
+                        <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help p-mt-1"
+                            (click)="exportExcel()"></button>
+                    </div>
+                </div>
+            </div>
+            <p-table #dt [value]="listMain" dataKey="STT" [rowHover]="true" [rows]="50" [paginator]="true"
+            [loading]="loading"
+            [filterDelay]="0" 
+                [globalFilterFields]="['MA_DVIQLY','STT','TEN_DVIQLY']"
+                currentPageReportTemplate="Hiển thị từ {first} đến {last} trên {totalRecords}" 
+                [responsive]="true"
+                [showCurrentPageReport]="true"
+                [rowsPerPageOptions]="[5, 10, 20, { showAll: 'Tất cả' }]">
+                <!-- <ng-template pTemplate="caption">
+                    <div class="p-grid">
+                        <div class="p-md-4 p-sm-4 p-d-flex p-jc-start">
+                            <span class="p-input-icon-left">
+                                <i class="pi pi-search"></i>
+                                <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                                    placeholder="Lọc..." />
+                            </span>
+                        </div>
+                        <div class="p-md-4 p-sm-4 p-d-flex p-jc-end">
+                            <p-dropdown inputId="ORG_CODE" [options]="lstORG" [(ngModel)]="selectedORG_CODE"
+                                optionLabel="ORG_NAME" optionValue="ORG_CODE" filter="true" (onChange)="search()">
+                            </p-dropdown>
+                        </div> 
+
+                        <div class="p-md-8 p-sm-8 p-d-flex p-jc-end">
+                           
+                        </div>
+                    </div>
+                </ng-template> -->
+                <!-- <ng-template pTemplate="colgroup" let-columns>
+                    <colgroup>
+                        <col style="width:50px">
+                        <col style="width:200px">
+                        <col style="width:200px">
+                        <col style="width:80px">
+                        <col style="width:80px">
+                        <col style="width:80px">
+                        <col style="width:80px">
+                        <col style="width:80px">
+                        <col style="width:80px">
+                        <col style="width:80px">
+                        <col style="width:80px">
+                        <col style="width:80px">
+                        <col style="width:80px">
+                        <col style="width:200px">
+                    </colgroup>
+                </ng-template> -->
+                <ng-template pTemplate="header">
+                    <tr class="trHeader">
+                        <th pSortableColumn="TIMESTAMP" class="p-col-1" rowspan="3">STT
+                            <!-- <p-sortIcon field="STT"></p-sortIcon> -->
+                        </th>
+                        <th pSortableColumn="MILLI_SECONDS" class="p-col-2" rowspan="3">Khu vực/ TBA 110kV
+                            <!-- <p-sortIcon field="TEN_DVIQLY"></p-sortIcon> -->
+                        </th>
+                        <th pSortableColumn="b1" class="p-col-1" colspan="8">Tình trạng kết nối và điều khiển
+                            <!-- <p-sortIcon field="TEN_TRAM"></p-sortIcon> -->
+                        </th>
+                        <th pSortableColumn="b2" class="p-col-1" colspan="2">Chất lượng tín hiệu (trạng thái, đo lường,
+                            cảnh báo)</th>
+                        <th pSortableColumn="b2" class="p-col-1" rowspan="3"></th>
+                    </tr>
+                    <tr class="trHeader">
+                        <th pSortableColumn="TIMESTAMP" class="p-col-1" rowspan="2">Mất kết nối</th>
+                        <th pSortableColumn="MILLI_SECONDS" class="p-col-1" rowspan="2">Mất kết nối khôi phục</th>
+                        <th pSortableColumn="MILLI_SECONDS" class="p-col-1" rowspan="2">Tổng thời gian mất kết nối (giờ)
+                        </th>
+                        <th pSortableColumn="MILLI_SECONDS" class="p-col-1" colspan="2">Tổng số lần điều khiển/tháng
+                        </th>
+                        <th pSortableColumn="MILLI_SECONDS" class="p-col-1" colspan="2">Tổng số lần điều khiển không
+                            thành công</th>
+                        <th pSortableColumn="MILLI_SECONDS" class="p-col-2" rowspan="2">Nguyên nhân điểu khiển không
+                            thành công</th>
+                        <th pSortableColumn="MILLI_SECONDS" class="p-col-1" rowspan="2">Đủ</th>
+                        <th pSortableColumn="MILLI_SECONDS" class="p-col-1" rowspan="2">Đúng</th>
+                    </tr>
+                    <tr class="trHeader">
+                        <th pSortableColumn="" cass="p-col-1">Cấp điện áp 22kV</th>
+                        <th pSortableColumn="" cass="p-col-1">Cấp điện áp 110kV</th>
+                        <th pSortableColumn="" cass="p-col-1">Cấp điện áp 22kV</th>
+                        <th pSortableColumn="" cass="p-col-1">Cấp điện áp 110kV</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-main>
+                    <tr class="p-selectable-row">
+                        <td class="bodySTT">{{main.STT}}</td>
+                        <td class="bodySTT" style="text-align: left;">{{main.TEN_DVIQLY}}</td>
+                        <td class="bodySTT" style="text-align: right;">{{main.TONG_MATKETNOI}}</td>
+                        <td class="bodySTT" style="text-align: right;">{{main.TONG_MATKETNOI_KHOIPHUC}}</td>
+                        <td class="bodySTT" style="text-align: right;">{{main.TONG_GIO_MATKETNOI}}</td>
+                        <td class="bodySTT" style="text-align: right;">{{main.TONG_22}}</td>
+                        <td class="bodySTT" style="text-align: right;">{{main.TONG_110}}</td>
+                        <td class="bodySTT" style="text-align: right;">{{main.TONG_22_TTB}}</td>
+                        <td class="bodySTT" style="text-align: right;">{{main.TONG_110_TTB}}</td>
+                        <td class="bodySTT" style=" text-align: left">{{main.NOTE}}</td>
+                        <td class="bodySTT">{{main.DU==='True'?'x':''}}</td>
+                        <td class="bodySTT">{{main.DUNG==='True'?'x':''}}</td>
+                        <td>
+                            <button style="z-index: 1000;" pButton pRipple icon="pi pi-pencil"
+                                class="p-button-rounded p-button-success p-mr-2" (click)="editItem(main)"></button>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="footer">
+                    <tr *ngIf="listMain && listMain.length>0">
+
+                        <td class="bodySTT"></td>
+                        <td class="bodySTT">Tổng</td>
+                        <td class="bodySTT" style=" text-align: left">{{mainTong? (mainTong.TONG_MATKETNOI| number:'0.0-3':'vi'): 0 }}</td>
+                        <td class="bodySTT" style=" text-align: left">{{mainTong? (mainTong.TONG_MATKETNOI_KHOIPHUC| number:'0.0-3':'vi'): 0 }}</td>
+                        <td class="bodySTT" style=" text-align: left">{{mainTong? (mainTong.TONG_GIO_MATKETNOI| number:'0.0-3':'vi'): 0 }}</td>
+                        <td class="bodySTT" style=" text-align: left">{{mainTong? (mainTong.TONG_22| number:'0.0-3':'vi'): 0 }}</td>
+                        <td class="bodySTT" style=" text-align: left">{{mainTong? (mainTong.TONG_110| number:'0.0-3':'vi'): 0 }}</td>
+                        <td class="bodySTT" style=" text-align: left">{{mainTong? (mainTong.TONG_22_TTB| number:'0.0-3':'vi'): 0 }}</td>
+                        <td class="bodySTT" style=" text-align: left">{{mainTong? (mainTong.TONG_110_TTB| number:'0.0-3':'vi'): 0 }}</td>
+                        <td class="bodySTT"></td>
+                        <td class="bodySTT"></td>
+                        <td class="bodySTT"></td>
+                        <td class="bodySTT"></td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="13" style="text-align: center;">Không có dữ liệu</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+    <p-dialog [(visible)]="editDialog" [style]="{width: '450px'}" (onHide)="hideDialog()"
+        header='Cập nhật chất lượng tính hiệu' [modal]="true" styleClass="p-fluid">
+        <ng-template pTemplate="content">
+            <div class="p-field">
+                <label for="TIMESTAMP">Tên đơn vị quản lý:</label>
+                <input type="text" pInputText id="TIMESTAMP" [(ngModel)]="mainCurrent.TEN_DVIQLY" required disabled />
+            </div>
+            <div class="p-field">
+                <label for="name">Đủ tín hiệu:</label>
+                <div class="p-field-radiobutton">
+                    <p-radioButton value="True" [(ngModel)]="mainCurrent.DU"></p-radioButton>
+                    <label>Đủ tín hiệu</label>
+                </div>
+                <div class="p-field-radiobutton">
+                    <p-radioButton value="False" [(ngModel)]="mainCurrent.DU"></p-radioButton>
+                    <label>Không đủ tín hiệu</label>
+                </div>
+            </div>
+            <div class="p-field">
+                <label for="name">Đúng tín hiệu:</label>
+                <div class="p-field-radiobutton">
+                    <p-radioButton value="True" [(ngModel)]="mainCurrent.DUNG"></p-radioButton>
+                    <label>Đúng tín hiệu</label>
+                </div>
+                <div class="p-field-radiobutton">
+                    <p-radioButton value="False" [(ngModel)]="mainCurrent.DUNG"></p-radioButton>
+                    <label>Không đúng tín hiệu</label>
+                </div>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <button pButton pRipple label="Hủy" icon="pi pi-times" class="p-button-secondary"
+                (click)="hideDialog()"></button>
+            <button pButton pRipple label="Lưu" icon="pi pi-check" class="p-button-info" (click)="saveItem()"></button>
+        </ng-template>
+    </p-dialog>
+</div>

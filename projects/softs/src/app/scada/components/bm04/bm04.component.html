@@ -1,0 +1,173 @@
+<p-toast key="tst"></p-toast>
+<p-confirmDialog header="Xác nhận" icon="pi pi-exclamation-triangle" acceptButtonStyleClass="ui-button-info"
+    acceptLabel="Đồng ý" rejectLabel="Hủy bỏ">
+</p-confirmDialog>
+<p-toolbar>
+    <div class="p-toolbar-group-left">
+        <span class="p-input-icon-left p-mb-2">
+            <i class="pi pi-search"></i>
+            <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                placeholder="Lọc..." />
+        </span>
+    </div>
+    <div class="p-toolbar-group-right">
+        <div class="p-formgroup-inline">
+            <div class="p-field">
+                <p-dropdown [options]="lstORG" [(ngModel)]="MA_DVIQLY" optionLabel="TEN_DVIQLY" optionValue="MA_DVIQLY"
+                    filter="true">
+                </p-dropdown>
+            </div>
+            <div class="p-field">
+                <p-calendar dateFormat="dd/mm/yy" dataType="string" [showIcon]="true" placeholder="Ngày bắt đầu"
+                    [selectOtherMonths]="true" [(ngModel)]="FROM_DATE" firstDayOfWeek=1 inputStyleClass="calendarInput">
+                </p-calendar>
+            </div>
+            <div class="p-field">
+                <p-calendar dateFormat="dd/mm/yy" dataType="string" [showIcon]="true" placeholder="Ngày kết thúc"
+                    [selectOtherMonths]="true" [(ngModel)]="TO_DATE" firstDayOfWeek=1 inputStyleClass="calendarInput">
+                </p-calendar>
+            </div>
+            <button pButton pRipple (click)="search()" icon="pi pi-search"
+                class="p-button-success p-mt-1 p-mr-2"></button>
+            <button pButton pRipple (click)="exportExcel()" icon="pi pi-file-excel" class="p-button-help p-mt-1"
+                label="Xuất excel"></button>
+        </div>
+    </div>
+</p-toolbar>
+<p-table #dt [value]="lstMain" [rowHover]="true" [rows]="10" [paginator]="true" [filterDelay]="0" [loading]="loading"
+    [globalFilterFields]="['STT','ORGDESC','DZ_TQ110','DZ_KD110','TRAM110','TONG_110','DZ_TQ22','DZ_KD22','TRAM22','TONG_22','TONG']"
+    currentPageReportTemplate="Hiển thị từ {first} đến {last} trên {totalRecords}" [responsive]="true"
+    [showCurrentPageReport]="true" [rowsPerPageOptions]="[5, 10, 20, { showAll: 'Tất cả' }]">
+    <ng-template pTemplate="header">
+        <tr class="trHeader">
+            <th pSortableColumn="STT" rowspan="3" class="headerSTT">STT
+                <p-sortIcon field="STT"></p-sortIcon>
+            </th>
+            <th pSortableColumn="ORGDESC" rowspan="3" class="headerTextLarge">Đơn vị quản lý vận hành
+                <p-sortIcon field="ORGDESC"></p-sortIcon>
+            </th>
+            <th colspan="4">SỰ CỐ 110kV</th>
+            <th colspan="4">SỰ CỐ 22kV</th>
+            <th pSortableColumn="TONG" rowspan="3">TỔNG
+                <p-sortIcon field="TONG"></p-sortIcon>
+            </th>
+        </tr>
+        <tr>
+            <th colspan="2" class="headerRow2">ĐƯỜNG DÂY</th>
+            <th pSortableColumn="TRAM110" rowspan="2" class="headerRow2">TBA
+                <p-sortIcon field="TRAM110"></p-sortIcon>
+            </th>
+            <th pSortableColumn="TONG_110" rowspan="2" class="headerRow2">TỔNG 110kV
+                <p-sortIcon field="TONG_110"></p-sortIcon>
+            </th>
+            <th colspan="2" class="headerRow2">ĐƯỜNG DÂY</th>
+            <th pSortableColumn="TRAM22" rowspan="2" class="headerRow2">TBA
+                <p-sortIcon field="TRAM22"></p-sortIcon>
+            </th>
+            <th pSortableColumn="TONG_22" rowspan="2" class="headerRow2">TỔNG 22kV
+                <p-sortIcon field="TONG_22"></p-sortIcon>
+            </th>
+        </tr>
+        <tr class="trHeader">
+            <th pSortableColumn="DZ_TQ110" class="headerRow3">TQ
+                <p-sortIcon field="DZ_TQ110"></p-sortIcon>
+            </th>
+            <th pSortableColumn="DZ_KD110" class="headerRow3">KD
+                <p-sortIcon field="DZ_KD110"></p-sortIcon>
+            </th>
+            <th pSortableColumn="DZ_TQ22" class="headerRow3">TQ
+                <p-sortIcon field="DZ_TQ22"></p-sortIcon>
+            </th>
+            <th pSortableColumn="DZ_KD22" class="headerRow3">KD
+                <p-sortIcon field="DZ_KD22"></p-sortIcon>
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-main let-rowIndex="rowIndex">
+        <tr class="p-selectable-row">
+            <td class="bodySTT">
+                <span class="p-column-title">STT</span>
+                {{main.STT}}
+            </td>
+            <td>
+                <span class="p-column-title">Đơn vị quản lý vận hành</span>
+                {{main.ORGDESC}}
+            </td>
+            <td>
+                <span class="p-column-title">TQ</span>
+                {{main.DZ_TQ110 | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">KD</span>
+                {{main.DZ_KD110 | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">TBA</span>
+                {{main.TRAM110 | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">TỔNG 100kV</span>
+                {{main.TONG_110 | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">TQ</span>
+                {{main.DZ_TQ22 | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">KD</span>
+                {{main.DZ_KD22 | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">TBA</span>
+                {{main.TRAM22 | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">TỔNG 22kV</span>
+                {{main.TONG_22 | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">TỔNG</span>
+                {{main.TONG | number:'0.0-3':'vi'}}
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <tr *ngIf="lstMain && lstMain.length>0">
+            <td></td>
+            <td style="font-weight: bold; text-align: right;">Tổng {{lstMain ? lstMain.length : 0}} dòng
+            </td>
+            <td style="font-weight: bold;">
+                {{dataTong ? (dataTong.DZ_TQ110 | number:'0.0-3':'vi'): 0 }}
+            </td>
+            <td style="font-weight: bold;">
+                {{dataTong ? (dataTong.DZ_KD110 | number:'0.0-3':'vi') : 0}}
+            </td>
+            <td style="font-weight: bold;">
+                {{dataTong ? (dataTong.TRAM110 | number:'0.0-3':'vi') : 0}}
+            </td>
+            <td style="font-weight: bold;">
+                {{dataTong ? (dataTong.TONG_110 | number:'0.0-3':'vi') : 0}}
+            </td>
+            <td style="font-weight: bold;">
+                {{dataTong ? (dataTong.DZ_TQ22 | number:'0.0-3':'vi'): 0 }}
+            </td>
+            <td style="font-weight: bold;">
+                {{dataTong ? (dataTong.DZ_KD22 | number:'0.0-3':'vi') : 0}}
+            </td>
+            <td style="font-weight: bold;">
+                {{dataTong ? (dataTong.TRAM22 | number:'0.0-3':'vi') : 0}}
+            </td>
+            <td style="font-weight: bold;">
+                {{dataTong ? (dataTong.TONG_22 | number:'0.0-3':'vi') : 0}}
+            </td>
+            <td style="font-weight: bold;">
+                {{dataTong ? (dataTong.TONG | number:'0.0-3':'vi') : 0}}
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+        <tr>
+            <td colspan="11" style="text-align: center;">Không có dữ liệu</td>
+        </tr>
+    </ng-template>
+</p-table>

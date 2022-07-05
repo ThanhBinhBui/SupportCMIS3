@@ -1,0 +1,106 @@
+<p-toast key="tst"></p-toast>
+<p-confirmDialog header="Xác nhận" icon="pi pi-exclamation-triangle" acceptButtonStyleClass="ui-button-info"
+    acceptLabel="Đồng ý" rejectLabel="Hủy bỏ">
+</p-confirmDialog>
+<p-toolbar>
+    <div class="p-toolbar-group-left">
+        <span class="p-input-icon-left p-mb-2">
+            <i class="pi pi-search"></i>
+            <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                placeholder="Lọc..." />
+        </span>
+    </div>
+    <div class="p-toolbar-group-right">
+        <div class="p-formgroup-inline">
+            <div class="p-field">
+                <p-dropdown [options]="lstORG" [(ngModel)]="MA_DVIQLY" optionLabel="TEN_DVIQLY" optionValue="MA_DVIQLY"
+                    filter="true">
+                </p-dropdown>
+            </div>
+            <div class="p-field">
+                <p-calendar dateFormat="dd/mm/yy" dataType="string" [showIcon]="true" placeholder="Đến ngày"
+                    [selectOtherMonths]="true" [(ngModel)]="TO_DATE" firstDayOfWeek=1 inputStyleClass="calendarInput">
+                </p-calendar>
+            </div>
+            <button pButton pRipple (click)="search()" icon="pi pi-search"
+                class="p-button-success p-mt-1 p-mr-2"></button>
+            <button pButton pRipple (click)="exportExcel()" icon="pi pi-file-excel" class="p-button-help p-mt-1"
+                label="Xuất excel"></button>
+        </div>
+    </div>
+</p-toolbar>
+<p-table #dt [value]="lstMain" dataKey="STT" [rowHover]="true" [rows]="10" [paginator]="true" [filterDelay]="0"
+    [loading]="loading"
+    [globalFilterFields]="['STT','MA_DVIQLY','TEN_DVIQLY','MA_TINH','TEN_TINH','RECLOSER','LBS','RMU','COMPACT','TRAM_CAT','Tong']"
+    currentPageReportTemplate="Hiển thị từ {first} đến {last} trên {totalRecords}" [responsive]="true"
+    [showCurrentPageReport]="true" [rowsPerPageOptions]="[5, 10, 20, { showAll: 'Tất cả' }]">
+    <ng-template pTemplate="header">
+        <tr class="trHeader">
+            <th pSortableColumn="STT" class="headerSTT">STT
+                <p-sortIcon field="STT"></p-sortIcon>
+            </th>
+            <th pSortableColumn="TEN_TINH">Đơn vị
+                <p-sortIcon field="TEN_TINH"></p-sortIcon>
+            </th>
+            <th pSortableColumn="RECLOSER">RECLOSER
+                <p-sortIcon field="RECLOSER"></p-sortIcon>
+            </th>
+            <th pSortableColumn="LBS">LBS
+                <p-sortIcon field="LBS"></p-sortIcon>
+            </th>
+            <th pSortableColumn="RMU">RMU
+                <p-sortIcon field="RMU"></p-sortIcon>
+            </th>
+            <th pSortableColumn="COMPACT">COMPACT
+                <p-sortIcon field="COMPACT"></p-sortIcon>
+            </th>
+            <th pSortableColumn="TRAM_CAT">Trạm cắt
+                <p-sortIcon field="TRAM_CAT"></p-sortIcon>
+            </th>
+            <th pSortableColumn="Tong">Tổng
+                <p-sortIcon field="Tong"></p-sortIcon>
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-main>
+        <tr class="p-selectable-row" [style]="main.TEN_TINH.includes('Miền') ? 'font-weight: bold' : ''">
+            <td class="bodySTT">
+                <span class="p-column-title">STT</span>
+                {{main.STT}}
+            </td>
+            <td>
+                <span class="p-column-title">Đơn vị</span>
+                {{main.TEN_TINH}}
+            </td>
+            <td>
+                <span class="p-column-title">RECLOSER</span>
+                {{main.RECLOSER | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">LBS</span>
+                {{main.LBS | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">RMU</span>
+                {{main.RMU | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">COMPACT</span>
+                {{main.COMPACT | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">Trạm cắt</span>
+                {{main.TRAM_CAT | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">Tổng</span>
+                {{main.Tong | number:'0.0-3':'vi'}}
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+        <tr>
+            <td colspan="8" style="text-align: center;">Không có dữ liệu</td>
+        </tr>
+    </ng-template>
+</p-table>

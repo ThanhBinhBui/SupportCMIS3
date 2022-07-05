@@ -1,0 +1,122 @@
+<div class="p-grid">
+    <div class="p-col-12">
+        <p-toast></p-toast>
+        <div class="card">
+            <p-toolbar styleClass="p-mb-4">
+                <ng-template pTemplate="left">
+                    <button pButton pRipple label="Thêm" icon="pi pi-plus" class="p-button-success p-mr-2 p-mb-2"
+                        (click)="openNew()"></button>
+                </ng-template>
+                <ng-template pTemplate="right">
+                    <!-- <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help p-mb-2" (click)="exportExcel()"></button> -->
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                            placeholder="Lọc..." />
+                    </span>
+                </ng-template>
+            </p-toolbar>
+
+            <p-table #dt [value]="listMain" [rows]="20" [paginator]="true" [loading]="loading"
+                [globalFilterFields]="['ID','START_TIME','END_TIME','NAME']" [rowHover]="true" dataKey="id"
+                styleClass="p-datatable-customers"
+                currentPageReportTemplate="Hiển thị từ {first} đến {last} trên {totalRecords}"
+                [showCurrentPageReport]="true">
+                <!-- <ng-template pTemplate="caption">
+                    <div class="p-grid">
+                        <div class="p-md-4 p-sm-4 p-d-flex p-jc-start">
+                            <span class="p-input-icon-left">
+                                <i class="pi pi-search"></i>
+                                <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                                    placeholder="Lọc..." />
+                            </span>
+                        </div>
+                        <div class="p-md-4 p-sm-4 p-d-flex p-jc-start"></div>
+                        <div class="p-md-4 p-sm-4 p-d-flex p-jc-end">
+                             <button pButton pRipple label="Thêm" icon="pi pi-plus" class="p-button-success p-mr-2 p-mb-2"
+                            (click)="openNew()"></button> 
+                        </div>
+                    </div>
+
+                </ng-template> -->
+                <ng-template pTemplate="header">
+                    <tr>
+
+                        <th pSortableColumn="ID">ID<p-sortIcon field="ID"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="START_TIME">Thời gian bắt đầu <p-sortIcon field="START_TIME"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="END_TIME">Thời gian kết thúc <p-sortIcon field="END_TIME"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="NAME">Tên ca <p-sortIcon field="NAME"></p-sortIcon>
+                        </th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-main>
+                    <tr>
+                        <td  style=" text-align: right">
+                            {{main.ID}}
+                        </td>
+                        <td  style=" text-align: right">
+                            {{main.START_TIME}}
+                        </td>
+                        <td  style=" text-align: right">
+                            {{main.END_TIME}}
+                        </td>
+                        <td  style=" text-align: left">
+                            {{main.NAME}}
+                        </td>
+                        <td class="bodySTT">
+                            <!-- <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2"
+                                (click)="editItem(tinh)"></button> -->
+                            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                                (click)="deleteItem(main)"></button>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="summary">
+                    <div class="p-d-flex p-ai-center p-jc-between">
+                        Số lượng: {{listMain ? listMain.length : 0 }} ca.
+                    </div>
+                </ng-template>
+            </p-table>
+        </div>
+
+
+
+        <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+    </div>
+</div>
+
+<p-dialog [(visible)]="dialog" [style]="{width: '450px'}" (onHide)="hideDialog()" [header]="'Thêm Mới DM Ca'"
+    [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <div class="p-field">
+            <label for="START_TIME">Thời gian bắt đầu (*)</label>
+
+            <p-calendar dateFormat="hh:mm:ss" [timeOnly]="true" hourFormat="24" inputId="timeonly" dataType="string"
+                [showIcon]="true" placeholder="Giờ bắt đầu" [selectOtherMonths]="true"
+                [(ngModel)]="mainCurrent.START_TIME" inputStyleClass="calendarInput">
+            </p-calendar>
+        </div>
+        <div class="p-field">
+            <label for="name">Thời gian kết thúc (*)</label>
+            <p-calendar dateFormat="hh:mm:ss" [timeOnly]="true" hourFormat="24" inputId="timeonly" dataType="string"
+                [showIcon]="true" placeholder="Giờ kết thúc" [selectOtherMonths]="true"
+                [(ngModel)]="mainCurrent.END_TIME" inputStyleClass="calendarInput">
+            </p-calendar>
+        </div>
+        <div class="p-field">
+            <label for="name">Tên ca (*)</label>
+            <input type="text" pInputText id="TEN_DVIQLY" [(ngModel)]="mainCurrent.NAME" required autofocus />
+        </div>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Hủy" icon="pi pi-times" class="p-button-secondary"
+            (click)="hideDialog()"></button>
+        <button pButton pRipple label="Lưu" icon="pi pi-check" class="p-button-info"
+            (click)="saveItem(mainCurrent)"></button>
+    </ng-template>
+</p-dialog>

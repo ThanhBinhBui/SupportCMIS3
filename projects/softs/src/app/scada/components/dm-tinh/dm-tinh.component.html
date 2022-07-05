@@ -1,0 +1,161 @@
+<div class="p-grid">
+    <div class="p-col-12">
+
+        <p-toast></p-toast>
+
+        <div class="card">
+            <p-toolbar styleClass="p-mb-4">
+                <ng-template pTemplate="left">
+                    <div class="p-mr-2 p-mb-2">
+                        <button pButton pRipple label="Thêm" icon="pi pi-plus" class="p-button-success p-mr-2 p-mb-2"
+                            (click)="openNew()"></button>
+                    </div>
+                    <div class="p-mr-2 p-mb-2">
+                        <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help p-mb-2"
+                            (click)="exportExcel()"></button>
+                    </div>
+                    <div class="p-mr-2 p-mb-2" style="padding-bottom:5pt;padding-left: 2pt;">
+                        <p-fileUpload #fileInput mode="basic" chooseLabel="Import" cancelLabel="Hủy"
+                            uploadLabel="Tải lên" name="FILE_NAME[]" accept=".xlsx,.xls" maxFileSize="1000000"
+                            (onUpload)="uploadFileDaChon()" (onBeforeUpload)="uploadFileDaChon()">
+                        </p-fileUpload>
+                    </div>
+
+                </ng-template>
+
+
+
+                <!-- <button pButton pRipple label="Import" icon="pi pi-upload" class="p-button-help p-mb-2"
+                        (click)="importExcel()"></button> -->
+                <!-- <p-fileUpload #fileInput name="FILE_NAME[]" maxFileSize="10000000" chooseLabel="Import"
+                    uploadLabel="Tải lên" cancelLabel="Hủy" upload accept=".xlsx" [showUploadButton]="false">
+                </p-fileUpload> -->
+
+
+                <ng-template pTemplate="right">
+                    <!-- <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help p-mb-2" (click)="exportExcel()"></button> -->
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                            placeholder="Lọc..." />
+                    </span>
+                </ng-template>
+            </p-toolbar>
+
+            <p-table #dt [value]="tinhs" [columns]="cols" [rows]="20" [paginator]="true" [loading]="loading"
+                [globalFilterFields]="['MA_TINH','TEN_TINH','TEN_DVIQLY','TEN_PHATTUYEN','MA_DVIQLY']"
+                [(selection)]="selectedTinhs" [rowHover]="true" dataKey="id" styleClass="p-datatable-customers"
+                currentPageReportTemplate="Hiển thị từ {first} đến {last} trên {totalRecords}"
+                [showCurrentPageReport]="true">
+                <!-- <ng-template pTemplate="caption">
+                    <div class="p-grid">
+                    <div class="p-md-4 p-sm-4 p-d-flex p-jc-start">
+                        <span class="p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                                placeholder="Lọc..." />
+                        </span>
+                    </div>
+                    <div class="p-md-4 p-sm-4 p-d-flex p-jc-start"></div>
+                    <div class="p-md-4 p-sm-4 p-d-flex p-jc-end">
+                       <button pButton pRipple label="Thêm" icon="pi pi-plus" class="p-button-success p-mr-2 p-mb-2"
+                            (click)="openNew()"></button>
+                    </div>
+                    </div>                    
+                </ng-template> -->
+                <ng-template pTemplate="header">
+                    <tr>
+
+                        <th pSortableColumn="MA_TINH">Mã tỉnh <p-sortIcon field="MA_TINH"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="MA_DVIQLY">Mã đơn vị quản lý <p-sortIcon field="MA_DVIQLY"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="TEN_TINH">Tên tỉnh <p-sortIcon field="TEN_TINH"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="TEN_DVIQLY">Tên đơn vị quản lý <p-sortIcon field="TEN_DVIQLY"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="TEN_PHATTUYEN">Tên phát tuyến <p-sortIcon field="TEN_PHATTUYEN">
+                            </p-sortIcon>
+                        </th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-tinh>
+                    <tr>
+
+                        <td style=" text-align: left">
+                            {{tinh.MA_TINH}}
+                        </td>
+                        <td style=" text-align: left">
+                            {{tinh.MA_DVIQLY}}
+                        </td>
+                        <td style=" text-align: left">
+                            {{tinh.TEN_TINH}}
+                        </td>
+                        <td style=" text-align: left">
+                            {{tinh.TEN_DVIQLY}}
+                        </td>
+                        <td style=" text-align: left">
+                            {{tinh.TEN_PHATTUYEN}}
+                        </td>
+                        <td class="bodySTT">
+                            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2"
+                                (click)="editItem(tinh)"></button>
+                            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                                (click)="deleteItem(tinh)"></button>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="summary">
+                    <div class="p-d-flex p-ai-center p-jc-between">
+                        Số lượng: {{tinhs ? tinhs.length : 0 }} tỉnh.
+                    </div>
+                </ng-template>
+            </p-table>
+        </div>
+
+
+
+        <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+    </div>
+</div>
+
+<p-dialog [(visible)]="tinhDialog" [style]="{width: '450px'}" (onHide)="hideDialog()"
+    [header]="isUpdate?'Cập Nhật Thông Tin Tỉnh':'Thêm Mới Tỉnh'" [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <div class="p-field">
+            <label for="MA_TINH">Mã tỉnh (*)</label>
+            <input type="text" pInputText id="MA_TINH" [(ngModel)]="tinh.MA_TINH" required autofocus
+                [disabled]="isUpdate?true:false" />
+            <small class="p-invalid" *ngIf="submitted && !tinh.MA_TINH">Mã tỉnh bắt buộc nhập.</small>
+        </div>
+        <div class="p-field">
+            <label for="MA_DVIQLY">Mã đơn vị quản lý (*)</label>
+            <input type="text" pInputText id="MA_TINH" [(ngModel)]="tinh.MA_DVIQLY" required autofocus />
+            <small class="p-invalid" *ngIf="submitted && !tinh.MA_DVIQLY">Mã tỉnh bắt buộc nhập.</small>
+        </div>
+        <div class="p-field">
+            <label for="name">Tên tỉnh (*)</label>
+            <input type="text" pInputText id="TEN_TINH" [(ngModel)]="tinh.TEN_TINH" required autofocus />
+            <small class="p-invalid" *ngIf="submitted && !tinh.TEN_TINH">Tên tỉnh bắt buộc nhập.</small>
+        </div>
+        <div class="p-field">
+            <label for="name">Tên đơn vị quản lý (*)</label>
+            <input type="text" pInputText id="TEN_DVIQLY" [(ngModel)]="tinh.TEN_DVIQLY" required autofocus />
+            <small class="p-invalid" *ngIf="submitted && !tinh.TEN_DVIQLY">Tên đơn vị quản lý bắt buộc
+                nhập</small>
+        </div>
+        <div class="p-field">
+            <label for="name">Tên phát tuyến (*)</label>
+            <input type="text" pInputText id="TEN_PHATTUYEN" [(ngModel)]="tinh.TEN_PHATTUYEN" required autofocus />
+            <small class="p-invalid" *ngIf="submitted && !tinh.TEN_PHATTUYEN">Tên phát tuyến bắt buộc
+                nhập</small>
+        </div>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Hủy" icon="pi pi-times" class="p-button-secondary"
+            (click)="hideDialog()"></button>
+        <button pButton pRipple label="Lưu" icon="pi pi-check" class="p-button-info" (click)="saveItem()"></button>
+    </ng-template>
+</p-dialog>

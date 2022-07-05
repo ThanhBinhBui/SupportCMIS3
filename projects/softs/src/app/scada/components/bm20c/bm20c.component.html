@@ -1,0 +1,140 @@
+<p-toast key="tst"></p-toast>
+<p-confirmDialog header="Xác nhận" icon="pi pi-exclamation-triangle" acceptButtonStyleClass="ui-button-info"
+    acceptLabel="Đồng ý" rejectLabel="Hủy bỏ">
+</p-confirmDialog>
+<p-toolbar>
+    <div class="p-toolbar-group-left">
+        <span class="p-input-icon-left p-mb-2">
+            <i class="pi pi-search"></i>
+            <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                placeholder="Lọc..." />
+        </span>
+    </div>
+    <div class="p-toolbar-group-right">
+        <div class="p-formgroup-inline">
+            <div class="p-field">
+                <p-dropdown [options]="lstORG" [(ngModel)]="MA_DVIQLY" optionLabel="TEN_DVIQLY" optionValue="MA_DVIQLY"
+                    filter="true">
+                </p-dropdown>
+            </div>
+            <div class="p-field">
+                <p-calendar dateFormat="dd/mm/yy" dataType="string" [showIcon]="true" placeholder="Đến ngày"
+                    [selectOtherMonths]="true" [(ngModel)]="TO_DATE" firstDayOfWeek=1 inputStyleClass="calendarInput">
+                </p-calendar>
+            </div>
+            <button pButton pRipple (click)="search()" icon="pi pi-search"
+                class="p-button-success p-mt-1 p-mr-2"></button>
+            <button pButton pRipple (click)="exportExcel()" icon="pi pi-file-excel" class="p-button-help p-mt-1"
+                label="Xuất excel"></button>
+        </div>
+    </div>
+</p-toolbar>
+<p-table #dt [value]="lstMain" [rowHover]="true" [rows]="10" [paginator]="true" [filterDelay]="0" [loading]="loading"
+    [globalFilterFields]="['STT','MA_DVIQLY','TEN_DVIQLY','MA_TINH','TEN_TINH','NOI_DUNG','SLDKX_LK','SLDKX','SLDKX_TC_LK','SLDKX_TC','TLDKX_TC_LK','TLDKX_TC','SLDENTRAM_LK','SLDENTRAM','NGUYEN_NHAN']"
+    currentPageReportTemplate="Hiển thị từ {first} đến {last} trên {totalRecords}" [showCurrentPageReport]="true"
+    [rowsPerPageOptions]="[5, 10, 20, { showAll: 'Tất cả' }]" rowGroupMode="rowspan" groupRowsBy="STT" sortField="STT"
+    sortMode="single" paginatorDropdownAppendTo="body">
+    <ng-template pTemplate="header">
+        <tr class="trHeader">
+            <th pSortableColumn="STT" class="headerSTT" rowspan="2">STT
+                <p-sortIcon field="STT"></p-sortIcon>
+            </th>
+            <th pSortableColumn="TEN_TINH" rowspan="2">Đơn vị
+                <p-sortIcon field="TEN_TINH"></p-sortIcon>
+            </th>
+            <th pSortableColumn="NOI_DUNG" rowspan="2">Nội dung
+                <p-sortIcon field="NOI_DUNG"></p-sortIcon>
+            </th>
+            <th colspan="2">Số lần đã điều khiển xa</th>
+            <th colspan="2">Số lần đã điều khiển xa thành công</th>
+            <th colspan="2">Tỷ lệ điều khiển xa thành công (%)</th>
+            <th colspan="2">Số lần tổ TTLĐ phải đến trạm để điều khiển</th>
+            <th pSortableColumn="NGUYEN_NHAN" rowspan="2">Các nguyên nhân chính dẫn đến thao tác xa không thành công
+                <p-sortIcon field="NGUYEN_NHAN"></p-sortIcon>
+            </th>
+        </tr>
+        <tr class="trHeader">
+            <th pSortableColumn="SLDKX_LK" class="headerRow2">Lũy kế từ khi VH
+                <p-sortIcon field="SLDKX_LK"></p-sortIcon>
+            </th>
+            <th pSortableColumn="SLDKX" class="headerRow2">Trong kỳ
+                <p-sortIcon field="SLDKX"></p-sortIcon>
+            </th>
+            <th pSortableColumn="SLDKX_TC_LK" class="headerRow2">Lũy kế từ khi VH
+                <p-sortIcon field="SLDKX_TC_LK"></p-sortIcon>
+            </th>
+            <th pSortableColumn="SLDKX_TC" class="headerRow2">Trong kỳ
+                <p-sortIcon field="SLDKX_TC"></p-sortIcon>
+            </th>
+            <th pSortableColumn="TLDKX_TC_LK" class="headerRow2">Lũy kế từ khi VH
+                <p-sortIcon field="TLDKX_TC_LK"></p-sortIcon>
+            </th>
+            <th pSortableColumn="TLDKX_TC" class="headerRow2">Trong kỳ
+                <p-sortIcon field="TLDKX_TC"></p-sortIcon>
+            </th>
+            <th pSortableColumn="SLDENTRAM_LK" class="headerRow2">Lũy kế từ khi VH
+                <p-sortIcon field="SLDENTRAM_LK"></p-sortIcon>
+            </th>
+            <th pSortableColumn="SLDENTRAM" class="headerRow2">Trong kỳ
+                <p-sortIcon field="SLDENTRAM"></p-sortIcon>
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-main let-rowgroup="rowgroup" let-rowspan="rowspan">
+        <tr class="p-selectable-row" [style]="main.TEN_TINH.includes('Miền') ? 'font-weight: bold' : ''">
+            <td *ngIf="rowgroup" [attr.rowspan]="rowspan">
+                <span class="p-column-title">STT</span>
+                {{main.STT}}
+            </td>
+            <td *ngIf="rowgroup" [attr.rowspan]="rowspan">
+                <span class="p-column-title">Đơn vị</span>
+                {{main.TEN_TINH}}
+            </td>
+            <td>
+                <span class="p-column-title">Nội dung</span>
+                {{main.NOI_DUNG}}
+            </td>
+            <td>
+                <span class="p-column-title">Số lần đã điều khiển xa - Lũy kế</span>
+                {{main.SLDKX_LK | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">Số lần đã điều khiển xa - Trong kỳ</span>
+                {{main.SLDKX | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">Số lần thành công- Lũy kế</span>
+                {{main.SLDKX_TC_LK | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">Số lần thành công - Trong kỳ</span>
+                {{main.SLDKX_TC | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">Tỷ lệ thành công - Lũy kế</span>
+                {{main.TLDKX_TC_LK | number:'0.0-3':'vi'}}%
+            </td>
+            <td>
+                <span class="p-column-title">Tỷ lệ thành công - Trong kỳ</span>
+                {{main.TLDKX_TC | number:'0.0-3':'vi'}}%
+            </td>
+            <td>
+                <span class="p-column-title">Số lần đến trạm - Lũy kế</span>
+                {{main.SLDENTRAM_LK | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">Số lần đến trạm - Trong kỳ</span>
+                {{main.SLDENTRAM | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">Nguyên nhân chính</span>
+                {{main.NGUYEN_NHAN | number:'0.0-3':'vi'}}
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+        <tr>
+            <td colspan="12" style="text-align: center;">Không có dữ liệu</td>
+        </tr>
+    </ng-template>
+</p-table>

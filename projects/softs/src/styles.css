@@ -1,0 +1,106 @@
+/* You can add global styles to this file, and also import other style files */
+
+:host ::ng-deep .p-datatable .p-datatable-thead > tr > th{
+    /* background: #1E88E5 !important; */
+    border: 1px solid #e0e0e0 !important;
+    text-align: center !important;
+    /* color: white; */
+    font-weight: bold;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 70px;
+}
+
+:host ::ng-deep .notStickyHeader{
+    position: unset !important;
+    top: unset !important;
+}
+
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+    border: 1px solid #e0e0e0 !important;    
+}
+
+/* :host ::ng-deep .p-datatable .p-sortable-column .p-highlight .p-sortable-column-icon{
+    color: white;
+}
+
+:host ::ng-deep .p-datatable .p-sortable-column .p-sortable-column-icon{
+    color: white;
+} */
+
+:host ::ng-deep .headerSTT{
+    width: 90px;
+}
+
+:host ::ng-deep .headerSTTFrozen{
+    width: 6rem;
+    left: 0;
+}
+
+:host ::ng-deep .headerDonViFrozen{
+    width: 10rem;
+    left: 6rem
+}
+
+:host ::ng-deep .headerDonViFrozen18{
+    width: 18rem;
+    left: 6rem
+}
+
+:host ::ng-deep .headerText{
+    width: 18rem;
+}
+
+:host ::ng-deep .headerText10{
+    width: 10rem;
+}
+
+:host ::ng-deep .headerText15{
+    width: 15rem;
+}
+
+:host ::ng-deep .headerTextLarge{
+    width: 30rem;
+}
+
+:host ::ng-deep .trHeader{
+   height: 0px;
+}
+
+:host ::ng-deep .headerRow2 {
+    top: 115px !important;
+}
+
+:host ::ng-deep .headerRow3 {
+    top: 160px !important;
+}
+
+:host ::ng-deep .bodySTT {
+    text-align: center !important;
+}
+
+:host ::ng-deep .calendarInput {
+    padding-right: unset;
+    width: 90px !important;
+}
+
+:host ::ng-deep .p-frozen-column {
+    font-weight: bold;
+    background-color: whitesmoke !important;
+}
+
+:host ::ng-deep .p-datatable-frozen-tbody {
+    font-weight: bold;
+}
+
+/* :host ::ng-deep .p-component *{
+    box-sizing: unset !important;
+} */
+
+:host ::ng-deep .p-datatable table {
+    table-layout: auto;
+}
+
+:host ::ng-deep .row-warning {
+    background-color: lightgoldenrodyellow !important;
+}

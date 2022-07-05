@@ -1,0 +1,51 @@
+
+  /* You can add global styles to this file, and also import other style files */
+:host ::ng-deep .p-datatable .p-datatable-thead > tr > th {
+  border: 1px solid #e0e0e0 !important;
+  text-align: center !important;
+  font-weight: bold;
+  /* position: -webkit-sticky;
+  position: sticky;
+  top: 70px; */
+}
+
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+  border: 1px solid #e0e0e0 !important;    
+}
+
+:host ::ng-deep .p-datatable .p-sortable-column .p-highlight .p-sortable-column-icon{
+  /* color: white; */
+}
+
+:host ::ng-deep .p-datatable .p-sortable-column .p-sortable-column-icon{
+  /* color: white; */
+}
+
+:host ::ng-deep .headerSTT{
+  width: 4rem;
+}
+
+:host ::ng-deep .headerText{
+  width: 200px;
+}
+
+:host ::ng-deep .trHeader{
+  width: 0px;
+}
+
+:host ::ng-deep .headerRow2 {
+  top: 115px !important;
+}
+
+:host ::ng-deep .bodySTT {
+  text-align: center !important;
+}
+
+:host ::ng-deep .p-frozen-column {
+  font-weight: bold;
+  background-color: whitesmoke !important;
+}
+
+:host ::ng-deep .p-datatable-frozen-tbody {
+  font-weight: bold;
+}

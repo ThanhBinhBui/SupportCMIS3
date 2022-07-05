@@ -1,0 +1,16 @@
+{
+  "env": {
+    "name": "production"
+  },
+  "url": {
+    "qtht": "http://10.170.210.202:7003/ServiceQTHT-QTHT-context-root/resources/ServiceQTHT/",
+    "qtht_ad": "http://10.170.3.78:7003/ServiceQTHT-QTHT-context-root/resources/ServiceQTHT/",
+    "hrms": "http://10.170.210.202:7003/ServiceHRMS-HRMS-context-root/resources/ServiceHRMS/",
+    "scadaBK": "http://10.170.210.202:9005/",
+    "scadaBKK": "http://10.170.210.202:9001/",
+    "scadaBKKK": "https://10.170.215.79:44309/",
+    "scadaBKKKK": "http://10.170.215.79:4201/",
+    "scada": "https://localhost:44309/",
+    "spcmis":"http://10.170.215.149:3001/cmis/"
+  }
+}

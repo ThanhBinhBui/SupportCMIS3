@@ -1,0 +1,163 @@
+
+<div class="p-grid">
+    <div class="p-col-12">
+
+        <p-toast></p-toast>
+
+        <div class="card">
+            <p-toolbar styleClass="p-mb-4">
+                <ng-template pTemplate="left">
+                    <button pButton pRipple label="Thêm" icon="pi pi-plus" class="p-button-success p-mr-2 p-mb-2"
+                        (click)="openNew()"></button>
+                </ng-template>
+                <ng-template pTemplate="right">
+                    <!-- <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help p-mb-2" (click)="exportExcel()"></button> -->
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                            placeholder="Lọc..." />
+                    </span>
+                </ng-template>
+            </p-toolbar>
+
+            <p-table #dt [value]="listMain" [rows]="20" [paginator]="true" [loading]="loading"
+                [globalFilterFields]="['IsActive','ReportType','WarningMails','WarningMails_CC','ReportMails','ReportMails_CC','Ord']" [rowHover]="true" dataKey="id"
+                styleClass="p-datatable-customers"
+                currentPageReportTemplate="Hiển thị từ {first} đến {last} trên {totalRecords}"
+                [showCurrentPageReport]="true">
+                <!-- <ng-template pTemplate="caption">
+                    <div class="p-grid">
+                        <div class="p-md-4 p-sm-4 p-d-flex p-jc-start">
+                            <span class="p-input-icon-left">
+                                <i class="pi pi-search"></i>
+                                <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                                    placeholder="Lọc..." />
+                            </span>
+                        </div>
+                        <div class="p-md-4 p-sm-4 p-d-flex p-jc-start"></div>
+                        <div class="p-md-4 p-sm-4 p-d-flex p-jc-end">
+                            <button pButton pRipple label="Thêm" icon="pi pi-plus" class="p-button-success p-mr-2 p-mb-2"
+                            (click)="openNew()"></button> 
+                        </div>
+                    </div>
+                </ng-template> -->
+                <ng-template pTemplate="header">
+                    <tr>
+
+                        <th pSortableColumn="WarningMails">Mail cảnh báo<p-sortIcon field="WarningMails"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="WarningMails_CC">Mail cảnh báo cc<p-sortIcon field="WarningMails_CC"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="WarningTime">Thời gian cảnh báo <p-sortIcon field="WarningTime"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="ReportMails">Mail báo cáo<p-sortIcon field="ReportMails"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="ReportMails_CC">Mail báo cáo cc<p-sortIcon field="ReportMails_CC"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="ReportMails_CC">Loại báo cáo<p-sortIcon field="ReportMails_CC"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="Ord">Thứ tự<p-sortIcon field="Ord"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="IsActive">Trạng thái<p-sortIcon field="IsActive"></p-sortIcon>
+                        </th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-main>
+                    <tr>
+                        <td  style=" text-align: left">
+                            {{main.WarningMails}}
+                        </td>
+                        <td  style=" text-align: left">
+                            {{main.WarningMails_CC}}
+                        </td>
+                        <td  style=" text-align: right">
+                            {{main.WarningTime}}
+                        </td>
+                        <td  style=" text-align: left">
+                            {{main.ReportMails}}
+                        </td>
+                        <td  style=" text-align: left">
+                            {{main.ReportMails_CC}}
+                        </td>
+                        <td  style=" text-align: left">
+                            {{main.ReportType}}
+                        </td>                        
+                        <td  style=" text-align: right">
+                            {{main.Ord}}
+                        </td>
+                        <td class="bodySTT">
+                            {{main.IsActive==='True'?'Hoạt động':'Khóa'}}
+                        </td>
+                        <td class="bodySTT">
+                            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2"
+                                (click)="editItem(main)"></button>
+                            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                                (click)="deleteItem(main)"></button>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="summary">
+                    <div class="p-d-flex p-ai-center p-jc-between">
+                        Số lượng: {{listMain ? listMain.length : 0 }} email.
+                    </div>
+                </ng-template>
+            </p-table>
+        </div>
+        <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+    </div>
+</div>
+
+<p-dialog [(visible)]="dialog" [style]="{width: '450px'}" (onHide)="hideDialog()"
+[header]="isUpdate?'Cập nhật thông tin email':'Thêm mới email'" [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <div class="p-field">
+            <label for="WarningMails">Mail cảnh báo:</label>
+            <input type="text" pInputText id="MA_TINH" [(ngModel)]="mainCurrent.WarningMails" required autofocus />
+        </div>
+        <div class="p-field">
+            <label for="WarningMails_CC">Mail cảnh báo cc:</label>
+            <input type="text" pInputText id="MA_TINH" [(ngModel)]="mainCurrent.WarningMails_CC" required autofocus />
+        </div>
+        <div class="p-field">
+            <label for="WarningTime">Thời gian cảnh báo:</label>
+            <p-calendar dateFormat="hh:mm:ss" [timeOnly]="true" hourFormat="24" inputId="timeonly" dataType="string" [showIcon]="true" placeholder="Giờ thực hiện"
+                    [selectOtherMonths]="true" [(ngModel)]="mainCurrent.WarningTime" inputStyleClass="calendarInput">
+                </p-calendar>
+        </div>
+        <div class="p-field">
+            <label for="ReportMails">Mail báo cáo:</label>
+            <input type="text" pInputText id="MA_TINH" [(ngModel)]="mainCurrent.ReportMails" required autofocus />
+        </div>
+        <div class="p-field">
+            <label for="ReportMails_CC">Mail báo cáo cc:</label>
+            <input type="text" pInputText id="MA_TINH" [(ngModel)]="mainCurrent.ReportMails_CC" required autofocus />
+        </div>
+        <div class="p-field">
+            <label for="ReportType">Loại báo cáo:</label>
+            <input type="text" pInputText id="MA_TINH" [(ngModel)]="mainCurrent.ReportType" required autofocus />
+        </div>
+        <div class="p-field">
+            <label for="name">Trạng thái (*): </label>
+                <div class="p-field-radiobutton">
+                    <p-radioButton value="True" [(ngModel)]="mainCurrent.IsActive"></p-radioButton>
+                    <label>Hoạt động</label>
+                </div>
+                <div class="p-field-radiobutton">
+                    <p-radioButton value="False" [(ngModel)]="mainCurrent.IsActive"></p-radioButton>
+                    <label>Khóa</label>
+                </div>
+        </div>
+        <div class="p-field">
+            <label for="name">Thứ tự: </label>
+            <input type="text" pInputText id="TEN_DVIQLY" [(ngModel)]="mainCurrent.Ord" required autofocus />
+        </div>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Hủy" icon="pi pi-times" class="p-button-secondary"
+            (click)="hideDialog()"></button>
+        <button pButton pRipple label="Lưu" icon="pi pi-check" class="p-button-info"
+            (click)="saveItem()"></button>
+    </ng-template>
+</p-dialog>

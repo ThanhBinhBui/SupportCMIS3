@@ -1,0 +1,61 @@
+<p-toast></p-toast>
+<div class="login-body">
+  <div class="login-panel p-fluid" style="height: auto;">
+    <div class="login-panel-header">
+      <img src="assets/layout/images/logo-spc-ngang.png">
+    </div>   
+    <div class="login-panel-content">
+      <div class="p-grid">
+        <div class="p-col-12">
+          <h1 style="font-weight: bold; font-size: 24px;">Hỗ Trợ CMIS</h1>
+          <p-messages [value]="msgs" [closable]="false"></p-messages>
+        </div>
+        <div style="width: 100%;">
+          <div class="p-col-12">
+            <span class="p-field">
+              <p-dropdown inputId="type" [options]="types" [(ngModel)]="selectedType">
+              </p-dropdown>
+            </span>
+          </div>
+          <div class="p-col-12">
+            <span class="p-field">
+              <label>Tên đăng nhập</label>
+              <input type="text" pInputText [(ngModel)]="username" required autofocus
+                placeholder="Nhập mã nhân viên/ tài khoản domain" (keyup.enter)="login()" />
+              <small class="p-invalid" *ngIf="submittedCBCNV && !username">Vui lòng nhập mã nhân viên/ tài khoản
+                domain</small>
+            </span>
+          </div>
+          <div class="p-col-12">
+            <span class="p-field">
+              <label>Mật khẩu</label>
+              <input type="password" pInputText [(ngModel)]="password" required autofocus placeholder="Nhập mật khẩu"
+                (keyup.enter)="login()" />
+              <small class="p-invalid" *ngIf="submittedCBCNV && !password">Vui lòng nhập mật khẩu</small>
+              <small class="p-invalid" *ngIf="submittedCBCNV && errorLogin">Tên đăng nhập hoặc mật khẩu không chính
+                xác</small>
+              <small class="p-invalid" *ngIf="submittedCBCNV && errorLoginINFO">{{messageLoginINFO}}</small>
+            </span>
+          </div>
+          <div class="p-col-12">
+            <button pButton type="button" label="Đăng nhập" (click)="login()" icon="pi pi-sign-in"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="area" >
+  <ul class="circles">
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+  </ul>
+</div >

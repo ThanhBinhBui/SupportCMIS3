@@ -1,0 +1,22 @@
+<div class="layout-wrapper" (click)="onWrapperClick()"
+     [ngClass]="{'layout-wrapper-static': layoutMode === 'static',
+                'layout-wrapper-active': mobileMenuActive,
+                'layout-menu-horizontal': layoutMode === 'horizontal',
+                'layout-rtl': isRTL, 'p-ripple-disabled': !ripple, 'p-input-filled': inputStyle === 'filled'}">
+
+    <app-menu></app-menu>
+
+    <div class="layout-main">
+        
+
+        <app-breadcrumb></app-breadcrumb>
+
+        <div class="layout-content">
+            <router-outlet></router-outlet>
+        </div>
+
+        <app-config></app-config>
+        <div class="layout-main-mask" *ngIf="mobileMenuActive"></div>
+    </div>
+
+</div>

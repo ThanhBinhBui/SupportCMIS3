@@ -1,0 +1,204 @@
+<p-toast key="tst"></p-toast>
+<p-confirmDialog header="Xác nhận" icon="pi pi-exclamation-triangle" acceptButtonStyleClass="ui-button-info"
+    acceptLabel="Đồng ý" rejectLabel="Hủy bỏ">
+</p-confirmDialog>
+<div class="p-grid">
+    <div class="p-col-12">
+        <div class="card">
+            <div class="p-grid">
+                <div class="p-md-4 p-sm-4 p-d-flex p-jc-start">
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                            placeholder="Lọc..." />
+                    </span>
+                </div>
+                <!-- <div class="p-md-4 p-sm-4 p-d-flex p-jc-end">
+                    <p-dropdown inputId="ORG_CODE" [options]="lstORG" [(ngModel)]="selectedORG_CODE"
+                        optionLabel="ORG_NAME" optionValue="ORG_CODE" filter="true" (onChange)="search()">
+                    </p-dropdown>
+                </div> -->
+
+                <div class="p-md-8 p-sm-8 p-d-flex p-jc-end">
+                    <div class="p-mb-2 p-mr-2">
+                        <p-calendar dateFormat="dd/mm/yy" dataType="string" [showIcon]="true"
+                            placeholder="Ngày bắt đầu" [selectOtherMonths]="true" [(ngModel)]="FROM_DATE"
+                            firstDayOfWeek=1 inputStyleClass="calendarInput">
+                        </p-calendar>
+                    </div>
+                    <div class="p-mb-2 p-mr-2">
+                        <p-calendar dateFormat="dd/mm/yy" dataType="string" [showIcon]="true"
+                            placeholder="Ngày kết thúc" [selectOtherMonths]="true" [(ngModel)]="TO_DATE"
+                            firstDayOfWeek=1 inputStyleClass="calendarInput">
+                        </p-calendar>
+                    </div>
+                    <div class="p-mb-2 p-mr-2">
+                        <button pButton pRipple (click)="search()" icon="pi pi-search"
+                            class="p-button-success p-mt-1"></button>
+
+                    </div>
+                    <div class="p-mb-2 p-mr-2">
+                        <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help p-mt-1"
+                            (click)="exportExcel()"></button>
+                    </div>
+                </div>
+            </div>
+            <p-table #dt [value]="lstMain" dataKey="STT" [rowHover]="true" [rows]="50" [paginator]="true"
+            [loading]="loading"
+                [filterDelay]="0" [globalFilterFields]="['TEN_TRAM','STT','TEN_DVIQLY']"
+                currentPageReportTemplate="Hiển thị từ {first} đến {last} trên {totalRecords}" [responsive]="true"
+                [showCurrentPageReport]="true" >
+                <!-- <ng-template pTemplate="caption">
+                    <div class="p-grid">
+                        <div class="p-md-4 p-sm-4 p-d-flex p-jc-start">
+                            <span class="p-input-icon-left">
+                                <i class="pi pi-search"></i>
+                                <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                                    placeholder="Lọc..." />
+                            </span>
+                        </div>
+                        <div class="p-md-4 p-sm-4 p-d-flex p-jc-end">
+                            <p-dropdown inputId="ORG_CODE" [options]="lstORG" [(ngModel)]="selectedORG_CODE"
+                                optionLabel="ORG_NAME" optionValue="ORG_CODE" filter="true" (onChange)="search()">
+                            </p-dropdown>
+                        </div> 
+
+                        <div class="p-md-8 p-sm-8 p-d-flex p-jc-end">
+                            
+                        </div>
+                    </div>
+                </ng-template> -->
+                <ng-template pTemplate="colgroup" let-columns>
+                    <colgroup>
+                        <col style="width:50px">
+                        <col style="width:200px">
+                        <col style="width:200px">
+                        <col style="width:80px">
+                        <col style="width:80px">
+                        <col style="width:80px">
+                        <col style="width:80px">
+                        <col style="width:80px">
+                        <col style="width:80px">
+                        <col style="width:80px">
+                        <col style="width:80px">
+                        <col style="width:80px">
+                        <col style="width:80px">
+                        <col style="width:200px">
+                    </colgroup>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr class="trHeader">
+                        <th pSortableColumn="TIMESTAMP" class="p-col-1" rowspan="3">STT
+                            <!-- <p-sortIcon field="STT"></p-sortIcon> -->
+                        </th>
+                        <th pSortableColumn="MILLI_SECONDS" class="p-col-1" rowspan="3">Đơn Vị
+                            <!-- <p-sortIcon field="TEN_DVIQLY"></p-sortIcon> -->
+                        </th>
+                        <th pSortableColumn="b1" class="p-col-1" rowspan="3">Tên TBA 110kV ĐKX
+                            <!-- <p-sortIcon field="TEN_TRAM"></p-sortIcon> -->
+                        </th>
+                        <th pSortableColumn="b2" class="p-col-1" colspan="10">Tình hình thực hiện điều khiển xa
+                        </th>
+                        <th pSortableColumn="b3" class="p-col-1" rowspan="3">Ghi Chú
+                        </th>
+                    </tr>
+                    <tr class="trHeader">
+                        <th pSortableColumn="TIMESTAMP" class="p-col-1" rowspan="2">Chương trình
+
+                        </th>
+                        <th pSortableColumn="MILLI_SECONDS" class="p-col-1" colspan="3">Tổng số lượng thao tác điều khiển xa</th>
+                        <th pSortableColumn="MILLI_SECONDS" class="p-col-1" colspan="3">Số lượng thao tác điều khiển xa tốt</th>
+                        <th pSortableColumn="MILLI_SECONDS" class="p-col-1" colspan="3">Số lượng thao tác tại thiết bị</th>
+                    </tr>
+                    <tr class="trHeader">
+                        <th pSortableColumn="TIMESTAMP" cass="p-col-1">110KV
+
+                        </th>
+                        <th pSortableColumn="TIMESTAMP" cass="p-col-1">22KV
+
+                        </th>
+                        <th pSortableColumn="TIMESTAMP" cass="p-col-1">Tổng
+
+                        </th>
+                        <th pSortableColumn="TIMESTAMP" cass="p-col-1">110KV
+
+                        </th>
+                        <th pSortableColumn="TIMESTAMP" cass="p-col-1">22KV
+
+                        </th>
+                        <th pSortableColumn="TIMESTAMP" cass="p-col-1">Tổng
+
+                        </th>
+                        <th pSortableColumn="TIMESTAMP" cass="p-col-1">110KV
+
+                        </th>
+                        <th pSortableColumn="TIMESTAMP" cass="p-col-1">22KV
+
+                        </th>
+                        <th pSortableColumn="TIMESTAMP" cass="p-col-1">Tổng
+
+                        </th>
+                    </tr>
+
+                </ng-template>
+                <ng-template pTemplate="body" let-main>
+                    <tr class="p-selectable-row">
+                        <td class="bodySTT">{{main.STT}}</td>
+                        <td style=" text-align: left">{{main.TEN_DVIQLY}}</td>
+                        <td style=" text-align: left" >{{main.TEN_TRAM}}</td>
+                        <td style=" text-align: left" >SP7</td>
+                        <td style=" text-align: right">{{main.TONG_110}}</td>
+                        <td style=" text-align: right">{{main.TONG_22}}</td>
+                        <td style=" text-align: right">{{getNumber(main.TONG_22)+getNumber(main.TONG_110)}}</td>
+                        <td style=" text-align: right">{{main.TONG_110_GOOD}}</td>
+                        <td style=" text-align: right">{{main.TONG_22_GOOD}}</td>
+                        <td style=" text-align: right">{{getNumber(main.TONG_22_GOOD)+getNumber(main.TONG_110_GOOD)}}</td>
+                        <td style=" text-align: right">{{main.TONG_110_TTB}}</td>
+                        <td style=" text-align: right">{{main.TONG_22_TTB}}</td>
+                        <td style=" text-align: right">{{getNumber(main.TONG_22_TTB)+getNumber(main.TONG_110_TTB)}}</td>
+                        <td></td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="14" style="text-align: center;">Không có dữ liệu</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+    <p-dialog [(visible)]="editDialog" [style]="{width: '450px'}" (onHide)="hideDialog()"
+        header='Cập Nhật Nguyên Nhân Thao Tác Không Thành Công' [modal]="true" styleClass="p-fluid">
+        <ng-template pTemplate="content">
+            <div class="p-field">
+                <label for="TIMESTAMP">Timestamp</label>
+                <input type="text" pInputText id="TIMESTAMP" [(ngModel)]="mainCurrent.TIMESTAMP" required disabled />
+            </div>
+            <div class="p-field">
+                <label for="name">B1</label>
+                <input type="text" pInputText id="b1" [(ngModel)]="mainCurrent.b1" required disabled />
+            </div>
+            <div class="p-field">
+                <label for="name">B2</label>
+                <input type="text" pInputText id="b2" [(ngModel)]="mainCurrent.b2" required disabled />
+            </div>
+            <div class="p-field">
+                <label for="name">B3</label>
+                <input type="text" pInputText id="b3" [(ngModel)]="mainCurrent.b3" required disabled />
+            </div>
+            <div class="p-field">
+                <label for="name">Nguyên Nhân</label>
+                <input type="text" pInputText id="b3" [(ngModel)]="mainCurrent.NGUYENNHAN" required autofocus />
+                <small class="p-invalid" *ngIf="submitted && !mainCurrent.NGUYENNHAN">Tên phát tuyến bắt buộc
+                    nhập</small>
+            </div>
+
+        </ng-template>
+
+        <ng-template pTemplate="footer">
+            <button pButton pRipple label="Hủy" icon="pi pi-times" class="p-button-secondary"
+                (click)="hideDialog()"></button>
+            <button pButton pRipple label="Lưu" icon="pi pi-check" class="p-button-info" (click)="saveItem()"></button>
+        </ng-template>
+    </p-dialog>
+</div>

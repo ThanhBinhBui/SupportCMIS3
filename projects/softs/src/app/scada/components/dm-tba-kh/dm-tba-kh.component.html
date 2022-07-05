@@ -1,0 +1,147 @@
+<div class="p-grid">
+    <div class="p-col-12">
+        <p-toast></p-toast>
+        <div class="card">
+            <p-toolbar styleClass="p-mb-4">
+                <ng-template pTemplate="left">
+                    <!-- <button pButton pRipple label="Thêm" icon="pi pi-plus" class="p-button-success p-mr-2 p-mb-2"
+                        (click)="openNew()"></button>
+                        <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help p-mb-2"
+                        (click)="exportExcel()"></button> -->
+                        <div class="p-mr-2 p-mb-2">
+                            <button pButton pRipple label="Thêm" icon="pi pi-plus" class="p-button-success p-mr-2 p-mb-2"
+                                (click)="openNew()"></button>
+                        </div>
+                        <div class="p-mr-2 p-mb-2">
+                            <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help p-mb-2"
+                                (click)="exportExcel()"></button>
+                        </div>
+                        <div class="p-mr-2 p-mb-2" style="padding-bottom:5pt;padding-left: 2pt;">
+                            <p-fileUpload  #fileInput mode="basic" chooseLabel="Import"
+                                cancelLabel="Hủy" uploadLabel="Tải lên" name="FILE_NAME[]" accept=".xlsx,.xls"
+                                maxFileSize="1000000" (onUpload)="uploadFileDaChon()" (onBeforeUpload)="uploadFileDaChon()">
+                            </p-fileUpload>
+                        </div>
+                </ng-template>
+
+                <ng-template pTemplate="right">
+                    <!-- <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help p-mb-2" (click)="exportExcel()"></button> -->
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                            placeholder="Lọc..." />
+                    </span>
+                </ng-template>
+            </p-toolbar>
+
+            <p-table #dt [value]="tbaKHs" [loading]="loading" [columns]="cols" [rows]="20" [paginator]="true"
+                [globalFilterFields]="['id','TEN_TINH','TEN_TRAM','TEN_B1']" [rowHover]="true" dataKey="id"
+                styleClass="p-datatable-customers"
+                currentPageReportTemplate="Hiển thị từ {first} đến {last} trên {totalRecords}"
+                [showCurrentPageReport]="true" [scrollable]="true" [style]="{'width':'100%'}" scrollHeight="100%"
+                >
+                <!-- <ng-template pTemplate="caption">
+                    <div class="p-grid">
+                    <div class="p-md-4 p-sm-4 p-d-flex p-jc-start">
+                        <span class="p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                                placeholder="Lọc..." />
+                        </span>
+                    </div>
+                    <div class="p-md-4 p-sm-4 p-d-flex p-jc-start"></div>
+                    <div class="p-md-4 p-sm-4 p-d-flex p-jc-end">
+                        <button pButton pRipple label="Thêm" icon="pi pi-plus" class="p-button-success p-mr-2 p-mb-2"
+                            (click)="openNew()"></button> 
+                    </div>
+                    </div>
+                    
+                </ng-template> -->
+                <ng-template pTemplate="header">
+                    <tr>
+                        
+                        <th style="align-items: center;justify-content: center;" pSortableColumn="MA_TRAM">Mã Trạm <p-sortIcon field="MA_TRAM"></p-sortIcon>
+                        </th>
+                        <th style="align-items: center;justify-content: center;" pSortableColumn="TEN_TINH">Tên Tỉnh <p-sortIcon field="TEN_TINH"></p-sortIcon>
+                        </th>
+                        <th style="align-items: center;justify-content: center;" pSortableColumn="TEN_TRAM">Tên Trạm <p-sortIcon field="TEN_TRAM"></p-sortIcon>
+                        </th>
+                        <th style="align-items: center;justify-content: center;" pSortableColumn="TEN_B1">Tên Trạm Không Dấu<p-sortIcon field="TEN_B1"></p-sortIcon>
+                        </th>
+                        <th style="align-items: center;justify-content: center;" ></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-tbaKH>
+                    <tr>
+                        <td class="bodySTT" style="align-items: center;justify-content: flex-start;">
+                            {{tbaKH.MA_TRAM}}
+                        </td>
+                        <td class="bodySTT" style="align-items: center;justify-content: flex-start;">
+                            {{tbaKH.TEN_TINH}}
+                        </td>
+                        <td class="bodySTT" style="align-items: center;justify-content: flex-start;">
+                            {{tbaKH.TEN_TRAM}}
+                        </td>
+                        <td class="bodySTT" style="align-items: center;justify-content: flex-start;">
+                            {{tbaKH.TEN_B1}}
+                        </td>
+                        <td class="bodySTT" style="align-items: center;justify-content: center;">
+                            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2"
+                                (click)="editItem(tbaKH)"></button>
+                            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                                (click)="deleteItem(tbaKH)"></button>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="summary">
+                    <div class="p-d-flex p-ai-center p-jc-between">
+                        Tổng số lượng: {{tbaKHs ? tbaKHs.length : 0 }} trạm biến áp khách hàng.
+                    </div>
+                </ng-template>
+            </p-table>
+        </div>
+        <p-dialog [(visible)]="dialog" [style]="{width: '450px'}" [header]="isUpdate?'Cập Nhật Trạm Biến Áp Khách Hàng':'Thêm Mới Trạm Biến Áp Khách Hàng'" (onHide)="hideDialog()" [modal]="true"
+            styleClass="p-fluid">
+            <ng-template pTemplate="content">
+                <div class="p-field">
+                    <label for="name">Tỉnh (*)</label>
+                    <p-autoComplete [(ngModel)]="selectedTinh" [suggestions]="filterTinhs"
+                        (completeMethod)="filterTinh($event)" field="TEN_TINH" [dropdown]="true">
+                    </p-autoComplete>
+                    <!-- <label for="name">Tên tỉnh</label>
+                    <input type="text" pInputText id="TEN_TINH" [(ngModel)]="tbaKH.TEN_TINH" required autofocus />-->
+                    <!-- <small class="p-invalid" *ngIf="!selectedTinh">Tên tỉnh bắt buộc nhập.</small> -->
+                </div>
+                <div class="p-field">
+                    <label for="name">Mã Trạm (*)</label>
+                    <input type="text" pInputText id="MA_TRAM" [(ngModel)]="tbaKH.MA_TRAM" required autofocus [disabled]="isUpdate?true:false"/>
+                    <small class="p-invalid" *ngIf="submitted && !tbaKH.MA_TRAM">Mã trạm bắt buộc
+                        nhập</small>
+                </div>
+                <div class="p-field">
+                    <label for="name">Tên Trạm (*)</label>
+                    <input type="text" pInputText id="TEN_TRAM" [(ngModel)]="tbaKH.TEN_TRAM" required autofocus />
+                    <small class="p-invalid" *ngIf="submitted && !tbaKH.TEN_TRAM">Tên trạm bắt buộc
+                        nhập</small>
+                </div>
+                <div class="p-field">
+                    <label for="name">Tên B1 (*)</label>
+                    <input type="text" pInputText id="TEN_B1" [(ngModel)]="tbaKH.TEN_B1" required autofocus />
+                    <small class="p-invalid" *ngIf="submitted && !tbaKH.TEN_B1">Tên B1 bắt buộc
+                        nhập</small>
+                </div>
+
+
+            </ng-template>
+
+            <ng-template pTemplate="footer">
+                <button pButton pRipple label="Hủy" icon="pi pi-times" class="p-button-secondary"
+                    (click)="hideDialog()"></button>
+                <button pButton pRipple label="Lưu" icon="pi pi-check" class="p-button-info"
+                    (click)="saveItem()"></button>
+            </ng-template>
+        </p-dialog>
+
+        <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+    </div>
+</div>

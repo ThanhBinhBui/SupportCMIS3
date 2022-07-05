@@ -1,0 +1,321 @@
+<p-toast key="tst"></p-toast>
+<p-confirmDialog header="Xác nhận" icon="pi pi-exclamation-triangle" acceptButtonStyleClass="ui-button-info"
+    acceptLabel="Đồng ý" rejectLabel="Hủy bỏ">
+</p-confirmDialog>
+<p-toolbar>
+    <div class="p-toolbar-group-left"></div>
+    <div class="p-toolbar-group-right">
+        <div class="p-formgroup-inline">
+            <div class="p-field">
+                <p-dropdown [options]="lstORG" [(ngModel)]="MA_DVIQLY" optionLabel="TEN_DVIQLY" optionValue="MA_DVIQLY"
+                    filter="true">
+                </p-dropdown>
+            </div>
+            <div class="p-field">
+                <p-calendar dateFormat="dd/mm/yy" dataType="string" [showIcon]="true" placeholder="Đến ngày"
+                    [selectOtherMonths]="true" [(ngModel)]="TO_DATE" firstDayOfWeek=1 inputStyleClass="calendarInput">
+                </p-calendar>
+            </div>
+            <button pButton pRipple (click)="search()" icon="pi pi-search"
+                class="p-button-success p-mt-1 p-mr-2"></button>
+            <button pButton pRipple (click)="exportExcel()" icon="pi pi-file-excel" class="p-button-help p-mt-1"
+                label="Xuất excel"></button>
+        </div>
+    </div>
+</p-toolbar>
+<div class="p-grid">
+    <div class="p-col-12 p-md-12 p-lg-3">
+        <div class="card">
+            <p-table #dtMain1 [value]="lstMainTBA110" [rowHover]="true" [rows]="10" [paginator]="true" [filterDelay]="0"
+                [loading]="loading" [globalFilterFields]="['TEN_TINH','SL']"
+                currentPageReportTemplate="Hiển thị từ {first} đến {last} trên {totalRecords}" [responsive]="true"
+                [showCurrentPageReport]="true" [rowsPerPageOptions]="[5, 10, 20, { showAll: 'Tất cả' }]">
+                <ng-template pTemplate="header">
+                    <tr class="trHeader">
+                        <th pSortableColumn="TEN_TINH">Đơn vị
+                            <p-sortIcon field="TEN_TINH"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="SL">TBA 110kV
+                            <p-sortIcon field="SL"></p-sortIcon>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-main>
+                    <tr class="p-selectable-row">
+                        <td>
+                            <span class="p-column-title">Đơn vị</span>
+                            {{main.TEN_TINH}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">TBA 110kV</span>
+                            {{main.SL}}
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="2" style="text-align: center;">Không có dữ liệu</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+    <div class="p-col-12 p-md-12 p-lg-9">
+        <div class="card">
+            <p-table [value]="lstMainTong" [rowHover]="true" [filterDelay]="0" [loading]="loading"
+                [globalFilterFields]="['Tong','DN','ConLai']" [responsive]="true">
+                <ng-template pTemplate="header">
+                    <tr class="trHeader">
+                        <th pSortableColumn="Tong">Tổng số TBA do EVN SPC quản lý
+                            <p-sortIcon field="Tong"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="DN">PC Đồng Nai (TBA)
+                            <p-sortIcon field="DN"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="ConLai">20 tỉnh còn lại (TBA)
+                            <p-sortIcon field="ConLai"></p-sortIcon>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-main>
+                    <tr class="p-selectable-row">
+                        <td style="font-weight: bold;">
+                            {{main.Tong}}
+                        </td>
+                        <td>
+                            {{main.DN}}
+                        </td>
+                        <td>
+                            {{main.ConLai}}
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="3" style="text-align: center;">Không có dữ liệu</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+        <div class="card">
+            <p-table [value]="lstMainKNT" [rowHover]="true" [filterDelay]="0" [loading]="loading"
+                [globalFilterFields]="['Loai','Tong','DN','ConLai']" [responsive]="true">
+                <ng-template pTemplate="header">
+                    <tr class="trHeader">
+                        <th pSortableColumn="Loai">TBA KNT
+                            <p-sortIcon field="Loai"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="DN">PC Đồng Nai (TBA)
+                            <p-sortIcon field="DN"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="ConLai">20 tỉnh còn lại (TBA)
+                            <p-sortIcon field="ConLai"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="Tong">Tổng
+                            <p-sortIcon field="Tong"></p-sortIcon>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-main>
+                    <tr class="p-selectable-row">
+                        <td style="font-weight: bold;">
+                            {{main.Loai}}
+                        </td>
+                        <td>
+                            {{main.DN}}
+                        </td>
+                        <td>
+                            {{main.ConLai}}
+                        </td>
+                        <td>
+                            {{main.Tong}}
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="4" style="text-align: center;">Không có dữ liệu</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+        <div class="card">
+            <p-table [value]="lstMainA2" [rowHover]="true" [filterDelay]="0" [loading]="loading"
+                [globalFilterFields]="['Loai','Tong','DN','ConLai']" [responsive]="true">
+                <ng-template pTemplate="header">
+                    <tr class="trHeader">
+                        <th pSortableColumn="Loai">Kết nối về A2
+                            <p-sortIcon field="Loai"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="DN">PC Đồng Nai (TBA)
+                            <p-sortIcon field="DN"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="ConLai">20 tỉnh còn lại (TBA)
+                            <p-sortIcon field="ConLai"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="Tong">Tổng
+                            <p-sortIcon field="Tong"></p-sortIcon>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-main>
+                    <tr class="p-selectable-row">
+                        <td style="font-weight: bold;">
+                            {{main.Loai}}
+                        </td>
+                        <td>
+                            {{main.DN}}
+                        </td>
+                        <td>
+                            {{main.ConLai}}
+                        </td>
+                        <td>
+                            {{main.Tong}}
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="4" style="text-align: center;">Không có dữ liệu</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+        <div class="card">
+            <p-table [value]="lstMainDKX" [rowHover]="true" [filterDelay]="0" [loading]="loading"
+                [globalFilterFields]="['Loai','Tong','DN','ConLai']" [responsive]="true">
+                <ng-template pTemplate="header">
+                    <tr class="trHeader">
+                        <th pSortableColumn="Loai">TBA ĐIỀU KHIỂN XA
+                            <p-sortIcon field="Loai"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="DN">PC Đồng Nai (TBA)
+                            <p-sortIcon field="DN"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="ConLai">20 tỉnh còn lại (TBA)
+                            <p-sortIcon field="ConLai"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="Tong">Tổng
+                            <p-sortIcon field="Tong"></p-sortIcon>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-main>
+                    <tr class="p-selectable-row">
+                        <td style="font-weight: bold;">
+                            {{main.Loai}}
+                        </td>
+                        <td>
+                            {{main.DN}}
+                        </td>
+                        <td>
+                            {{main.ConLai}}
+                        </td>
+                        <td>
+                            {{main.Tong}}
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="4" style="text-align: center;">Không có dữ liệu</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+        <div class="card">
+            <p-table [value]="lstMainPHONE" [rowHover]="true" [filterDelay]="0" [loading]="loading"
+                [globalFilterFields]="['Loai','Tong','DN','ConLai']" [responsive]="true">
+                <ng-template pTemplate="header">
+                    <tr class="trHeader">
+                        <th pSortableColumn="Loai">Loại
+                            <p-sortIcon field="Loai"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="DN">PC Đồng Nai (TBA)
+                            <p-sortIcon field="DN"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="ConLai">20 tỉnh còn lại (TBA)
+                            <p-sortIcon field="ConLai"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="Tong">Tổng
+                            <p-sortIcon field="Tong"></p-sortIcon>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-main>
+                    <tr class="p-selectable-row">
+                        <td style="font-weight: bold;">
+                            {{main.Loai}}
+                        </td>
+                        <td>
+                            {{main.DN}}
+                        </td>
+                        <td>
+                            {{main.ConLai}}
+                        </td>
+                        <td>
+                            {{main.Tong}}
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="4" style="text-align: center;">Không có dữ liệu</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            <p-table [value]="lstMainTBAKH" [rowHover]="true" [filterDelay]="0" [loading]="loading"
+                [globalFilterFields]="['Loai','ICCP','IEC_101','IEC_104','Tong','CS']" [responsive]="true">
+                <ng-template pTemplate="header">
+                    <tr class="trHeader">
+                        <th pSortableColumn="Loai">TBA khách hàng kế nối với hệ thống SCADA EVN SPC
+                            <p-sortIcon field="Loai"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="ICCP">ICCP
+                            <p-sortIcon field="DN"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="IEC_101">IEC-101
+                            <p-sortIcon field="ConLai"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="IEC_104">IEC-104
+                            <p-sortIcon field="Tong"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="Tong">Tổng
+                            <p-sortIcon field="Tong"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="CS">Công suất (MW)
+                            <p-sortIcon field="Tong"></p-sortIcon>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-main>
+                    <tr class="p-selectable-row">
+                        <td style="font-weight: bold;">
+                            {{main.Loai}}
+                        </td>
+                        <td>
+                            {{main.ICCP}}
+                        </td>
+                        <td>
+                            {{main.IEC_101}}
+                        </td>
+                        <td>
+                            {{main.IEC_104}}
+                        </td>
+                        <td>
+                            {{main.Tong}}
+                        </td>
+                        <td>
+                            {{main.CS}}
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="6" style="text-align: center;">Không có dữ liệu</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+</div>

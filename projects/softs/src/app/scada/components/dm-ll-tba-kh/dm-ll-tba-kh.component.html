@@ -1,0 +1,542 @@
+<div class="p-grid">
+    <div class="p-col-12">
+        <p-toast></p-toast>
+        <div class="card" *ngIf="dialog">
+
+            <p-fieldset legend="Thông tin khách hàng" class="p-field p-col-12 p-md-4" [toggleable]="true">
+                <div class="p-fluid p-grid p-formgrid">
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name">Trạm (*)</label>
+                        <!-- <p-autoComplete [(ngModel)]="selectedTBA" [suggestions]="filterTBAs"
+                            (completeMethod)="filterTBA($event)" field="TEN_TRAM" [dropdown]="true">
+                        </p-autoComplete> -->
+                        <p-dropdown [options]="tbas" [(ngModel)]="selectedTBA" placeholder="Chọn trạm" optionLabel="TEN_TRAM" optionValue="MA_TRAM"
+                            [showClear]="true"></p-dropdown>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name"> Thiết bị đầu nối </label>
+                        <input type="text" pInputText id="TTKH_THIETBIDAUNOI" [(ngModel)]="llTKH.TTKH_THIETBIDAUNOI"
+                            required autofocus />
+                    </div>
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name"> Ngày Vận Hành </label>
+                        <p-calendar [(ngModel)]="llTKH.TTKH_NGAYVANHANH" dateFormat="dd/mm/yy"></p-calendar>
+                    </div>
+                    <div class="p-field p-col-12 p-md-6">
+                        <label for="name"> Liên Hệ </label>
+                        <!-- <input type="text" pInputText id="TTKH_LIENHE" [(ngModel)]="llTKH.TTKH_LIENHE" required
+                            autofocus /> -->
+                        <textarea [rows]="5" pInputTextarea [(ngModel)]="llTKH.TTKH_LIENHE"></textarea>
+                    </div>
+                    <div class="p-field p-col-12 p-md-6">
+                        <label for="name"> Phương Án </label>
+                        <!-- <input type="text" pInputText id="TTKH_PHUONGAN" [(ngModel)]="llTKH.TTKH_PHUONGAN" required
+                            autofocus /> -->
+                        <textarea [rows]="5" pInputTextarea [(ngModel)]="llTKH.TTKH_PHUONGAN"></textarea>
+                    </div>
+                </div>
+            </p-fieldset>
+            <p-fieldset legend="Thông tin năng lượng" class="p-field p-col-12 p-md-4" [toggleable]="true">
+                <div class="p-fluid p-grid p-formgrid">
+                    <div class="p-field p-col-12 p-md-8">
+                        <label for="name">Năng lượng tái tạo: </label>
+                        <div class="p-field-radiobutton">
+                            <div class="p-md-2">
+                                <p-radioButton value="NLTT_DIESEL" [(ngModel)]="llTKH.NLTT"></p-radioButton>
+                                <label> DIESEL</label>
+                            </div>
+                            <div class="p-md-2">
+                                <p-radioButton value="NLTT_NMDGIO" [(ngModel)]="llTKH.NLTT"></p-radioButton>
+                                <label> NMĐ Gió</label>
+                            </div>
+                            <div class="p-md-2">
+                                <p-radioButton value="NLTT_NMDMATTROI" [(ngModel)]="llTKH.NLTT"></p-radioButton>
+                                <label> NMĐ Mặt Trời </label>
+                            </div>
+                            <div class="p-md-2">
+                                <p-radioButton value="NLTT_NMNHIETDIEN" [(ngModel)]="llTKH.NLTT"></p-radioButton>
+                                <label> NM Nhiệt Điện</label>
+                            </div>
+                            <div class="p-md-2">
+                                <p-radioButton value="NLTT_NMTHUYDIEN" [(ngModel)]="llTKH.NLTT"></p-radioButton>
+                                <label> NM Thủy Điện</label>
+                            </div>
+                            <div class="p-md-2">
+                                <p-radioButton value="NLK_NGANHNGHE" [(ngModel)]="llTKH.NLTT"></p-radioButton>
+                                <label> Khác</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name"> Cấp điện áp</label>
+                        <div class="p-field-radiobutton">
+                            <div class="p-md-2">
+                                <p-radioButton value="CDA_220KV" [(ngModel)]="llTKH.CDA"></p-radioButton>
+                                <label> 220kV</label>
+                            </div>
+                            <div class="p-md-2">
+                                <p-radioButton value="CDA_110KV" [(ngModel)]="llTKH.CDA"></p-radioButton>
+                                <label> 110kV</label>
+                            </div>
+                            <div class="p-md-2">
+                                <p-radioButton value="CDA_22KV" [(ngModel)]="llTKH.CDA"></p-radioButton>
+                                <label> 22kV</label>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </p-fieldset>
+            <p-fieldset legend="Thông tin công suất" class="p-field p-col-12 p-md-4" [toggleable]="true">
+                <div class="p-fluid p-grid p-formgrid">
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name"> Lắp Đặt MVA </label>
+                        <input type="text" pInputText id="CS_LAPDATMVA" [(ngModel)]="llTKH.CS_LAPDATMVA" required
+                            autofocus />
+                    </div>
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name"> MW MWp </label>
+                        <input type="text" pInputText id="CS_MWMWP" [(ngModel)]="llTKH.CS_MWMWP" required autofocus />
+                    </div>
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name"> Vận Hành </label>
+                        <input type="text" pInputText id="CS_VANHANH" [(ngModel)]="llTKH.CS_VANHANH" required
+                            autofocus />
+                    </div>
+                </div>
+            </p-fieldset>
+            <p-fieldset legend="Thông tin kết nối SCADA về EVN SPC" class="p-field p-col-12 p-md-4" [toggleable]="true">
+                <div class="p-fluid p-grid p-formgrid">
+                    <div class="p-field p-col-12 p-md-8">
+                        <label for="name"> EVN SPC Giao Thức </label>
+                        <div class="p-field-radiobutton">
+                            <div class="p-md-2">
+                                <p-radioButton value="IEC-101" [(ngModel)]="llTKH.SCADASPC_GIAOTHUC"></p-radioButton>
+                                <label> IEC-101</label>
+                            </div>
+                            <div class="p-md-2">
+                                <p-radioButton value="IEC-104" [(ngModel)]="llTKH.SCADASPC_GIAOTHUC"></p-radioButton>
+                                <label> IEC-104</label>
+                            </div>
+                            <div class="p-md-2">
+                                <p-radioButton value="ICCP" [(ngModel)]="llTKH.SCADASPC_GIAOTHUC"></p-radioButton>
+                                <label> ICCP</label>
+                            </div>
+                            <div class="p-md-2">
+                                <p-radioButton value="DNP3" [(ngModel)]="llTKH.SCADASPC_GIAOTHUC"></p-radioButton>
+                                <label> DNP3</label>
+                            </div>
+                            <div class="p-md-2">
+                                <p-radioButton value="KHAC" [(ngModel)]="llTKH.SCADASPC_GIAOTHUC"></p-radioButton>
+                                <label> Khác</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name"> EVN SPC Ngày NT </label>
+
+                        <p-calendar [(ngModel)]="llTKH.SCADASPC_NGAYNGHIEMTHU" dateFormat="dd/mm/yy"></p-calendar>
+                    </div>
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name"> EVN SPC Năm NT 1 </label>
+                        <input type="text" pInputText id="SCADASPC_NAMNT1" [(ngModel)]="llTKH.SCADASPC_NAMNT1" required
+                            autofocus />
+                    </div>
+                    <div class=" p-md-4">
+                        <label for="name"> EVN SPC Năm NT 2 </label>
+                        <input type="text" pInputText id="SCADASPC_NAMNT2" [(ngModel)]="llTKH.SCADASPC_NAMNT2" required
+                            autofocus />
+                    </div>
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name"> EVN SPC Xác Nhận </label>
+                        <input type="text" pInputText id="SCADASPC_VANBANXACNHAN"
+                            [(ngModel)]="llTKH.SCADASPC_VANBANXACNHAN" required autofocus />
+                    </div>
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name"> EVN SPC Point </label>
+                        <input type="text" pInputText id="SCADASPC_POINT" [(ngModel)]="llTKH.SCADASPC_POINT" required
+                            autofocus />
+                    </div>
+                </div>
+            </p-fieldset>
+            <p-fieldset legend="Thông tin kết nối SCADA về A2 (theo VB 6454/EVN SPC-KT ngày 31/7/2020)"
+                class="p-field p-col-12 p-md-4" [toggleable]="true">
+                <div class="p-fluid p-grid p-formgrid">
+                    <div class="p-field p-col-12 p-md-8">
+                        <label for="name"> A2 Giao Thức </label>
+                        <div class="p-field-radiobutton">
+                            <div class="p-md-2">
+                                <p-radioButton value="IEC-101" [(ngModel)]="llTKH.SCADAA2_GIAOTHUC"></p-radioButton>
+                                <label>IEC-101</label>
+                            </div>
+                            <div class="p-md-2">
+                                <p-radioButton value="IEC-104" [(ngModel)]="llTKH.SCADAA2_GIAOTHUC"></p-radioButton>
+                                <label>IEC-104</label>
+                            </div>
+                            <div class="p-md-2">
+                                <p-radioButton value="ICCP" [(ngModel)]="llTKH.SCADAA2_GIAOTHUC"></p-radioButton>
+                                <label>ICCP</label>
+                            </div>
+                            <div class="p-md-2">
+                                <p-radioButton value="DNP3" [(ngModel)]="llTKH.SCADAA2_GIAOTHUC"></p-radioButton>
+                                <label>DNP3</label>
+                            </div>
+                            <div class="p-md-2">
+                                <p-radioButton value="KHAC" [(ngModel)]="llTKH.SCADAA2_GIAOTHUC"></p-radioButton>
+                                <label>Khác</label>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name"> A2 ngày nghiệm thu </label>
+                        <p-calendar [(ngModel)]="llTKH.SCADAA2_NGAYNHIEMTHU" dateFormat="dd/mm/yy"></p-calendar>
+                    </div>
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name"> A2 Xác Nhận </label>
+                        <input type="text" pInputText id="SCADAA2_VANBANXACNHAN"
+                            [(ngModel)]="llTKH.SCADAA2_VANBANXACNHAN" required autofocus />
+                    </div>
+                </div>
+            </p-fieldset>
+            <p-fieldset legend="Thông tin lắp đặt thiết bị giám sát chất lượng điện năng"
+                class="p-field p-col-12 p-md-4" [toggleable]="true">
+                <div class="p-fluid p-grid p-formgrid">
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name"> Lắp đặt thiết bị giám sát ngày nghiệm thu</label>
+                        <p-calendar [(ngModel)]="llTKH.LDTBGSCLDN_NGAYNT" dateFormat="dd/mm/yy"></p-calendar>
+                    </div>
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name"> CLDN Xác Nhận </label>
+                        <input type="text" pInputText id="LDTBGSCLDN_VANBANXACNHAN"
+                            [(ngModel)]="llTKH.LDTBGSCLDN_VANBANXACNHAN" required autofocus />
+                    </div>
+                </div>
+            </p-fieldset>
+            <p-fieldset legend="Thông tin xóa tín hiệu dư thừa" class="p-field p-col-12 p-md-4" [toggleable]="true">
+                <div class="p-fluid p-grid p-formgrid">
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name"> Xóa tín hiệu dư thừa ngày thực hiện </label>
+                        <p-calendar [(ngModel)]="llTKH.XTHDT_NGAYTHUCHIEN" dateFormat="dd/mm/yy"></p-calendar>
+                    </div>
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name"> Xóa tín hiệu nhân viên thực hiện </label>
+                        <input type="text" pInputText id="XTHDT_NHANVIENTHUCHIEN"
+                            [(ngModel)]="llTKH.XTHDT_NHANVIENTHUCHIEN" required autofocus />
+                    </div>
+                </div>
+            </p-fieldset>
+
+            <div class="p-field p-col-12 p-md-12">
+                <button pButton pRipple label="Hủy" icon="pi pi-times" class="p-button-secondary"
+                    (click)="hideDialog()"></button>
+                <button pButton pRipple label="Lưu" icon="pi pi-check" class="p-button-info" style="margin-left: 20px;"
+                    (click)="saveItem()"></button>
+            </div>
+        </div>
+        <div class="card" *ngIf="!dialog">
+            <p-toolbar styleClass="p-mb-4">
+                <ng-template pTemplate="left">
+                    <button pButton pRipple label="Thêm" icon="pi pi-plus" class="p-button-success p-mr-2 p-mb-2"
+                        (click)="openNew()"></button>
+                    <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help p-mr-2 p-mb-2"
+                        (click)="exportExcel()"></button>
+                        <p-fileUpload class="p-mr-2 p-mb-2" style="padding-left: 5pt;" #fileInput
+                        mode="basic" chooseLabel="Import" cancelLabel="Hủy" uploadLabel="Tải lên" name="FILE_NAME[]"
+                        accept=".xlsx,.xls" maxFileSize="1000000" (onUpload)="uploadFileDaChon()"
+                        (onBeforeUpload)="uploadFileDaChon()">
+                    </p-fileUpload>
+                </ng-template>
+
+                <ng-template pTemplate="right">
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                            placeholder="Lọc..." />
+                    </span>
+
+                </ng-template>
+            </p-toolbar>
+            <!-- <div style="overflow-x: auto;width: 100%;"> -->
+            <p-table #dt [value]="llTKHs" [rows]="20" [paginator]="true" [globalFilterFields]="[
+                'id', 'MA_TINH','TEN_TINH',  'TEN_TRAM',  'TTKH_LIENHE', 'TTKH_PHUONGAN',  'TTKH_THIETBIDAUNOI', 'TTKH_NGAYVANHANH', 'NLTT','CDA', 'CS_LAPDATMVA', 'CS_MWMWP', 'CS_VANHANH', 'SCADASPC_GIAOTHUC','SCADASPC_NGAYNGHIEMTHU', 'SCADASPC_NAMNT1',
+                'SCADASPC_NAMNT2','SCADASPC_VANBANXACNHAN', 'SCADASPC_POINT', 'SCADAA2_GIAOTHUC', 'SCADAA2_NGAYNHIEMTHU', 'SCADAA2_VANBANXACNHAN', 'LDTBGSCLDN_NGAYNT', 'LDTBGSCLDN_VANBANXACNHAN', 'XTHDT_NGAYTHUCHIEN',
+                'XTHDT_NHANVIENTHUCHIEN'
+                ]" [rowHover]="true" [loading]="loading" dataKey="id"
+                currentPageReportTemplate="Hiển thị từ {first} đến {last} trên {totalRecords}"
+                [showCurrentPageReport]="true" [scrollable]="true" [style]="{'width':'100%'}" scrollHeight="100%">
+                <!-- <ng-template pTemplate="caption">
+                <div class="p-grid">
+                    <div class="p-md-4 p-sm-4 p-d-flex p-jc-start">
+
+                    </div>
+                    <div class="p-md-4 p-sm-4 p-d-flex p-jc-start"></div>
+                    <div class="p-md-4 p-sm-4 p-d-flex p-jc-end">
+                         <button pButton pRipple label="Thêm" icon="pi pi-plus" class="p-button-success p-mr-2 p-mb-2"
+                            (click)="openNew()"></button> 
+                    </div>
+                </div>
+
+            </ng-template> -->
+                <ng-template pTemplate="headergrouped">
+                    <tr class="trHeader">
+                        <!-- <th [style.transform]="'translateX('+scrollXColumn  + 'px)'" rowspan="2" pFrozenColumn></th>
+                    
+                        <th [style.transform]="'translateX('+scrollXColumn  + 'px)'" rowspan="2" pSortableColumn="TEN_TINH">Tên Tỉnh <p-sortIcon field="TEN_TINH"></p-sortIcon>
+                        </th>
+                        <th [style.transform]="'translateX('+scrollXColumn  + 'px)'" rowspan="2" pSortableColumn="TEN_TRAM">Tên Trạm <p-sortIcon field="TEN_TRAM"></p-sortIcon>
+                        </th> -->
+
+
+                        <th rowspan="2" style="width: 150px;" pFrozenColumn pSortableColumn="TEN_TINH">Tên Tỉnh
+                            <p-sortIcon field="TEN_TINH"></p-sortIcon>
+                        </th>
+                        <th rowspan="2" style="width: 150px;" pFrozenColumn pSortableColumn="TEN_TRAM">Tên Trạm
+                            <p-sortIcon field="TEN_TRAM"></p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" rowspan="2" pSortableColumn="MA_TRAM" class="headerText">Mã Trạm
+                            <p-sortIcon field="MA_TRAM"></p-sortIcon>
+                        </th>
+                        <th style="width: 600px;" colspan="4" class="headerText center">Thông Tin Khách Hàng</th>
+                        <th style="width: 750px;" colspan="5">Năng Lượng Tái Tạo
+                        </th>
+                        <th style="width: 150px;" colspan="1">Ngành Khác
+                        </th>
+                        <th style="width: 450px;" colspan="3">Cấp Điện Áp</th>
+                        <th style="width: 450px;" colspan="3">Công Suất</th>
+                        <th style="width: 900px;" colspan="6">Kết Nối SCADA Về EVNSPC</th>
+                        <th style="width: 450px;" colspan="3">Kết Nối SCADA Về A2 <br />Theo VB 6454/EVN SPC-KT ngày
+                            31/7/2020</th>
+                        <th style="width: 300px;" colspan="2">Lắp Đặt Thiết Bị Giám Sát Chất Lượng Điện Năng</th>
+                        <th style="width: 300px;" colspan="2">Xóa Tín Hiệu Dư Thừa</th>
+                        <th rowspan="2" style="width: 150px;"></th>
+                    </tr>
+                    <tr>
+                        <th style="width: 150px;" pSortableColumn="TTKH_LIENHE">Liên Hệ<p-sortIcon field="TTKH_LIENHE">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" pSortableColumn="TTKH_PHUONGAN">Phương Án <p-sortIcon
+                                field="TTKH_PHUONGAN">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" pSortableColumn="TTKH_THIETBIDAUNOI">Thiết bị đầu nối <p-sortIcon
+                                field="TTKH_THIETBIDAUNOI"></p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" pSortableColumn="TTKH_NGAYVANHANH">Ngày Vận Hành <p-sortIcon
+                                field="TTKH_NGAYVANHANH">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;">DIESEL
+                        </th>
+                        <th style="width: 150px;">NMĐ Gió
+                        </th>
+                        <th style="width: 150px;">NMĐ Mặt Trời
+                        </th>
+                        <th style="width: 150px;">NM Nhiệt Điện
+                        </th>
+                        <th style="width: 150px;">NM Thủy Điện
+                        </th>
+                        <th style="width: 150px;">Ngành Nghề
+                        </th>
+                        <th style="width: 150px;">220kV
+                        </th>
+                        <th style="width: 150px;">110kV
+                        </th>
+                        <th style="width: 150px;">22kV
+                        </th>
+                        <th style="width: 150px;" pSortableColumn="CS_LAPDATMVA">Lắp Đặt MVA <p-sortIcon
+                                field="CS_LAPDATMVA"></p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" pSortableColumn="CS_MWMWP">MW MWp <p-sortIcon field="CS_MWMWP">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" pSortableColumn="CS_VANHANH">Vận Hành <p-sortIcon field="CS_VANHANH">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" pSortableColumn="SCADASPC_GIAOTHUC">EVN SPC Giao Thức<p-sortIcon
+                                field="SCADASPC_GIAOTHUC">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" pSortableColumn="SCADASPC_NGAYNGHIEMTHU">EVN SPC Ngày NT <p-sortIcon
+                                field="SCADASPC_NGAYNGHIEMTHU">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" pSortableColumn="SCADASPC_NAMNT1">EVN SPC Năm NT 1 <p-sortIcon
+                                field="SCADASPC_NAMNT1">
+                            </p-sortIcon>
+                        </th>
+
+                        <th style="width: 150px;" pSortableColumn="SCADASPC_NAMNT2">EVN SPC Năm NT 2 <p-sortIcon
+                                field="SCADASPC_NAMNT2">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" pSortableColumn="SCADASPC_VANBANXACNHAN">EVN SPC Xác Nhận <p-sortIcon
+                                field="SCADASPC_VANBANXACNHAN">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" pSortableColumn="SCADASPC_POINT">EVN SPC Point <p-sortIcon
+                                field="SCADASPC_POINT">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" pSortableColumn="SCADAA2_GIAOTHUC">A2 Giao Thức <p-sortIcon
+                                field="SCADAA2_GIAOTHUC">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" pSortableColumn="SCADAA2_NGAYNHIEMTHU">A2 Ngày NT <p-sortIcon
+                                field="SCADAA2_NGAYNHIEMTHU">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" pSortableColumn="SCADAA2_VANBANXACNHAN">A2 Xác Nhận<p-sortIcon
+                                field="SCADAA2_VANBANXACNHAN"></p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" pSortableColumn="LDTBGSCLDN_NGAYNT">CLDN Ngày NT <p-sortIcon
+                                field="LDTBGSCLDN_NGAYNT">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" pSortableColumn="LDTBGSCLDN_VANBANXACNHAN">CLDN Xác Nhận <p-sortIcon
+                                field="LDTBGSCLDN_VANBANXACNHAN">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" pSortableColumn="XTHDT_NGAYTHUCHIEN">Xóa tín hiệu dư thừa ngày thực
+                            hiện <p-sortIcon field="XTHDT_NGAYTHUCHIEN">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" pSortableColumn="XTHDT_NHANVIENTHUCHIEN">Xóa tín hiệu dư thừa ngày
+                            thực hiện <p-sortIcon field="XTHDT_NHANVIENTHUCHIEN">
+                            </p-sortIcon>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-llTKH>
+                    <tr>
+                        <!-- <td class="bodySTT" [style.transform]="'translateX('+scrollXColumn  + 'px)'">
+                            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2"
+                                (click)="editItem(llTKH)"></button>
+                            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                                (click)="deleteItem(llTKH)"></button>
+                        </td>
+                        <td class="bodySTT" [style.transform]="'translateX('+scrollXColumn  + 'px)'">
+                            {{llTKH.TEN_TINH}}
+                        </td>
+                        <td class="bodySTT" [style.transform]="'translateX('+scrollXColumn  + 'px)'">
+                            {{llTKH.TEN_TRAM}}
+                        </td> -->
+
+                        <td class="bodySTT" pFrozenColumn style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTKH.TEN_TINH}}
+                        </td>
+                        <td class="bodySTT" pFrozenColumn style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTKH.TEN_TRAM}}
+                        </td>
+
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTKH.MA_TRAM}}
+                        </td>
+                        <td style="flex: 1">
+                            {{llTKH.TTKH_LIENHE}}
+                        </td>
+
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTKH.TTKH_PHUONGAN}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTKH.TTKH_THIETBIDAUNOI}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTKH.TTKH_NGAYVANHANH | date: 'dd/MM/yyyy'}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: center;">
+                            {{llTKH.NLTT==='NLTT_DIESEL'?'x':''}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: center;">
+                            {{llTKH.NLTT==='NLTT_NMDGIO'?'x':''}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: center;">
+                            {{llTKH.NLTT==='NLTT_NMDMATTROI'?'x':''}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: center;">
+                            {{llTKH.NLTT==='NLTT_NMNHIETDIEN'?'x':''}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: center;">
+                            {{llTKH.NLTT==='NLTT_NMTHUYDIEN'?'x':''}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: center;">
+                            {{llTKH.NLTT==='NLK_NGANHNGHE'?'x':''}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: center;">
+                            {{llTKH.CDA==='CDA_220KV'?'x':''}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: center;">
+                            {{llTKH.CDA==='CDA_110KV'?'x':''}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: center;">
+                            {{llTKH.CDA==='CDA_22KV'?'x':''}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-end;">
+                            {{llTKH.CS_LAPDATMVA | number:'0.0-3':'vi'}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-end;">
+                            {{llTKH.CS_MWMWP | number:'0.0-3':'vi'}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-end;">
+                            {{llTKH.CS_VANHANH | number:'0.0-3':'vi'}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTKH.SCADASPC_GIAOTHUC}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTKH.SCADASPC_NGAYNGHIEMTHU | date: 'dd/MM/yyyy'}}
+                        </td>
+
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTKH.SCADASPC_NAMNT1}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTKH.SCADASPC_NAMNT2}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTKH.SCADASPC_VANBANXACNHAN}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTKH.SCADASPC_POINT}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTKH.SCADAA2_GIAOTHUC}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTKH.SCADAA2_NGAYNHIEMTHU | date: 'dd/MM/yyyy'}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTKH.SCADAA2_VANBANXACNHAN}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTKH.LDTBGSCLDN_NGAYNT | date: 'dd/MM/yyyy'}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTKH.LDTBGSCLDN_VANBANXACNHAN}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTKH.XTHDT_NGAYTHUCHIEN | date: 'dd/MM/yyyy'}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTKH.XTHDT_NHANVIENTHUCHIEN}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: center;">
+                            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2"
+                                (click)="editItem(llTKH)"></button>
+                            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                                (click)="deleteItem(llTKH)"></button>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="summary">
+                    <div class="p-d-flex p-ai-center p-jc-between">
+                        Tổng số lượng: {{llTKHs ? llTKHs.length : 0 }} lý lịch trạm biến áp khách hàng.
+                    </div>
+                </ng-template>
+            </p-table>
+        </div>
+        <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+    </div>
+</div>

@@ -1,0 +1,25 @@
+/* .b {
+    overflow-y: hidden;
+    color: red;
+}
+
+.b::-webkit-scrollbar {
+    height: 10px;
+}
+
+.b::-webkit-scrollbar-thumb {
+    background: #5b626b;
+    border-radius: 5px;
+}
+
+td {
+    white-space: nowrap;
+    z-index: -1;
+}
+
+.a {
+    position: sticky;
+    left: 0;
+    z-index: 11;
+    background-color: coral;
+} */

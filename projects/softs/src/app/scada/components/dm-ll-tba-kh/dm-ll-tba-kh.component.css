@@ -1,0 +1,144 @@
+:host ::ng-deep  .p-frozen-column {
+    font-weight: bold;
+  }
+  :host ::ng-deep .p-datatable-frozen-tbody {
+    font-weight: bold;
+  }
+  body {
+    background: #ccc;
+  }
+  
+  .container {
+    width: 500px;
+    height: 200px;
+    border: 2px solid #444444;
+    overflow: scroll;
+    position: relative;
+  }
+  
+  table {
+    table-layout: fixed;
+    border-collapse: separate;
+    border-spacing: 0;
+    position: absolute;
+    width: 100%;
+  }
+  
+  th,
+  td {
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    padding: 5px 10px;
+    width: 100px;
+    box-sizing: border-box;
+    margin: 0;
+  }
+  
+  td {
+    background: #fff;
+  }
+  
+  th,
+  .fixed-cell {
+    background: #eee;
+  }
+  
+  .cross {
+    position: relative;
+    z-index: 1;
+  }
+  
+  .zui-table {
+    border: none;
+    border-right: solid 1px #DDEFEF;
+    border-collapse: separate;
+    border-spacing: 0;
+    font: normal 13px Arial, sans-serif;
+}
+.zui-table thead th {
+    background-color: #DDEFEF;
+    border: none;
+    color: #336B6B;
+    padding: 10px;
+    text-align: left;
+    text-shadow: 1px 1px 1px #fff;
+    white-space: nowrap;
+}
+.zui-table tbody td {
+    border-bottom: solid 1px #DDEFEF;
+    color: #333;
+    padding: 10px;
+    text-shadow: 1px 1px 1px #fff;
+    white-space: nowrap;
+}
+.zui-wrapper {
+    position: relative;
+}
+.zui-scroller {
+    margin-left: 141px;
+    overflow-x: scroll;
+    overflow-y: visible;
+    padding-bottom: 5px;
+    width: 300px;
+}
+.zui-table .zui-sticky-col {
+    border-left: solid 1px #DDEFEF;
+    border-right: solid 1px #DDEFEF;
+    left: 0;
+    position: absolute;
+    top: auto;
+    width: 120px;
+}
+  /* You can add global styles to this file, and also import other style files */
+:host ::ng-deep .p-datatable .p-datatable-thead > tr > th {
+  border: 1px solid #e0e0e0 !important;
+  text-align: center !important;
+  font-weight: bold;
+  /* position: -webkit-sticky;
+  position: sticky;
+  top: 70px; */
+}
+
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+  border: 1px solid #e0e0e0 !important;    
+}
+
+:host ::ng-deep .p-datatable .p-sortable-column .p-highlight .p-sortable-column-icon{
+  /* color: white; */
+}
+
+:host ::ng-deep .p-datatable .p-sortable-column .p-sortable-column-icon{
+  /* color: white; */
+}
+
+:host ::ng-deep .headerSTT{
+  width: 4rem;
+}
+
+:host ::ng-deep .headerText{
+  width: 20rem;
+}
+
+:host ::ng-deep .trHeader{
+ height: 0px;
+}
+
+:host ::ng-deep .headerRow2 {
+  top: 115px !important;
+}
+
+:host ::ng-deep .bodySTT {
+  text-align: center !important;
+}
+:host ::ng-deep .p-frozen-column {
+  font-weight: bold;
+  background-color: whitesmoke !important;
+}
+
+:host ::ng-deep .p-datatable-frozen-tbody {
+  font-weight: bold;
+}
+:host ::ng-deep .calendarInput {
+  padding-right: unset;
+  width: 82px !important;
+}

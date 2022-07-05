@@ -1,0 +1,215 @@
+<p-toast key="tst"></p-toast>
+<p-confirmDialog header="Xác nhận" icon="pi pi-exclamation-triangle" acceptButtonStyleClass="ui-button-info"
+    acceptLabel="Đồng ý" rejectLabel="Hủy bỏ">
+</p-confirmDialog>
+<p-toolbar>
+    <div class="p-toolbar-group-left">
+        <div class="p-formgroup-inline">
+            <div class="p-field">
+                <span class="p-input-icon-left p-mb-2">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                        placeholder="Lọc..." />
+                </span>
+            </div>
+            <div class="p-field">
+                <button pButton pRipple (click)="showDiaglogMail()" icon="pi pi-send" class="p-button-danger p-mt-1"
+                    label="Gửi mail báo cáo"></button>
+            </div>
+        </div>
+    </div>
+    <div class="p-toolbar-group-right">
+        <div class="p-formgroup-inline">
+            <div class="p-field">
+                <p-dropdown [options]="lstORG" [(ngModel)]="MA_DVIQLY" optionLabel="TEN_DVIQLY" optionValue="MA_DVIQLY"
+                    filter="true">
+                </p-dropdown>
+            </div>
+            <div class="p-field">
+                <p-calendar dateFormat="dd/mm/yy" dataType="string" [showIcon]="true" placeholder="Ngày bắt đầu"
+                    [selectOtherMonths]="true" [(ngModel)]="FROM_DATE" firstDayOfWeek=1 inputStyleClass="calendarInput">
+                </p-calendar>
+            </div>
+            <div class="p-field">
+                <p-calendar dateFormat="dd/mm/yy" dataType="string" [showIcon]="true" placeholder="Ngày kết thúc"
+                    [selectOtherMonths]="true" [(ngModel)]="TO_DATE" firstDayOfWeek=1 inputStyleClass="calendarInput">
+                </p-calendar>
+            </div>
+            <button pButton pRipple (click)="search()" icon="pi pi-search"
+                class="p-button-success p-mt-1 p-mr-2"></button>
+            <button pButton pRipple (click)="exportExcel()" icon="pi pi-file-excel" class="p-button-help p-mt-1"
+                label="Xuất excel"></button>
+        </div>
+    </div>
+</p-toolbar>
+<p-table #dt [value]="lstMain" dataKey="STT" [rowHover]="true" [rows]="10" [paginator]="true" [filterDelay]="0"
+    [loading]="loading"
+    [globalFilterFields]="['STT','TENTHIETBI','TENDV','DIENBIEN','NGUYENNHAN','KHU_VUC_MD','SO_KH_MD','TGIAN','P_TAI','UOC_SL_NG','SL','BATDAU','KETTHUC']"
+    currentPageReportTemplate="Hiển thị từ {first} đến {last} trên {totalRecords}" [responsive]="true"
+    [showCurrentPageReport]="true" [rowsPerPageOptions]="[5, 10, 20, { showAll: 'Tất cả' }]"
+    [(selection)]="selectedRows" dataKey="STT">
+    <ng-template pTemplate="header">
+        <tr class="trHeader">
+            <th style="width: 3rem" rowspan="2">
+                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+            </th>
+            <th pSortableColumn="STT" rowspan="2" class="headerSTT">STT
+                <p-sortIcon field="STT"></p-sortIcon>
+            </th>
+            <th pSortableColumn="TENTHIETBI" rowspan="2">Tên DZ, TBA bị sự cố
+                <p-sortIcon field="TENTHIETBI"></p-sortIcon>
+            </th>
+            <th pSortableColumn="TENDV" rowspan="2">Đơn vị quản lý vận hành
+                <p-sortIcon field="TENDV"></p-sortIcon>
+            </th>
+            <th colspan="2" class="headerText15">Thời gian sự cố
+            </th>
+            <th pSortableColumn="DIENBIEN" rowspan="2" class="headerText">Diễn biến sự cố
+                <p-sortIcon field="DIENBIEN"></p-sortIcon>
+            </th>
+            <th pSortableColumn="NGUYENNHAN" rowspan="2" class="headerText10">Nguyên nhân
+                <p-sortIcon field="NGUYENNHAN"></p-sortIcon>
+            </th>
+            <th pSortableColumn="KHU_VUC_MD" rowspan="2">Khu vực bị ngừng, giảm cấp điện
+                <p-sortIcon field="KHU_VUC_MD"></p-sortIcon>
+            </th>
+            <th pSortableColumn="SO_KH_MD" rowspan="2">Số KH bị ngừng, giảm cung cấp điện
+                <p-sortIcon field="SO_KH_MD"></p-sortIcon>
+            </th>
+            <th pSortableColumn="TGIAN" rowspan="2">Thời gian gián đoạn cấp điện (phút)
+                <p-sortIcon field="TGIAN"></p-sortIcon>
+            </th>
+            <th pSortableColumn="P_TAI" rowspan="2">CS bị ngừng giảm (MW)
+                <p-sortIcon field="P_TAI"></p-sortIcon>
+            </th>
+            <th pSortableColumn="UOC_SL_NG" rowspan="2">Ước SL điện không cung cấp được (kWh)
+                <p-sortIcon field="UOC_SL_NG"></p-sortIcon>
+            </th>
+            <th pSortableColumn="SL" rowspan="2">Số vụ trong năm (tuyến ĐD)
+                <p-sortIcon field="SL"></p-sortIcon>
+            </th>
+        </tr>
+        <tr>
+            <th pSortableColumn="BATDAU" class="headerRow2">Bắt đầu
+                <p-sortIcon field="BATDAU"></p-sortIcon>
+            </th>
+            <th pSortableColumn="KETTHUC" class="headerRow2">Kết thúc
+                <p-sortIcon field="KETTHUC"></p-sortIcon>
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-main>
+        <tr class="p-selectable-row" [ngClass]="{'row-warning': checkRowWarning(main)}" [pSelectableRow]="main">
+            <td>
+                <p-tableCheckbox [value]="main"></p-tableCheckbox>
+            </td>
+            <td class="bodySTT">
+                <span class="p-column-title">STT</span>
+                {{main.STT}}
+            </td>
+            <td>
+                <span class="p-column-title">Tên đường dây, trạm biến áp bị sự cố</span>
+                {{main.TENTHIETBI}}
+            </td>
+            <td>
+                <span class="p-column-title">Đơn vị quản lý vận hành</span>
+                {{main.TENDV}}
+            </td>
+            <td>
+                <span class="p-column-title">Bắt đầu</span>
+                {{main.BATDAU | date: 'dd/MM/yyyy HH:mm'}}
+            </td>
+            <td>
+                <span class="p-column-title">Kết thúc</span>
+                {{main.KETTHUC | date: 'dd/MM/yyyy HH:mm'}}
+            </td>
+            <td>
+                <span class="p-column-title">Diễn biến sự cố</span>
+                {{main.DIENBIEN}}
+            </td>
+            <td>
+                <span class="p-column-title">Nguyên nhân</span>
+                {{main.NGUYENNHAN}}
+            </td>
+            <td>
+                <span class="p-column-title">Khu vực bị ngừng, giảm cấp điện</span>
+                {{main.KHU_VUC_MD}}
+            </td>
+            <td>
+                <span class="p-column-title">Số KH bị ngừng, giảm cung cấp điện</span>
+                {{main.SO_KH_MD | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">Thời gian gián đoạn cấp điện (phút), Nếu có chuyển tải thì phân
+                    ra nhiều khoảng thời gian khác nhau</span>
+                {{main.TGIAN | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">CS bị ngừng giảm (MW)</span>
+                {{main.P_TAI | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">Ước SL điện không cung cấp được (kWh)</span>
+                {{main.UOC_SL_NG | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">Số vụ trong năm (tuyến ĐD)</span>
+                {{main.SL | number:'0.0-3':'vi'}}
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <tr *ngIf="lstMain && lstMain.length>0">
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td style="font-weight: bold; text-align: right;">Tổng {{lstMain ? lstMain.length : 0}} dòng
+            </td>
+            <td style="font-weight: bold;">
+                {{dataTong ? (dataTong.SO_KH_MD | number:'0.0-3':'vi'): 0 }}
+            </td>
+            <td style="font-weight: bold;">
+                {{dataTong ? (dataTong.TGIAN | number:'0.0-3':'vi') : 0}}
+            </td>
+            <td style="font-weight: bold;">
+                {{dataTong ? (dataTong.P_TAI | number:'0.0-3':'vi') : 0}}
+            </td>
+            <td style="font-weight: bold;">
+                {{dataTong ? (dataTong.UOC_SL_NG | number:'0.0-3':'vi') : 0}}
+            </td>
+            <td style="font-weight: bold;">
+                {{dataTong ? (dataTong.SL | number:'0.0-3':'vi') : 0}}
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+        <tr>
+            <td colspan="14" style="text-align: center;">Không có dữ liệu</td>
+        </tr>
+    </ng-template>
+</p-table>
+<p-dialog [(visible)]="docDialog" [style]="{width: '50rem'}" header="Gửi mail báo cáo" [modal]="true"
+    styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <div class="p-field">
+            <label for="CATEGORY_IDEdit">Chủ đề (*)</label>
+            <input type="text" id="CATEGORY_IDEdit" pInputText [(ngModel)]="Subject" required autofocus />
+            <small class="p-error" *ngIf="submitted && !Subject">Vui lòng nhập chủ đề</small>
+        </div>
+        <div class="p-field">
+            <label for="TITLE">Nội dung báo cáo(*)</label>
+            <textarea id="TITLE" pInputTextarea [(ngModel)]="HtmlMsg" required rows="3" cols="20"></textarea>
+            <small class="p-error" *ngIf="submitted && !HtmlMsg">Vui lòng nhập nội dung</small>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Hủy" icon="pi pi-times" class="p-button-secondary"
+            (click)="hideDialog()"></button>
+        <button pButton pRipple label="Gửi" icon="pi pi-check" class="p-button-info" (click)="sendMail()"></button>
+    </ng-template>
+</p-dialog>

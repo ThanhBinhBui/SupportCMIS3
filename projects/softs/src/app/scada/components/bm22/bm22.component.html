@@ -1,0 +1,151 @@
+<p-toast key="tst"></p-toast>
+<p-confirmDialog header="Xác nhận" icon="pi pi-exclamation-triangle" acceptButtonStyleClass="ui-button-info"
+    acceptLabel="Đồng ý" rejectLabel="Hủy bỏ">
+</p-confirmDialog>
+
+<div class="card">
+    <div class="p-grid">
+        <div class="p-md-4 p-sm-4 p-d-flex p-jc-start">
+            <span class="p-input-icon-left">
+                <i class="pi pi-search"></i>
+                <!-- <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                            placeholder="Tìm kiếm..." /> -->
+                <!-- <button pButton pRipple label="Thêm" icon="pi pi-plus" class="p-button-success p-mr-2 p-mb-2"
+                    (click)="openNew()"></button> -->
+            </span>
+        </div>
+        <!-- <div class="p-md-4 p-sm-4 p-d-flex p-jc-end">
+                    <p-dropdown inputId="ORG_CODE" [options]="lstORG" [(ngModel)]="selectedORG_CODE"
+                        optionLabel="ORG_NAME" optionValue="ORG_CODE" filter="true" (onChange)="search()">
+                    </p-dropdown>
+                </div> -->
+
+                <div class="p-md-8 p-sm-8 p-d-flex p-jc-end">
+                    <div class="p-mb-2 p-mr-2">
+                        <p-calendar view="month" dateFormat="mm/yy" [yearNavigator]="true" yearRange="2018:2040"
+                            dataType="string" [showIcon]="true" placeholder="Chọn tháng" [selectOtherMonths]="true"
+                            [(ngModel)]="FROM_DATE" inputStyleClass="calendarInput">
+                        </p-calendar>
+                    </div>
+                    <div class="p-mb-2 p-mr-2">
+                        <button hidden pButton pRipple (click)="search()" icon="pi pi-search"
+                            class="p-button-success p-mt-1"></button>
+
+                    </div>
+                    <div class="p-mb-2 p-mr-2">
+                        <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help p-mt-1"
+                            (click)="exportExcel()"></button>
+                    </div>
+                </div>
+    </div>
+    <p-table #dt [value]="listMain" dataKey="STT" [rowHover]="true" [rows]="50" [paginator]="true" [loading]="loading"
+        [filterDelay]="0"
+        [loading]="loading"
+        [globalFilterFields]="['MA_DVIQLY','TEN_DVIQLY']"
+        currentPageReportTemplate="Hiển thị từ {first} đến {last} trên {totalRecords}" [responsive]="true"
+        [showCurrentPageReport]="true" [rowsPerPageOptions]="[5, 10, 20, { showAll: 'Tất cả' }]">
+        <ng-template pTemplate="caption">
+            
+        </ng-template>
+
+        <ng-template pTemplate="headergrouped">
+            <tr class="trHeader">
+                <th rowspan="2">STT</th>
+                <th rowspan="2">Đơn Vị</th>
+                <th rowspan="2">Cấp điện áp (kV)</th>
+                <th rowspan="2">Tổng số TBA đang vận hành trên lưới</th>
+                <th colspan="3">Số TBA đã đồng bộ thời gian</th>
+                <th rowspan="2">Số TBA chưa đồng bộ thời gian</th>
+                <th rowspan="2">Đã đồng bộ</th>
+                <th rowspan="2">Chưa đồng bộ</th>
+                <th rowspan="2">Ghi Chú</th>
+                <th rowspan="2"></th>
+            </tr>
+            <tr class="trHeader">
+                <th>100% thiết bị</th>
+                <th>Từ 80 đến dưới 100% thiết bị</th>
+                <th>Nhỏ hơn 80% thiết bị</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-main>
+            <tr class="p-selectable-row">
+                <td  style=" text-align: left">{{main.STT}}</td>
+                <td  style=" text-align: left">{{main.TEN_DVIQLY}}</td>
+                <td  style=" text-align: left">{{main.CAP_DIEN_AP}}</td>
+                <td  style=" text-align: right">{{main.TONG_SO_TBI_DANG_VH}}</td>
+                <td  style=" text-align: right">{{main.SO_TBI_DA_DONGBO_100}}</td>
+                <td  style=" text-align: right">{{main.SO_TBI_DA_DONGBO_80_100}}</td>
+                <td  style=" text-align: right">{{main.SO_TBI_DA_DONGBO_0_80}}</td>
+                <td  style=" text-align: right">{{main.SO_TBA_CHUA_DONGBO_THOIGIAN}}</td>
+                <td  style=" text-align: right">{{main.SO_TBI_DA_DONGBO}}</td>
+                <td  style=" text-align: right">{{main.SO_TBI_CHUA_DONGBO}}</td>
+                <td  style=" text-align: left">{{main.GHI_CHU}}</td>
+                <td class="bodySTT">
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2"
+                        (click)="editItem(main)"></button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="12" style="text-align: center;">Không có dữ liệu</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+<p-dialog [(visible)]="dialog" [style]="{height:'70%',width: '450px'}"
+    [header]="isUpdate?'Cập Nhật Thông Tin Sự Kiện':'Thêm Mới Thông Tin Sự Kiện'" (onHide)="hideDialog()" [modal]="true"
+    styleClass="p-fluid">
+    <ng-template pTemplate="content">
+
+        <div class="p-field">
+            <label for="name">Đơn vị quản lý</label>
+            <p-autoComplete [(ngModel)]="selectedTinh" [suggestions]="filterTinhs" (completeMethod)="filterTinh($event)"
+                field="TEN_DVIQLY" [dropdown]="true" disabled>
+            </p-autoComplete>
+        </div>
+        <div class="p-field">
+            <label for="name">Cấp điện áp (kV)</label>
+            <input type="text" pInputText [(ngModel)]="mainCurrent.CAP_DIEN_AP" disabled/>
+        </div>
+        <div class="p-field">
+            <label for="name">Tổng số TBA đang vận hành trên lưới</label>
+            <input type="text" pInputText [(ngModel)]="mainCurrent.TONG_SO_TBI_DANG_VH" />
+        </div>
+        <div class="p-field">
+            <label for="name">Số TBA đã đồng bộ thời gian 100% thiết bị</label>
+            <input type="text" pInputText [(ngModel)]="mainCurrent.SO_TBI_DA_DONGBO_100" />
+        </div>
+        <div class="p-field">
+            <label for="name">Số TBA đã đồng bộ thời gian từ 80 đến dưới 100%</label>
+            <input type="text" pInputText [(ngModel)]="mainCurrent.SO_TBI_DA_DONGBO_80_100" />
+        </div>
+        <div class="p-field">
+            <label for="name">Số TBA đã đồng bộ thời gian nhỏ hơn 80% thiết bị</label>
+            <input type="text" pInputText [(ngModel)]="mainCurrent.SO_TBI_DA_DONGBO_0_80" />
+        </div>
+        <div class="p-field">
+            <label for="name">Số TBA chưa đồng bộ thời gian </label>
+            <input type="text" pInputText [(ngModel)]="mainCurrent.SO_TBA_CHUA_DONGBO_THOIGIAN" />
+        </div>
+        <div class="p-field">
+            <label for="name">Đã đồng bộ</label>
+            <input type="text" pInputText [(ngModel)]="mainCurrent.SO_TBI_DA_DONGBO" />
+        </div>
+        <div class="p-field">
+            <label for="name">Chưa đồng bộ</label>
+            <input type="text" pInputText [(ngModel)]="mainCurrent.SO_TBI_CHUA_DONGBO" />
+        </div>
+        <div class="p-field">
+            <label for="name">Ghi chú</label>
+            <input type="text" pInputText [(ngModel)]="mainCurrent.GHI_CHU" />
+        </div>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Hủy" icon="pi pi-times" class="p-button-secondary"
+            (click)="hideDialog()"></button>
+        <button pButton pRipple label="Lưu" icon="pi pi-check" class="p-button-info" (click)="saveItem()"></button>
+    </ng-template>
+</p-dialog>

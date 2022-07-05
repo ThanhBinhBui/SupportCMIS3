@@ -1,0 +1,169 @@
+<p-toast key="tst"></p-toast>
+<p-confirmDialog header="Xác nhận" icon="pi pi-exclamation-triangle" acceptButtonStyleClass="ui-button-info"
+    acceptLabel="Đồng ý" rejectLabel="Hủy bỏ">
+</p-confirmDialog>
+<p-toolbar>
+    <div class="p-toolbar-group-left">
+        <div class="p-formgroup-inline">
+            <div class="p-field">
+                <button pButton pRipple (click)="showDiaglogMail()" icon="pi pi-send" class="p-button-danger p-mt-1"
+                    label="Gửi mail báo cáo"></button>
+            </div>
+        </div>
+    </div>
+    <div class="p-toolbar-group-right">
+        <div class="p-formgroup-inline">
+            <div class="p-field">
+                <p-dropdown [options]="lstORG" [(ngModel)]="MA_DVIQLY" optionLabel="TEN_DVIQLY" optionValue="MA_DVIQLY"
+                    filter="true">
+                </p-dropdown>
+            </div>
+            <div class="p-field">
+                <p-calendar dateFormat="dd/mm/yy" dataType="string" [showIcon]="true" placeholder="Ngày thực hiện"
+                    [selectOtherMonths]="true" [(ngModel)]="FROM_DATE" firstDayOfWeek=1 inputStyleClass="calendarInput">
+                </p-calendar>
+            </div>
+            <button pButton pRipple (click)="search()" icon="pi pi-search"
+                class="p-button-success p-mt-1 p-mr-2"></button>
+            <button pButton pRipple (click)="exportExcel()" icon="pi pi-file-excel" class="p-button-help p-mt-1"
+                label="Xuất excel"></button>
+        </div>
+    </div>
+</p-toolbar>
+<div class="p-grid">
+    <div class="p-col-12 p-md-12 p-lg-3">
+        <div class="card">
+            <h5>1. Công suất</h5>
+            <p-table #dtMain1 [value]="lstMain1" [rowHover]="true" [rows]="10" [paginator]="true" [filterDelay]="0"
+                [loading]="loading" [globalFilterFields]="['NoiDung','GiaTri']"
+                currentPageReportTemplate="Hiển thị từ {first} đến {last} trên {totalRecords}" [responsive]="true"
+                [showCurrentPageReport]="true" [rowsPerPageOptions]="[5, 10, 20, { showAll: 'Tất cả' }]">
+                <ng-template pTemplate="header">
+                    <tr class="trHeader">
+                        <th pSortableColumn="NoiDung">Giờ
+                            <p-sortIcon field="NoiDung"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="GiaTri">P (MW)
+                            <p-sortIcon field="GiaTri"></p-sortIcon>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-main>
+                    <tr class="p-selectable-row">
+                        <td>
+                            <span class="p-column-title">Giờ</span>
+                            {{main.NoiDung}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">P (MW)</span>
+                            {{main.GiaTri}}
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="2" style="text-align: center;">Không có dữ liệu</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+    <div class="p-col-12 p-md-12 p-lg-9">
+        <div class="card">
+            <div class="p-grid">
+                <div class="p-col-12 p-md-12 p-lg-5">
+                    <h5>2. Sản lượng điện nhận EVN</h5>
+                    <p-table #dtMain2 [value]="lstMain2" [rowHover]="true" [filterDelay]="0" [loading]="loading"
+                        [globalFilterFields]="['NoiDung','GiaTri']" [responsive]="true">
+                        <ng-template pTemplate="body" let-main>
+                            <tr class="p-selectable-row">
+                                <td style="font-weight: bold;">
+                                    {{main.NoiDung}}
+                                </td>
+                                <td>
+                                    {{main.GiaTri}}
+                                </td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="emptymessage">
+                            <tr>
+                                <td colspan="2" style="text-align: center;">Không có dữ liệu</td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </div>
+                <div class="p-col-12 p-md-12 p-lg-7">
+                    <h5>3. Công suất, sản lượng cùng kỳ</h5>
+                    <p-table #dtMain3 [value]="lstMain3" [rowHover]="true" [filterDelay]="0" [loading]="loading"
+                        [globalFilterFields]="['NoiDung','GiaTri','GiaTri2']" [responsive]="true">
+                        <ng-template pTemplate="header">
+                            <tr class="trHeader">
+                                <th pSortableColumn="NoiDung">So sánh (Tăng +/ giảm -)
+                                    <p-sortIcon field="NoiDung"></p-sortIcon>
+                                </th>
+                                <th pSortableColumn="GiaTri">SL
+                                    <p-sortIcon field="GiaTri"></p-sortIcon>
+                                </th>
+                                <th pSortableColumn="GiaTri2">CS
+                                    <p-sortIcon field="GiaTri2"></p-sortIcon>
+                                </th>
+                                <th pSortableColumn="GhiChu">Ghi chú
+                                    <p-sortIcon field="GhiChu"></p-sortIcon>
+                                </th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-main>
+                            <tr class="p-selectable-row">
+                                <td>
+                                    {{main.NoiDung}}
+                                </td>
+                                <td>
+                                    {{main.GiaTri}}
+                                </td>
+                                <td>
+                                    {{main.GiaTri2}}
+                                </td>
+                                <td>
+                                    {{main.GhiChu}}
+                                </td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="emptymessage">
+                            <tr>
+                                <td colspan="4" style="text-align: center;">Không có dữ liệu</td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                    <div style="margin-top: 2rem" *ngIf="lstMain1 && lstMain1.length > 0">
+                        <h5 style="text-align: center;">Biểu đồ phụ tải Tổng công ty Điện lực miền Nam</h5>
+                        <p-chart type="line" [data]="basicData" [options]="basicOptions" #chart></p-chart>
+                    </div>
+                </div>
+                <!-- <div class="p-col-12" *ngIf="lstMain1 && lstMain1.length > 0">
+                    <h5 style="text-align: center;">Biểu đồ phụ tải Tổng công ty Điện lực miền Nam</h5>
+                    <p-chart type="line" [data]="basicData" [options]="basicOptions"></p-chart>
+                </div> -->
+            </div>
+        </div>
+    </div>
+</div>
+<p-dialog [(visible)]="docDialog" [style]="{width: '50rem'}" header="Gửi mail báo cáo" [modal]="true"
+    styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <div class="p-field">
+            <label for="CATEGORY_IDEdit">Chủ đề (*)</label>
+            <input type="text" id="CATEGORY_IDEdit" pInputText [(ngModel)]="Subject" required autofocus />
+            <small class="p-error" *ngIf="submitted && !Subject">Vui lòng nhập chủ đề</small>
+        </div>
+        <div class="p-field">
+            <label for="TITLE">Nội dung báo cáo(*)</label>
+            <textarea id="TITLE" pInputTextarea [(ngModel)]="HtmlMsg" required rows="3" cols="20"></textarea>
+            <small class="p-error" *ngIf="submitted && !HtmlMsg">Vui lòng nhập nội dung</small>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Hủy" icon="pi pi-times" class="p-button-secondary"
+            (click)="hideDialog()"></button>
+        <button pButton pRipple label="Gửi" icon="pi pi-check" class="p-button-info" (click)="sendMail()"></button>
+    </ng-template>
+</p-dialog>

@@ -1,0 +1,112 @@
+<p-toast></p-toast>
+<div class="card">
+    <div class="p-grid">
+        <div class="p-md-4 p-sm-4 p-d-flex p-jc-start">
+            <span class="p-input-icon-left">
+                <!-- <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                            placeholder="Lọc..." /> -->
+                <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help p-mt-1"
+                    (click)="exportExcel()"></button>
+            </span>
+        </div>
+        <!-- <div class="p-md-4 p-sm-4 p-d-flex p-jc-end">
+                    <p-dropdown inputId="ORG_CODE" [options]="lstORG" [(ngModel)]="selectedORG_CODE"
+                        optionLabel="ORG_NAME" optionValue="ORG_CODE" filter="true" (onChange)="search()">
+                    </p-dropdown>
+                </div> -->
+        <div class="p-md-8 p-sm-8 p-d-flex p-jc-end">
+            <div class="p-mb-2 p-mr-2">
+                <p-calendar dateFormat="dd/mm/yy" dataType="string" [showIcon]="true" placeholder="Từ Ngày"
+                    [selectOtherMonths]="true" [(ngModel)]="FROM_DATE" firstDayOfWeek=1 inputStyleClass="calendarInput">
+                </p-calendar>
+            </div>
+            <div class="p-mb-2 p-mr-2">
+                <p-calendar dateFormat="dd/mm/yy" dataType="string" [showIcon]="true" placeholder="Đến Ngày"
+                    [selectOtherMonths]="true" [(ngModel)]="TO_DATE" firstDayOfWeek=1 inputStyleClass="calendarInput">
+                </p-calendar>
+            </div>
+            <div class="p-mb-2 p-mr-2">
+                <button pButton pRipple (click)="search()" icon="pi pi-search" class="p-button-success p-mt-1"></button>
+            </div>
+        </div>
+    </div>
+
+    <p-table id="Test1" #dt [value]="listMain" dataKey="STT" [rowHover]="true" [rows]="50" [paginator]="true"
+        [filterDelay]="0" [loading]="loading"
+        [globalFilterFields]="['NGAY_TAO','NGUOI_TAO','TEN_FILE','LOAI','SO_DONG_DA_THEM','SO_DONG_LOI']"
+        currentPageReportTemplate="Hiển thị từ {first} đến {last} trên {totalRecords}" [responsive]="true"
+        [showCurrentPageReport]="true" [scrollable]="true" [style]="{'width':'100%'}" scrollHeight="100%">
+        <ng-template pTemplate="headergrouped">
+            <tr class="trHeader">
+                <th colspan="2" style="width: 300px;">Ngày Giờ</th>
+                <th rowspan="2" style="width: 300px;">TBA/NMĐ/TTĐK/REC/LBS: B3 (ASDU)/Tuyến SDH/IP</th>
+                <th rowspan="2" style="width: 150px;">ĐƠN VỊ QUẢN LÝ</th>
+                <th rowspan="2" style="width: 300px;">SỰ KIỆN/ DỊCH VỤ ẢNH HƯỞNG</th>
+                <th rowspan="2" style="width: 300px;">QUÁ TRÌNH XỬ LÝ</th>
+                <th rowspan="2" style="width: 300px;">NGUYÊN NHÂN</th>
+                <th rowspan="2" style="width: 150px;">PHÂN LOẠI SỰ KIỆN</th>
+                <th colspan="2" style="width: 300px;">TIÊP NHẬN THÔNG TIN</th>
+                <th rowspan="2" style="width: 150px;">ĐƠN VỊ XỬ LÝ</th>
+                <th rowspan="2" style="width: 300px;">THỜI GIAN XỬ LÝ</th>
+                <th rowspan="2" style="width: 300px;">GHI CHÚ/ĐÁNH GIÁ</th>
+            </tr>
+            <tr class="trHeader">
+                <th style="width: 150px;">Bắt đầu</th>
+                <th style="width: 150px;">Kết thúc</th>
+                <th style="width: 150px;">Đơn vị khác</th>
+                <th style="width: 150px;">TTĐH SCADA</th>
+            </tr>
+            <tr>
+                <th colspan="13">1. Sự kiện trong ca trực:</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-main>
+            <tr style="flex: 1;display: flex;">
+                <!-- <td class="bodySTT" style="flex: 1;align-items: center;justify-content: center;">{{main.ID}}</td> -->
+
+                <td style="flex:0.905;align-items: center;justify-content: flex-start;">
+                    {{main.START_TIME | date: 'dd/MM/yyyy hh:mm:ss a'}}</td>
+                <td style="flex:0.905;align-items: center;justify-content: flex-start;">
+                    {{main.END_TIME==='0001-01-01T00:00:00'?null:main.END_TIME | date: 'dd/MM/yyyy hh:mm:ss a'}}</td>
+                <td style="flex: 2.03942896;align-items: center;justify-content: flex-start;">
+                    {{main.TEN_TB}}</td>
+                <td style="flex:0.905;align-items: center;justify-content: flex-start;">
+                    {{getNameDonViQuanLy(main.DONVI_QUANLY)}}</td>
+                <td style="flex: 2.03942896;align-items: center;justify-content: flex-start;">
+                    {{main.SU_KIEN}}</td>
+                <td style="flex: 2.03942896;align-items: center;justify-content: flex-start;">
+                    {{main.QUA_TRINH}}</td>
+                <td style="flex: 2.03942896;align-items: center;justify-content: flex-start;">
+                    {{main.NGUYEN_NHAN}}</td>
+                <td style="flex:0.905;align-items: center;justify-content: center;">
+                    {{main.LOAI_SUKIEN}}</td>
+                <td style="flex:0.905;align-items: center;justify-content: flex-start;">
+                    {{main.TIEPNHAN_NGOAI}}</td>
+                <td style="flex:0.905;align-items: center;justify-content: flex-start;">
+                    {{main.TIEPNHAN_SCADA}}</td>
+                <td style="flex:0.905;align-items: center;justify-content: flex-start;">
+                    {{getNameDonViQuanLy(main.DONVI_XULY)}}</td>
+                <td style="flex: 2.03942896;align-items: center;justify-content: flex-start;">
+                    {{main.THOI_GIAN}}</td>
+                <td style="flex: 2.03942896;align-items: center;justify-content: flex-start;">
+                    {{main.GHI_CHU}}</td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="18" style="align-items: center;justify-content: center;">Không có dữ liệu</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+
+<p-dialog header="Đang xử lý..." [(visible)]="loadingModal" [closeOnEscape]="false" closable="false" modal="true"
+    closeIcon="null">
+    <div class="p-md-12" style="justify-content: center;align-items: center;">
+        <p-progressSpinner [style]="{width: '80px', height: '80px'}" styleClass="custom-spinner" strokeWidth="8"
+            animationDuration=".5s"></p-progressSpinner>
+    </div>
+
+    <!-- <p-progressBar mode="indeterminate" [style]="{'height': '6px'}"></p-progressBar> -->
+</p-dialog>

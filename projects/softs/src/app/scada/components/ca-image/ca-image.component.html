@@ -1,0 +1,47 @@
+<p-toast key="tst"></p-toast>
+<p-confirmDialog header="Xác nhận" icon="pi pi-exclamation-triangle" acceptButtonStyleClass="ui-button-info"
+    acceptLabel="Đồng ý" rejectLabel="Hủy bỏ" rejectButtonStyleClass="p-button-secondary">
+</p-confirmDialog>
+<p-toolbar>
+    <div class="p-toolbar-group-left">
+        <button pButton pRipple label="Lưu" icon="pi pi-save" class="p-button-help p-mr-2"
+            (click)="uploadCAImage()"></button>
+    </div>
+    <div class="p-toolbar-group-right">
+    </div>
+</p-toolbar>
+<p-card>
+    <div class="p-fluid">
+        <div class="p-field p-grid">
+            <label class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Hình chữ ký đã cấu hình</label>
+            <div class="p-col-12 p-md-10">
+                <img [src]="srcImage" style="max-width: 200px">
+            </div>
+        </div>
+        <div class="p-field p-grid">
+            <div class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">
+                <div>Hình chữ ký cần cập nhật</div>
+                <div style="color: red;">(định dạng: png, kích thước (px): 200x150)</div>
+            </div>
+            <div class="p-col-12 p-md-10">
+                <p-fileUpload #fileInput name="FILE_NAME[]" maxFileSize="10000000" chooseLabel="Chọn hình ảnh chữ ký"
+                    uploadLabel="Tải lên" cancelLabel="Hủy" accept=".png" [showUploadButton]="false" fileLimit=1>
+                </p-fileUpload>
+            </div>
+        </div>
+        <div class="p-field p-grid">
+            <label class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Canh lề trái</label>
+            <div class="p-col-12 p-md-10">
+                <p-inputNumber [(ngModel)]="MARGIN_LEFT" mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="2">
+                </p-inputNumber>
+            </div>
+        </div>
+        <div class="p-field p-grid">
+            <label class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Canh lề dưới</label>
+            <div class="p-col-12 p-md-10">
+                <p-inputNumber [(ngModel)]="MARGIN_BOTTOM" mode="decimal" [minFractionDigits]="2"
+                    [maxFractionDigits]="2"></p-inputNumber>
+            </div>
+        </div>
+    </div>
+</p-card>

@@ -1,0 +1,109 @@
+<p-toast key="tst"></p-toast>
+<p-confirmDialog header="Xác nhận" icon="pi pi-exclamation-triangle" acceptButtonStyleClass="ui-button-info"
+    acceptLabel="Đồng ý" rejectLabel="Hủy bỏ">
+</p-confirmDialog>
+<div class="p-grid">
+    <div class="p-col-12">
+        <div class="card">
+            <div class="p-grid">
+                <div class="p-md-4 p-sm-4 p-d-flex p-jc-start">
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                            placeholder="Lọc..." />
+                    </span>
+                </div>
+                <!-- <div class="p-md-4 p-sm-4 p-d-flex p-jc-end">
+                    <p-dropdown inputId="ORG_CODE" [options]="lstORG" [(ngModel)]="selectedORG_CODE"
+                        optionLabel="ORG_NAME" optionValue="ORG_CODE" filter="true" (onChange)="search()">
+                    </p-dropdown>
+                </div> -->
+
+                <div class="p-md-8 p-sm-8 p-d-flex p-jc-end">
+                    <div class="p-mb-2 p-mr-2">
+                        <p-calendar dateFormat="dd/mm/yy" dataType="string" [showIcon]="true"
+                            placeholder="Ngày bắt đầu" [selectOtherMonths]="true" [(ngModel)]="FROM_DATE"
+                            firstDayOfWeek=1 inputStyleClass="calendarInput">
+                        </p-calendar>
+                    </div>
+                    <div class="p-mb-2 p-mr-2">
+                        <p-calendar dateFormat="dd/mm/yy" dataType="string" [showIcon]="true"
+                            placeholder="Ngày kết thúc" [selectOtherMonths]="true" [(ngModel)]="TO_DATE"
+                            firstDayOfWeek=1 inputStyleClass="calendarInput">
+                        </p-calendar>
+                    </div>
+                    <div class="p-mb-2 p-mr-2">
+                        <button pButton pRipple (click)="search()" icon="pi pi-search"
+                            class="p-button-success p-mt-1"></button>
+
+                    </div>
+                    <div class="p-mb-2 p-mr-2">
+                        <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help p-mt-1"
+                            (click)="exportExcel()"></button>
+                    </div>
+                </div>
+            </div>
+            <p-table #dt [value]="lstMain" dataKey="STT" [rowHover]="true" [rows]="50" [paginator]="true"
+            [loading]="loading"    
+            [filterDelay]="0" [globalFilterFields]="['MA_DONVI','ORGDESC','DZ110','DZ22']"
+                currentPageReportTemplate="Hiển thị từ {first} đến {last} trên {totalRecords}"
+                [showCurrentPageReport]="true" 
+                [style]="{'width':'100%'}">
+                <!-- <ng-template pTemplate="caption">
+                    <div class="p-grid">
+                        <div class="p-md-4 p-sm-4 p-d-flex p-jc-start">
+                            <span class="p-input-icon-left">
+                                <i class="pi pi-search"></i>
+                                <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                                    placeholder="Lọc..." />
+                            </span>
+                        </div>
+                         <div class="p-md-4 p-sm-4 p-d-flex p-jc-end">
+                            <p-dropdown inputId="ORG_CODE" [options]="lstORG" [(ngModel)]="selectedORG_CODE"
+                                optionLabel="ORG_NAME" optionValue="ORG_CODE" filter="true" (onChange)="search()">
+                            </p-dropdown>
+                        </div>
+                        <div class="p-md-8 p-sm-8 p-d-flex p-jc-end">                            
+                        </div>
+                    </div>
+                </ng-template> -->
+                
+                <ng-template pTemplate="header">
+                    <tr class="trHeader">
+                        <th  style="flex: 1;" rowspan="2">STT
+                            <!-- <p-sortIcon field="STT"></p-sortIcon> -->
+                        </th>
+                        <!-- <th pSortableColumn="MA_DONVI" class="p-col-1" rowspan="2">Đơn Vị
+                        </th> -->
+                        <th pSortableColumn="ORGDESC" style="flex: 1;"rowspan="2">Tỉnh
+                            <!-- <p-sortIcon field="TEN_TRAM"></p-sortIcon> -->
+                        </th>
+                        <th style="flex: 1;" colspan="2">Công tác
+                        </th>
+                        <th style="flex: 1;" rowspan="2">Ghi Chú
+                        </th>
+                    </tr>
+                    <tr class="trHeader">
+                        <th pSortableColumn="DZ110" class="p-col-1" >ĐD 110kV</th>
+                        <th pSortableColumn="DZ22" class="p-col-1" >ĐD 22kV</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-main>
+                    <tr class="p-selectable-row">
+                        <td class="bodySTT">{{main.STT}}</td>
+                        <!-- <td class="bodySTT">{{main.MA_DONVI}}</td> -->
+                        <td style=" text-align: left">{{main.ORGDESC}}</td>
+                        <td style=" text-align: right">{{main.DZ110}}</td>
+                        <td style=" text-align: right">{{main.DZ22}}</td>
+                        <td class="bodySTT"></td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="6" style="text-align: center;">Không có dữ liệu</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+</div>

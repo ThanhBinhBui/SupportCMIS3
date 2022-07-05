@@ -1,0 +1,99 @@
+<p-toast></p-toast>
+
+<div class="card">
+  <p-toolbar styleClass="p-mb-4">
+    <ng-template pTemplate="left">
+      <!-- <input id="file-upload" type="file" name="fileUpload" accept=".json" (change)="fileUpload($event)" /> -->
+      <p-fileUpload #fileInput mode="basic" chooseLabel="Chọn file" cancelLabel="Hủy" uploadLabel="Tải lên"
+        name="FILE_NAME[]" accept=".json" maxFileSize="1000000" (onBeforeUpload)="fileUpload()">
+      </p-fileUpload>
+    </ng-template>
+    <ng-template pTemplate="right">
+      <div class="p-formgroup-inline">
+        <div class="p-field">
+          <p-calendar dateFormat="dd/mm/yy" dataType="string" [showIcon]="true" placeholder="Từ Ngày"
+            [selectOtherMonths]="true" [(ngModel)]="FROM_DATE" firstDayOfWeek=1 inputStyleClass="calendarInput">
+          </p-calendar>
+        </div>
+        <div class="p-field">
+          <p-calendar dateFormat="dd/mm/yy" dataType="string" [showIcon]="true" placeholder="Đến Ngày"
+            [selectOtherMonths]="true" [(ngModel)]="TO_DATE" firstDayOfWeek=1 inputStyleClass="calendarInput">
+          </p-calendar>
+        </div>
+        <button pButton pRipple (click)="search()" icon="pi pi-search" class="p-button-success p-mt-1"></button>
+      </div>
+    </ng-template>
+  </p-toolbar>
+
+  <p-table #dt [value]="listMain" dataKey="STT" [rowHover]="true" [rows]="50" [paginator]="true" [filterDelay]="0"
+    [loading]="loading"
+    [globalFilterFields]="['NGAY_TAO','NGUOI_TAO','TEN_FILE','LOAI','SO_DONG_DA_THEM','SO_DONG_LOI']"
+    currentPageReportTemplate="Hiển thị từ {first} đến {last} trên {totalRecords}" [responsive]="true"
+    [showCurrentPageReport]="true">
+    <!-- <ng-template pTemplate="caption">
+      <div class="p-grid">
+        
+        <div class="p-md-4 p-sm-4 p-d-flex p-jc-start">
+          <input id="file-upload" type="file" name="fileUpload" accept=".json" (change)="fileUpload($event)" />
+        </div>
+
+        <div class="p-md-8 p-sm-8 p-d-flex p-jc-end">
+          <div class="p-mb-2 p-mr-2">
+            <p-calendar dateFormat="dd/mm/yy" dataType="string" [showIcon]="true" placeholder="Từ Ngày"
+              [selectOtherMonths]="true" [(ngModel)]="FROM_DATE" firstDayOfWeek=1 
+              inputStyleClass="calendarInput">
+            </p-calendar>
+          </div>
+          <div class="p-mb-2 p-mr-2">
+            <p-calendar dateFormat="dd/mm/yy" dataType="string" [showIcon]="true" placeholder="Đến Ngày"
+              [selectOtherMonths]="true" [(ngModel)]="TO_DATE" firstDayOfWeek=1 
+              inputStyleClass="calendarInput">
+            </p-calendar>
+          </div>
+          <div class="p-mb-2 p-mr-2">
+            <button pButton pRipple (click)="search()" icon="pi pi-search" class="p-button-success p-mt-1"></button>
+          </div>
+        </div>
+
+      </div>
+    </ng-template> -->
+    <ng-template pTemplate="header">
+      <tr class="trHeader">
+        <th>Ngày tạo</th>
+        <th>Người tạo</th>
+        <th>Loại</th>
+        <th>Số dòng thêm thành công</th>
+        <th>Số dòng thêm lỗi</th>
+        <th>Tên file</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-main>
+      <tr>
+        <td style=" text-align: left">{{main.NGAY_TAO | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+        <td style=" text-align: left">{{main.NGUOI_TAO}}</td>
+        <td style=" text-align: left">
+          <p-badge [style]="{cursor: 'pointer'}" value="{{main.LOAI==='TRUC_TIEP'?'Trực Tiếp ':'Hệ Thống'}}"
+            size="large" [severity]="main.LOAI==='TRUC_TIEP'?'success':'info'">
+          </p-badge>
+        </td>
+        <td style=" text-align: right">{{main.SO_DONG_DA_THEM}}</td>
+        <td style=" text-align: right">{{main.SO_DONG_LOI}}</td>
+        <td style=" text-align: left">{{main.TEN_FILE}}</td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="6" style="text-align: center">Không có dữ liệu</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+<p-dialog header="Đang xử lý..." [(visible)]="loadingModal" [closeOnEscape]="false" closable="false" modal="true"
+  closeIcon="null">
+  <div class="p-md-12" style="justify-content: center;align-items: center;">
+    <p-progressSpinner [style]="{width: '80px', height: '80px'}" styleClass="custom-spinner" strokeWidth="8"
+      animationDuration=".5s"></p-progressSpinner>
+  </div>
+
+  <!-- <p-progressBar mode="indeterminate" [style]="{'height': '6px'}"></p-progressBar> -->
+</p-dialog>

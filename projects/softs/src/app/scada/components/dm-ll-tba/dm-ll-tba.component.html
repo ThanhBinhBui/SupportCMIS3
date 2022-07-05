@@ -1,0 +1,807 @@
+<div class="p-grid">
+    <p-toast></p-toast>
+    <div class="p-col-12">
+        <div class="card" *ngIf="dialog">
+            <p-fieldset legend="Thông tin trạm" [toggleable]="true">
+                <div class="p-fluid p-grid p-formgrid">
+                    <div class="p-field p-col-4 p-md-4">
+                        <label for="name">Trạm(*):</label>
+                        <!-- <p-autoComplete [(ngModel)]="selectedTBASPC" [suggestions]="filterTBASPCs"
+                            (completeMethod)="filterTramSPC($event)" field="TEN_TRAM" [dropdown]="true">
+                        </p-autoComplete> -->
+                        <p-dropdown [options]="tbaSPCs" [(ngModel)]="selectedTBASPC" placeholder="Chọn trạm"
+                            optionLabel="TEN_TRAM" optionValue="MA_TRAM" [showClear]="true"></p-dropdown>
+                    </div>
+
+                    <div class="p-field p-col-4 p-md-4">
+                        <label for="name"> Xóa Tín Hiệu Dư:</label>
+                        <div class="p-field-radiobutton">
+                            <div class="p-md-6">
+                                <p-radioButton value="True" [(ngModel)]="llTBA.XOATIN_HIEUDU"></p-radioButton>
+                                <label> Xóa tín hiệu dư</label>
+                            </div>
+                            <div class="p-md-6">
+                                <p-radioButton value="False" [(ngModel)]="llTBA.XOATIN_HIEUDU"></p-radioButton>
+                                <label> Không xóa tín hiêu dư</label>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <div class="p-field p-col-4 p-md-4">
+                        <label for="name"> Công suất T1:</label>
+                        <input type="text" pInputText id="CONGSUAT_T1" [(ngModel)]="llTBA.CONGSUAT_T1" autofocus />
+                    </div>
+                    <div class="p-field p-col-4 p-md-4">
+                        <label for="name"> Công suất T2:</label>
+                        <input type="text" pInputText id="CONGSUAT_T2" [(ngModel)]="llTBA.CONGSUAT_T2" autofocus />
+                    </div>
+                    <div class="p-field p-col-4 p-md-4">
+                        <label for="name">ASDU:</label>
+                        <input type="text" pInputText id="ASDU" [(ngModel)]="llTBA.ASDU" autofocus />
+                    </div>
+                    <div class="p-field p-col-4 p-md-4">
+                        <label for="name"> ID Backup:</label>
+                        <input type="text" pInputText id="ID_BACKUP" [(ngModel)]="llTBA.ID_BACKUP" autofocus />
+                    </div>
+                    <div class="p-field p-col-4 p-md-4">
+                        <label for="name"> CMU:</label>
+                        <input type="text" pInputText id="CMU" [(ngModel)]="llTBA.CMU" autofocus />
+                    </div>
+                    <div class="p-field p-col-4 p-md-4">
+                        <label for="name"> RTU Main:</label>
+                        <input type="text" pInputText id="RTU_MAIN" [(ngModel)]="llTBA.RTU_MAIN" autofocus />
+                    </div>
+                    <div class="p-field p-col-4 p-md-4">
+                        <label for="name"> RTU Bay:</label>
+                        <input type="text" pInputText id="RTU_BAY" [(ngModel)]="llTBA.RTU_BAY" autofocus />
+                    </div>
+                    <div class="p-field p-col-4 p-md-4">
+                        <label for="name"> Update RTU:</label>
+                        <input type="text" pInputText id="UPDATE_RTU_CONFIG" [(ngModel)]="llTBA.UPDATE_RTU_CONFIG"
+                            autofocus />
+                    </div>
+                    <div class="p-field p-col-4 p-md-4">
+                        <label for="name">HMI:</label>
+                        <input type="text" pInputText id="HMI" [(ngModel)]="llTBA.HMI" autofocus />
+                    </div>
+                    <div class="p-field p-col-4 p-md-4">
+                        <label for="name">Dự Án:</label>
+                        <input type="text" pInputText id="DU_AN" [(ngModel)]="llTBA.DU_AN" autofocus />
+                    </div>
+                    <div class="p-field p-col-4 p-md-4">
+                        <label for="name"> Dự Án SPC:</label>
+                        <input type="text" pInputText id="DUAN_SPC" [(ngModel)]="llTBA.DUAN_SPC" autofocus />
+                    </div>
+                    <div class="p-field p-col-4 p-md-4">
+                        <label for="name"> Vận Hành Điều Khiển Xa SP7/HMI:</label>
+                        <div class="p-field-radiobutton">
+                            <div class="p-md-6">
+                                <p-radioButton value="SP7" [(ngModel)]="llTBA.VHDKX_SP7HMI"></p-radioButton>
+                                <label> SP7</label>
+                            </div>
+                            <div class="p-md-6">
+                                <p-radioButton value="HMI" [(ngModel)]="llTBA.VHDKX_SP7HMI"></p-radioButton>
+                                <label> HMI</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-field p-col-4 p-md-4">
+                        <label for="name"> DKX:</label>
+                        <input type="text" pInputText id="DKX" [(ngModel)]="llTBA.DKX" autofocus />
+                    </div>
+                    <div class="p-field p-col-4 p-md-4">
+                        <label for="name">IP Phone:</label>
+                        <input type="text" pInputText id="IP_PHONE" [(ngModel)]="llTBA.IP_PHONE" autofocus />
+                    </div>
+                    <div class="p-field p-col-4 p-md-4">
+                        <label for="name">VNPT Phone:</label>
+                        <input type="text" pInputText id="VNPT_PHONE" [(ngModel)]="llTBA.VNPT_PHONE" autofocus />
+                    </div>
+                    <div class="p-field p-col-4 p-md-4">
+                        <label for="name"> Ghi Chú:</label>
+                        <input type="text" pInputText id="GHI_CHU" [(ngModel)]="llTBA.GHI_CHU" autofocus />
+                    </div>
+                </div>
+            </p-fieldset>
+            <p-fieldset legend="Thông tin kết nối A2" class="p-field p-col-12 p-md-4" [toggleable]="true">
+                <div class="p-fluid p-grid p-formgrid">
+                    <div class="p-field p-col-12 p-md-8">
+                        <label for="name"> Kết nối A2 giao thức:</label>
+                        <div class="p-field-radiobutton">
+                            <div class="p-md-2">
+                                <p-radioButton value="IEC-101" [(ngModel)]="llTBA.KETNOIA2_GIAOTHUC"></p-radioButton>
+                                <label> IEC-101</label>
+                            </div>
+                            <div class="p-md-2">
+                                <p-radioButton value="IEC-104" [(ngModel)]="llTBA.KETNOIA2_GIAOTHUC"></p-radioButton>
+                                <label> IEC-104</label>
+                            </div>
+                            <div class="p-md-2">
+                                <p-radioButton value="ICCP" [(ngModel)]="llTBA.KETNOIA2_GIAOTHUC"></p-radioButton>
+                                <label> ICCP</label>
+                            </div>
+                            <div class="p-md-2">
+                                <p-radioButton value="DNP3" [(ngModel)]="llTBA.KETNOIA2_GIAOTHUC"></p-radioButton>
+                                <label> DNP3</label>
+                            </div>
+                            <div class="p-md-2">
+                                <p-radioButton value="KHAC" [(ngModel)]="llTBA.KETNOIA2_GIAOTHUC"></p-radioButton>
+                                <label> Khác</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name"> Văn bản xác nhận:</label>
+                        <input type="text" pInputText id="KETNOIA2_VANBANXACNHAN"
+                            [(ngModel)]="llTBA.KETNOIA2_VANBANXACNHAN" autofocus />
+                    </div>
+                </div>
+            </p-fieldset>
+            <p-fieldset legend="Thông tin trạm vận hành không người trực" class="p-field p-col-12 p-md-4"
+                [toggleable]="true">
+                <div class="p-fluid p-grid p-formgrid">
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name">Vận hành:</label>
+                        <input type="text" pInputText id="TBAVHKNT_DVH_CVH" [(ngModel)]="llTBA.TBAVHKNT_DVH_CVH"
+                            autofocus />
+                    </div>
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name"> Văn bản xác nhận:</label>
+                        <input type="text" pInputText id="TBAVHKNT_VANBANXACNHAN"
+                            [(ngModel)]="llTBA.TBAVHKNT_VANBANXACNHAN" autofocus />
+                    </div>
+                </div>
+            </p-fieldset>
+            <p-fieldset legend="Thông tin đưa vào điều kiển xa" class="p-field p-col-12 p-md-4" [toggleable]="true">
+                <div class="p-fluid p-grid p-formgrid">
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name">Ngày vận hành:</label>
+                        <p-calendar [(ngModel)]="llTBA.DVDKX_NGAYVH_DKX" dateFormat="dd/mm/yy"></p-calendar>
+                    </div>
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name">Văn bản xác nhận:</label>
+                        <input type="text" pInputText id="DVDKX_VANBANXACNHAN" [(ngModel)]="llTBA.DVDKX_VANBANXACNHAN"
+                            autofocus />
+                    </div>
+                </div>
+            </p-fieldset>
+            <p-fieldset legend="Thông tin End-to-End về EVN SPC" class="p-field p-col-12 p-md-4" [toggleable]="true">
+                <div class="p-fluid p-grid p-formgrid">
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name"> Ngày nghiệm thu:</label>
+                        <p-calendar [(ngModel)]="llTBA.ETESPC_NGAYNT" dateFormat="dd/mm/yy"></p-calendar>
+                    </div>
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name"> Năm nghiệm thu:</label>
+                        <input type="text" pInputText id="llTBA.ETESPC_NAMNT" [(ngModel)]="llTBA.ETESPC_NAMNT"
+                            autofocus />
+                    </div>
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name"> Văn bản xác nhận:</label>
+                        <input type="text" pInputText id="ETESPC_VANBANXACNHAN" [(ngModel)]="llTBA.ETESPC_VANBANXACNHAN"
+                            autofocus />
+                    </div>
+                </div>
+            </p-fieldset>
+            <p-fieldset legend="Thông tin tín hiệu giám sát nguồn DC" class="p-field p-col-12 p-md-4"
+                [toggleable]="true">
+                <div class="p-fluid p-grid p-formgrid">
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name"> Ngày nghiệm thu:</label>
+                        <p-calendar [(ngModel)]="llTBA.THGSNDC_NGAYNT" dateFormat="dd/mm/yy"></p-calendar>
+                    </div>
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name"> Văn bản xác nhận:</label>
+                        <input type="text" pInputText id="THGSNDC_VANBANXACNHAN"
+                            [(ngModel)]="llTBA.THGSNDC_VANBANXACNHAN" autofocus />
+                    </div>
+                </div>
+            </p-fieldset>
+            <p-fieldset legend="Thông tin lắp thiết bị F90" class="p-field p-col-12 p-md-4" [toggleable]="true">
+                <div class="p-fluid p-grid p-formgrid">
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name"> MBA T1:</label>
+                        <p-calendar [(ngModel)]="llTBA.LTBF90_MBAT1" dateFormat="dd/mm/yy"></p-calendar>
+                    </div>
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name"> Văn bản xác nhận:</label>
+                        <input type="text" pInputText id="LTBF90_VANBANXACNHANT1"
+                            [(ngModel)]="llTBA.LTBF90_VANBANXACNHANT1" autofocus />
+                    </div>
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name"> MBA T2:</label>
+                        <p-calendar [(ngModel)]="llTBA.LTBF90_MBAT2" dateFormat="dd/mm/yy"></p-calendar>
+                    </div>
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name"> Văn bản xác nhận:</label>
+                        <input type="text" pInputText id="LTBF90_VANBANXACNHANT2"
+                            [(ngModel)]="llTBA.LTBF90_VANBANXACNHANT2" autofocus />
+                    </div>
+                </div>
+            </p-fieldset>
+            <p-fieldset legend="Thông tin lắp relay 87B" class="p-field p-col-12 p-md-4" [toggleable]="true">
+                <div class="p-fluid p-grid p-formgrid">
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name"> Ngày nghiệm thu:</label>
+                        <p-calendar [(ngModel)]="llTBA.RELAY87B_NGAYNT" dateFormat="dd/mm/yy"></p-calendar>
+                    </div>
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name"> Văn bản xác nhận:</label>
+                        <input type="text" pInputText id="RELAY87B_XACNHAN" [(ngModel)]="llTBA.RELAY87B_XACNHAN"
+                            autofocus />
+                    </div>
+                </div>
+            </p-fieldset>
+            <p-fieldset legend="Thông tin lắp relay 87L" class="p-field p-col-12 p-md-4" [toggleable]="true">
+                <div class="p-fluid p-grid p-formgrid">
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name"> Ngăn Lộ:</label>
+                        <input type="text" pInputText id="RELAY87L_NGANLO" [(ngModel)]="llTBA.RELAY87L_NGANLO"
+                            autofocus />
+                    </div>
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name"> Ngày nghiệm thu:</label>
+                        <p-calendar [(ngModel)]="llTBA.RELAY87L_NGAYNT" dateFormat="dd/mm/yy"></p-calendar>
+                    </div>
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name"> Văn bản xác nhận:</label>
+                        <input type="text" pInputText id="RELAY87L_VANBANXACNHAN"
+                            [(ngModel)]="llTBA.RELAY87L_VANBANXACNHAN" autofocus />
+                    </div>
+                </div>
+            </p-fieldset>
+            <p-fieldset legend="Thông tin Deadbanb (8458/EVN SPC-KT ngày 30/9/2020)" class="p-field p-col-12 p-md-4"
+                [toggleable]="true">
+                <div class="p-fluid p-grid p-formgrid">
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name">Ngày thực hiện:</label>
+                        <p-calendar [(ngModel)]="llTBA.DEADDBANB_NGAYTHUCHIEN" dateFormat="dd/mm/yy"></p-calendar>
+                    </div>
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name"> Văn bản xác nhận:</label>
+                        <input type="text" pInputText id="DEADDBANB_VANBANXACNHAN"
+                            [(ngModel)]="llTBA.DEADDBANB_VANBANXACNHAN" autofocus />
+                    </div>
+                </div>
+            </p-fieldset>
+            <p-fieldset legend="Thông tin xóa tín hiệu thừa" class="p-field p-col-12 p-md-4" [toggleable]="true">
+                <div class="p-fluid p-grid p-formgrid">
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name"> Ngày Thực Hiện:</label>
+                        <p-calendar [(ngModel)]="llTBA.XTHDT_NGAYTHUCHIEN" dateFormat="dd/mm/yy"></p-calendar>
+                    </div>
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name"> Nhân viên thực hiện:</label>
+                        <input type="text" pInputText id="XTHDT_NHANVIENTHUCHIEN"
+                            [(ngModel)]="llTBA.XTHDT_NHANVIENTHUCHIEN" autofocus />
+                    </div>
+                </div>
+            </p-fieldset>
+            <p-fieldset legend="Thông tin ngăn phát tuyến 22kV & 35kV" class="p-field p-col-12 p-md-4"
+                [toggleable]="true">
+                <div class="p-fluid p-grid p-formgrid">
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name">Tổng Số:</label>
+                        <input type="text" pInputText id="NPT22KV35KV_TONGSOPHATTUYEN"
+                            [(ngModel)]="llTBA.NPT22KV35KV_TONGSOPHATTUYEN" autofocus />
+                    </div>
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name">Số phát tuyến điều khiển xa từ TTĐK:</label>
+                        <input type="text" pInputText id="NPT22KV35KV_SPTDKX_TTDK"
+                            [(ngModel)]="llTBA.NPT22KV35KV_SPTDKX_TTDK" autofocus />
+                    </div>
+                </div>
+            </p-fieldset>
+            <p-fieldset legend="Thông tin số ngăn tụ bù 22kV" class="p-field p-col-12 p-md-4" [toggleable]="true">
+                <div class="p-fluid p-grid p-formgrid">
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name"> Tổng Số:</label>
+                        <input type="text" pInputText id="SNTB22KV_TONGSO" [(ngModel)]="llTBA.SNTB22KV_TONGSO"
+                            autofocus />
+                    </div>
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name">Số ngăn điều khiển xa từ TTĐK:</label>
+                        <input type="text" pInputText id="SNTB22KV_SNDKX_TTDK" [(ngModel)]="llTBA.SNTB22KV_SNDKX_TTDK"
+                            autofocus />
+                    </div>
+                </div>
+            </p-fieldset>
+            <p-fieldset legend="Thông tin tủ" class="p-field p-col-12 p-md-4" [toggleable]="true">
+                <div class="p-fluid p-grid p-formgrid">
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name"> Tổng Số Ngăn Lộ:</label>
+                        <input type="text" pInputText id="TONGSO_NGANLO" [(ngModel)]="llTBA.TONGSO_NGANLO" autofocus />
+                    </div>
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name"> Tù Hợp Bộ:</label>
+                        <input type="text" pInputText id="TUHOPBO" [(ngModel)]="llTBA.TUHOPBO" autofocus />
+                    </div>
+                    <div class="p-field p-col-12 p-md-4">
+                        <label for="name"> Ngoài Trời:</label>
+                        <input type="text" pInputText id="NGOAI_TROI" [(ngModel)]="llTBA.NGOAI_TROI" autofocus />
+                    </div>
+                </div>
+            </p-fieldset>
+
+            <div class="p-field p-col-12 p-md-12">
+                <button pButton pRipple label="Hủy" icon="pi pi-times" class="p-button-secondary"
+                    (click)="hideDialog()"></button>
+                <button pButton pRipple label="Lưu" icon="pi pi-check" class="p-button-info" style="margin-left: 20px;"
+                    (click)="saveItem()"></button>
+            </div>
+        </div>
+        <div class="card" *ngIf="!dialog">
+            <p-toolbar styleClass="p-mb-4">
+                <ng-template pTemplate="left">
+                    <button pButton pRipple label="Thêm" icon="pi pi-plus" class="p-button-success p-mr-2 p-mb-2"
+                        (click)="openNew()"></button>
+                    <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help p-mb-2"
+                        (click)="exportExcel()"></button>
+                    <p-fileUpload class="p-mr-2 p-mb-2" style="padding-left: 5pt;" #fileInput mode="basic"
+                        chooseLabel="Import" cancelLabel="Hủy" uploadLabel="Tải lên" name="FILE_NAME[]"
+                        accept=".xlsx,.xls" maxFileSize="1000000" (onUpload)="uploadFileDaChon()"
+                        (onBeforeUpload)="uploadFileDaChon()">
+                    </p-fileUpload>
+                </ng-template>
+                <ng-template pTemplate="right">
+
+                    <div class="p-field">
+                        <span class="p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                                placeholder="Lọc..." />
+                        </span>
+                    </div>
+
+
+                </ng-template>
+            </p-toolbar>
+
+            <p-table #dt [value]="llTBAs" [rows]="20" [paginator]="true" [loading]="loading" [globalFilterFields]="[
+    'id','TEN_TINH' ,'MA_TRAM' ,' TEN_TRAM' ,'XOATIN_HIEUDU'  , 'CONGSUAT_T1',' CONGSUAT_T2' ,'ASDU', 'ID_BACKUP' , 'CMU', 'RTU_MAIN','RTU_BAY',
+     'UPDATE_RTU_CONFIG' , 'HMI'  , 'DU_AN' ,'DUAN_SPC','VHDKX_SP7HMI' ,'DKX'  ,'IP_PHONE' ,'VNPT_PHONE'   ,'GHI_CHU' ,'KETNOIA2_GIAOTHUC',
+    'KETNOIA2_VANBANXACNHAN' ,'TBAVHKNT_DVH_CVH'    ,'TBAVHKNT_VANBANXACNHAN'  ,'DVDKX_NGAYVH_DKX' ,'DVDKX_VANBANXACNHAN'  ,'ETESPC_NGAYNT',
+    'ETESPC_NAMNT' ,'ETESPC_VANBANXACNHAN','THGSNDC_NGAYNT' ,'THGSNDC_VANBANXACNHAN' ,'LTBF90_MBAT1','LTBF90_VANBANXACNHANT1' ,'LTBF90_MBAT2',
+    'LTBF90_VANBANXACNHANT2' ,'RELAY87B_NGAYNT' ,'RELAY87B_XACNHAN'  ,'RELAY87L_NGANLO'  ,'RELAY87L_NGAYNT' ,'RELAY87L_VANBANXACNHAN' ,'DEADDBANB_NGAYTHUCHIEN'     
+    ,'DEADDBANB_VANBANXACNHAN','XTHDT_NGAYTHUCHIEN' ,'XTHDT_NHANVIENTHUCHIEN' ,'NPT22KV35KV_TONGSOPHATTUYEN' ,'NPT22KV35KV_SPTDKX_TTDK','SNTB22KV_TONGSO' ,
+    'SNTB22KV_SNDKX_TTDK' ,'TONGSO_NGANLO','TUHOPBO','NGOAI_TROI'
+    ]" [rowHover]="true" dataKey="id" styleClass="p-datatable-customers"
+                currentPageReportTemplate="Hiển thị từ {first} đến {last} trên {totalRecords}"
+                [showCurrentPageReport]="true" [scrollable]="true" [style]="{'width':'100%'}" scrollHeight="100%">
+                <!-- <ng-template pTemplate="caption">
+                    <div class="p-grid">
+                        <div class="p-md-4 p-sm-4 p-d-flex p-jc-start">
+                            
+                        </div>
+                        <div class="p-md-4 p-sm-4 p-d-flex p-jc-start"></div>
+                        <div class="p-md-4 p-sm-4 p-d-flex p-jc-end">
+                             <button pButton pRipple label="Thêm" icon="pi pi-plus" class="p-button-success p-mr-2 p-mb-2"
+                            (click)="openNew()"></button>
+                        </div>
+                    </div>
+                </ng-template> -->
+                <ng-template pTemplate="headergrouped">
+                    <tr class="trHeader">
+                        <th style="width: 150px;" rowspan="2" pFrozenColumn>Tên Tỉnh <p-sortIcon field="TEN_TINH">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" rowspan="2" pFrozenColumn>Tên Trạm <p-sortIcon field="MA_TRAM">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" rowspan="2" pSortableColumn="MA_TRAM">Mã Trạm <p-sortIcon
+                                field="MA_TRAM">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" rowspan="2" pSortableColumn="XOATIN_HIEUDU">Xóa Tín Hiệu Dư<p-sortIcon
+                                field="XOATIN_HIEUDU">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" rowspan="2" pSortableColumn="CONGSUAT_T1">Công suất T1<p-sortIcon
+                                field="CONGSUAT_T1">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" rowspan="2" pSortableColumn="CONGSUAT_T2">Công suất T2<p-sortIcon
+                                field="CONGSUAT_T2">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" rowspan="2" pSortableColumn="ASDU">ASDU <p-sortIcon field="ASDU">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" rowspan="2" pSortableColumn="ID_BACKUP">ID Backup <p-sortIcon
+                                field="ID_BACKUP"></p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" rowspan="2" pSortableColumn="CMU">CMU<p-sortIcon field="CMU">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" rowspan="2" pSortableColumn="RTU_MAIN">RTU Main <p-sortIcon
+                                field="RTU_MAIN">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" rowspan="2" pSortableColumn="RTU_BAY">RTU Bay <p-sortIcon
+                                field="RTU_BAY">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" rowspan="2" pSortableColumn="UPDATE_RTU_CONFIG">Update RTU<p-sortIcon
+                                field="UPDATE_RTU_CONFIG">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" rowspan="2" pSortableColumn="HMI">HMI <p-sortIcon field="HMI">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" rowspan="2" pSortableColumn="DU_AN">Dự Án <p-sortIcon field="DU_AN">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" rowspan="2" pSortableColumn="DUAN_SPC">Dự Án SPC<p-sortIcon
+                                field="DUAN_SPC">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" rowspan="2" pSortableColumn="VHDKX_SP7HMI">SP7/HMI<p-sortIcon
+                                field="VHDKX_SP7HMI">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" rowspan="2" pSortableColumn="DKX">DKX<p-sortIcon field="DKX">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" rowspan="2" pSortableColumn="IP_PHONE">IP Phone <p-sortIcon
+                                field="IP_PHONE">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" rowspan="2" pSortableColumn="VNPT_PHONE">VNPT Phone <p-sortIcon
+                                field="VNPT_PHONE">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" rowspan="2" pSortableColumn="GHI_CHU">Ghi Chú<p-sortIcon
+                                field="GHI_CHU">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 300px;" colspan="2">Kết nối A2</th>
+                        <th style="width: 300px;" colspan="2">Trạm biến áp Vận hành Không người trực</th>
+                        <th style="width: 300px;" colspan="2">Đưa vào điều khiển xa</th>
+                        <th style="width: 450px;" colspan="3">End-to-End về EVN SPC</th>
+                        <th colspan="2" style="width: 300px;">Tín hiệu giám sát nguồn DC</th>
+                        <th colspan="4" style="width: 600px;">Lắp thiết bị F90</th>
+                        <th colspan="2" style="width: 300px;">Lắp relay 87B</th>
+                        <th colspan="3" style="width: 450px;">Lắp relay 87L</th>
+                        <th colspan="2" style="width: 300px;">Deadbanb (8458/EVN SPC-KT ngày 30/9/2020)</th>
+                        <th colspan="2" style="width: 300px;">Xóa tín hiệu dư thừa</th>
+                        <th colspan="2" style="width: 300px;">Ngăn Phát tuyến 22kV& 35kV</th>
+                        <th colspan="2" style="width: 300px;">Số ngăn Tụ bù 22kV</th>
+                        <th rowspan="2" style="width: 150px;">Tổng số ngăn lộ</th>
+                        <th rowspan="2" style="width: 150px;">Tủ hợp bộ</th>
+                        <th rowspan="2" style="width: 150px;">Ngoài trời</th>
+                        <th style="width: 150px;" rowspan="2">
+                        </th>
+                    </tr>
+                    <tr class="trHeader">
+                        <th style="width: 150px;" pSortableColumn="KETNOIA2_GIAOTHUC">A2 Giao Thức<p-sortIcon
+                                field="KETNOIA2_GIAOTHUC">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" pSortableColumn="KETNOIA2_VANBANXACNHAN">A2 Xác Nhận <p-sortIcon
+                                field="KETNOIA2_VANBANXACNHAN">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" pSortableColumn="TBAVHKNT_DVH_CVH">Vận Hành<p-sortIcon
+                                field="TBAVHKNT_DVH_CVH">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" pSortableColumn="TBAVHKNT_VANBANXACNHAN">Xác Nhận <p-sortIcon
+                                field="TBAVHKNT_VANBANXACNHAN">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" pSortableColumn="DVDKX_NGAYVH_DKX">Ngày vận hành <p-sortIcon
+                                field="DVDKX_NGAYVH_DKX">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" pSortableColumn="DVDKX_VANBANXACNHAN">Văn bản xác nhận<p-sortIcon
+                                field="DVDKX_VANBANXACNHAN">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" pSortableColumn="ETESPC_NGAYNT">Ngày nghiệm thu <p-sortIcon
+                                field="ETESPC_NGAYNT">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" pSortableColumn="ETESPC_NAMNT">Năm nghiệm thu<p-sortIcon
+                                field="ETESPC_NAMNT">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" pSortableColumn="ETESPC_VANBANXACNHAN">Văn bản SPC Xác Nhận
+                            <p-sortIcon field="ETESPC_VANBANXACNHAN">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" pSortableColumn="THGSNDC_NGAYNT">Tín hiệu giám sát DC Ngày NT
+                            <p-sortIcon field="THGSNDC_NGAYNT">
+                            </p-sortIcon>
+                        </th>
+
+                        <th style="width: 150px;" pSortableColumn="THGSNDC_VANBANXACNHAN">Tín hiệu giám sát DC Xác Nhận
+                            <p-sortIcon field="THGSNDC_VANBANXACNHAN">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" pSortableColumn="LTBF90_MBAT1">F90 MBA T1 <p-sortIcon
+                                field="LTBF90_MBAT1">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" pSortableColumn="LTBF90_VANBANXACNHANT1">Văn bản xác nhận<p-sortIcon
+                                field="LTBF90_VANBANXACNHANT1">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" pSortableColumn="LTBF90_MBAT2">F90 MBA T2 <p-sortIcon
+                                field="LTBF90_MBAT2">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" pSortableColumn="LTBF90_VANBANXACNHANT2">Văn bản xác nhận <p-sortIcon
+                                field="LTBF90_VANBANXACNHANT2">
+                            </p-sortIcon>
+                        </th>
+
+                        <th style="width: 150px;" pSortableColumn="RELAY87B_NGAYNT">Ngày nghiệm thu<p-sortIcon
+                                field="RELAY87B_NGAYNT">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" pSortableColumn="RELAY87B_XACNHAN">Văn bản xác nhận <p-sortIcon
+                                field="RELAY87B_XACNHAN">
+                            </p-sortIcon>
+                        </th>
+
+                        <th style="width: 150px;" pSortableColumn="RELAY87L_NGANLO">Ngăn Lộ <p-sortIcon
+                                field="RELAY87L_NGANLO">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" pSortableColumn="RELAY87L_NGAYNT">Ngày nghiệm thu <p-sortIcon
+                                field="RELAY87L_NGAYNT">
+                            </p-sortIcon>
+                        </th>
+
+                        <th style="width: 150px;" pSortableColumn="RELAY87L_VANBANXACNHAN">Văn bản xác nhận<p-sortIcon
+                                field="RELAY87L_VANBANXACNHAN">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" pSortableColumn="DEADDBANB_NGAYTHUCHIEN"> Ngày thực hiện <p-sortIcon
+                                field="DEADDBANB_NGAYTHUCHIEN">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" pSortableColumn="DEADDBANB_VANBANXACNHAN">Văn bản xác nhận<p-sortIcon
+                                field="DEADDBANB_VANBANXACNHAN">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" pSortableColumn="XTHDT_NGAYTHUCHIEN">Ngày Thực Hiện <p-sortIcon
+                                field="XTHDT_NGAYTHUCHIEN">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" pSortableColumn="XTHDT_NHANVIENTHUCHIEN">Nhân viên thực hiện
+                            <p-sortIcon field="XTHDT_NHANVIENTHUCHIEN">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" pSortableColumn="NPT22KV35KV_TONGSOPHATTUYEN">Tổng Số <p-sortIcon
+                                field="NPT22KV35KV_TONGSOPHATTUYEN"> </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" pSortableColumn="NPT22KV35KV_SPTDKX_TTDK">Số phát tuyến điều khiển xa
+                            từ TTĐK<p-sortIcon field="NPT22KV35KV_SPTDKX_TTDK">
+                            </p-sortIcon>
+                        </th>
+
+                        <th style="width: 150px;" pSortableColumn="SNTB22KV_TONGSO">Tổng Số <p-sortIcon
+                                field="SNTB22KV_TONGSO">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 150px;" pSortableColumn="SNTB22KV_SNDKX_TTDK">Số ngăn điều khiển xa từ TTĐK
+                            <p-sortIcon field="SNTB22KV_SNDKX_TTDK">
+                            </p-sortIcon>
+                        </th>
+
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-llTBA>
+                    <tr>
+                        <td class="bodySTT" pFrozenColumn
+                            style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTBA.TEN_TINH}}
+                        </td>
+                        <td class="bodySTT" pFrozenColumn
+                            style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTBA.TEN_TRAM}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTBA.MA_TRAM}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: center;">
+                            {{llTBA.XOATIN_HIEUDU==='True'?'x':''}}
+                        </td>
+
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-end;">
+                            {{llTBA.CONGSUAT_T1 | number:'0.0-3':'vi'}}
+                        </td>
+
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-end;">
+                            {{llTBA.CONGSUAT_T2 | number:'0.0-3':'vi'}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-end;">
+                            {{llTBA.ASDU | number:'0.0-3':'vi'}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-end;">
+                            {{llTBA.ID_BACKUP}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-end;">
+                            {{llTBA.CMU}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-end;">
+                            {{llTBA.RTU_MAIN}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-end;">
+                            {{llTBA.RTU_BAY}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTBA.UPDATE_RTU_CONFIG}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTBA.HMI}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTBA.DU_AN}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTBA.DUAN_SPC}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTBA.VHDKX_SP7HMI}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTBA.DKX}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-end;">
+                            {{llTBA.IP_PHONE}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-end;">
+                            {{llTBA.VNPT_PHONE}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTBA.GHI_CHU}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTBA.KETNOIA2_GIAOTHUC}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTBA.KETNOIA2_VANBANXACNHAN}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTBA.TBAVHKNT_DVH_CVH}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTBA.TBAVHKNT_VANBANXACNHAN}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTBA.DVDKX_NGAYVH_DKX | date: 'dd/MM/yyyy'}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTBA.DVDKX_VANBANXACNHAN}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTBA.ETESPC_NGAYNT| date: 'dd/MM/yyyy'}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTBA.ETESPC_NAMNT}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTBA.ETESPC_VANBANXACNHAN}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTBA.THGSNDC_NGAYNT| date: 'dd/MM/yyyy'}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTBA.THGSNDC_VANBANXACNHAN}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTBA.LTBF90_MBAT1| date: 'dd/MM/yyyy'}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTBA.LTBF90_VANBANXACNHANT1}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTBA.LTBF90_MBAT2| date: 'dd/MM/yyyy'}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTBA.LTBF90_VANBANXACNHANT2}}
+                        </td>
+
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTBA.RELAY87B_NGAYNT| date: 'dd/MM/yyyy'}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTBA.RELAY87B_XACNHAN}}
+                        </td>
+
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTBA.RELAY87L_NGANLO}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTBA.RELAY87L_NGAYNT| date: 'dd/MM/yyyy'}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTBA.RELAY87L_VANBANXACNHAN}}
+                        </td>
+
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTBA.DEADDBANB_NGAYTHUCHIEN | date: 'dd/MM/yyyy'}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTBA.DEADDBANB_VANBANXACNHAN}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTBA.XTHDT_NGAYTHUCHIEN | date: 'dd/MM/yyyy'}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-start;">
+                            {{llTBA.XTHDT_NHANVIENTHUCHIEN }}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-end;">
+                            {{llTBA.NPT22KV35KV_TONGSOPHATTUYEN | number:'0.0-3':'vi'}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-end;">
+                            {{llTBA.NPT22KV35KV_SPTDKX_TTDK| number:'0.0-3':'vi'}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-end;">
+                            {{llTBA.SNTB22KV_TONGSO| number:'0.0-3':'vi'}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-end;">
+                            {{llTBA.SNTB22KV_SNDKX_TTDK| number:'0.0-3':'vi'}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-end;">
+                            {{llTBA.TONGSO_NGANLO| number:'0.0-3':'vi'}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-end;">
+                            {{llTBA.TUHOPBO| number:'0.0-3':'vi'}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: flex-end;">
+                            {{llTBA.NGOAI_TROI | number:'0.0-3':'vi'}}
+                        </td>
+                        <td class="bodySTT" style="flex: 1;align-items: center;justify-content: center;">
+                            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2"
+                                (click)="editItem(llTBA)"></button>
+                            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                                (click)="deleteItem(llTBA)"></button>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="summary">
+                    <div class="p-d-flex p-ai-center p-jc-between">
+                        Tổng số lượng : {{llTBAs ? llTBAs.length : 0 }} Trạm biến áp SPC.
+                    </div>
+                </ng-template>
+            </p-table>
+
+            <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+
+
+        </div>
+    </div>
+
+
+    <!-- <div class="p-col-12">
+        
+        
+        <div class="card" *ngIf="!dialog">
+            <p-toolbar styleClass="p-mb-4">
+                <ng-template pTemplate="left">
+                    <button pButton pRipple label="Thêm" icon="pi pi-plus" class="p-button-success mr-2"
+                        (click)="openNew()"></button>
+                    <button pButton pRipple label="Thêm" icon="pi pi-plus" class="p-button-success mr-2"
+                        (click)="openNew()"></button>
+                    <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help p-mb-2"
+                        (click)="exportExcel()"></button>
+                </ng-template>
+                <ng-template pTemplate="right">
+                    <div class="p-field">
+                        <span class="p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                                placeholder="Lọc..." />
+                        </span>
+                    </div>
+                </ng-template>
+            </p-toolbar>
+            
+        </div>
+        
+    </div> -->
+</div>

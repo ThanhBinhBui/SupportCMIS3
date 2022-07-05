@@ -1,0 +1,160 @@
+<p-toast key="tst"></p-toast>
+<p-confirmDialog header="Xác nhận" icon="pi pi-exclamation-triangle" acceptButtonStyleClass="ui-button-info"
+    acceptLabel="Đồng ý" rejectLabel="Hủy bỏ">
+</p-confirmDialog>
+
+<div class="card">
+    <p-table #dt [value]="listMain" dataKey="STT" [rowHover]="true" [rows]="50" [paginator]="true" [loading]="loading"
+        [loading]="loading"    
+        [filterDelay]="0" [globalFilterFields]="['MA_DVIQLY','TEN_DVIQLY']"
+        currentPageReportTemplate="Hiển thị từ {first} đến {last} trên {totalRecords}" [responsive]="true"
+        [showCurrentPageReport]="true" [rowsPerPageOptions]="[5, 10, 20, { showAll: 'Tất cả' }]">
+        <ng-template pTemplate="caption">
+            <div class="p-grid">
+                <div class="p-md-4 p-sm-4 p-d-flex p-jc-start">
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <!-- <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                                    placeholder="Tìm kiếm..." /> -->
+                        <button pButton pRipple label="Thêm" icon="pi pi-plus" class="p-button-success p-mr-2 p-mb-2"
+                            (click)="openNew()"></button>
+                    </span>
+                </div>
+                <!-- <div class="p-md-4 p-sm-4 p-d-flex p-jc-end">
+                            <p-dropdown inputId="ORG_CODE" [options]="lstORG" [(ngModel)]="selectedORG_CODE"
+                                optionLabel="ORG_NAME" optionValue="ORG_CODE" filter="true" (onChange)="search()">
+                            </p-dropdown>
+                        </div> -->
+
+                <div class="p-md-8 p-sm-8 p-d-flex p-jc-end">
+                    <div class="p-mb-2 p-mr-2">
+                        <p-dropdown [options]="listDonVi" [(ngModel)]="maDonViSelected" optionLabel="TEN_DVIQLY"
+                            optionValue="MA_DVIQLY" filter="true">
+                        </p-dropdown>
+                    </div>
+                    <div class="p-mb-2 p-mr-2">
+                        <!-- <p-calendar view="month" dateFormat="mm/yy" [yearNavigator]="true" yearRange="2018:2040"
+                            dataType="string" [showIcon]="true" placeholder="Chọn tháng" [selectOtherMonths]="true"
+                            [(ngModel)]="FROM_DATE">
+                        </p-calendar> -->
+                        <p-calendar view="month" dateFormat="mm/yy" [yearNavigator]="true" yearRange="2018:2040"
+                            dataType="string" [showIcon]="true" placeholder="Chọn tháng" [selectOtherMonths]="true"
+                            [(ngModel)]="FROM_DATE" inputStyleClass="calendarInput">
+                        </p-calendar>
+                    </div>
+                    <div class="p-mb-2 p-mr-2">
+                        <button pButton pRipple (click)="search()" icon="pi pi-search"
+                            class="p-button-success p-mt-1"></button>
+
+                    </div>
+                    <div class="p-mb-2 p-mr-2">
+                        <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help p-mt-1"
+                            (click)="exportExcel()"></button>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+
+        <ng-template pTemplate="headergrouped">
+            <tr class="trHeader">
+                <th>STT</th>
+                <th>Trạm 110kV</th>
+                <th>Ngăn</th>
+                <th>Mã Hiệu</th>
+                <th>Đồng bộ từ GPS tại trạm</th>
+                <th>Đồng bộ từ RTU/Gateway</th>
+                <th>Chưa Đồng Bộ</th>
+                <th>Nguyên nhân chưa đồng bộ</th>
+                <th>Tình trạng vận hành</th>
+                <th></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-main>
+            <tr class="p-selectable-row">
+                <td  style=" text-align: left">{{main.STT}}</td>
+                <td  style=" text-align: left">{{main.TEN_TRAM}}</td>
+                <td  style=" text-align: right">{{main.NGAN}}</td>
+                <td  style=" text-align: right">{{main.MA_HIEU}}</td>
+                <td class="bodySTT">{{main.DONG_BO==='GPS'?'X':''}}</td>
+                <td class="bodySTT">{{main.DONG_BO==='RTU-GATEWAY'?'X':''}}</td>
+                <td class="bodySTT">{{main.DONG_BO==='CHUA'?'X':''}}</td>
+                <td  style=" text-align: left">{{main.NGUYEN_NHAN}}</td>
+                <td >{{main.TINH_TRANG_VH==='DUNG'?'Đúng thời gian so với
+                    RTU_MAIN':main.TINH_TRANG_VH==='HIEU_CHINH'?'Hiệu chỉnh bằng tay theo thời gian RTU_MAIN':
+                    'Chưa đưa vào vận hành'}}</td>
+                <td class="bodySTT">
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2"
+                        (click)="editItem(main)"></button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="12" style="text-align: center;">Không có dữ liệu</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+<p-dialog [(visible)]="dialog" [style]="{height:'70%',width: '450px'}"
+    [header]="isUpdate?'Cập Nhật Thông Tin Sự Kiện':'Thêm Mới Thông Tin Sự Kiện'" (onHide)="hideDialog()" [modal]="true"
+    styleClass="p-fluid">
+    <ng-template pTemplate="content">
+
+        <div class="p-field">
+            <label for="name">Trạm 110KV</label>
+            <p-autoComplete [(ngModel)]="selectedTram" [suggestions]="filterTrams" (completeMethod)="filterTram($event)"
+                field="TEN_TRAM" [dropdown]="true" [disabled]="isUpdate?true:false">
+            </p-autoComplete>
+        </div>
+        <div class="p-field">
+            <label for="name">Ngăn</label>
+            <input type="text" pInputText [(ngModel)]="mainCurrent.NGAN" [disabled]="isUpdate?true:false" />
+        </div>
+        <div class="p-field">
+            <label for="name">Mã hiệu</label>
+            <input type="text" pInputText [(ngModel)]="mainCurrent.MA_HIEU" />
+        </div>
+        <div class="p-field">
+            <label for="name"> Đồng bộ: </label>
+            <div class="p-field-radiobutton">
+                <p-radioButton value="GPS" [(ngModel)]="mainCurrent.DONG_BO"></p-radioButton>
+                <label>Đồng bộ từ GPS tại trạm</label>
+            </div>
+            <div class="p-field-radiobutton">
+                <p-radioButton value="RTU-GATEWAY" [(ngModel)]="mainCurrent.DONG_BO"></p-radioButton>
+                <label>Đồng bộ từ RTU/GATEWAY</label>
+            </div>
+            <div class="p-field-radiobutton">
+                <p-radioButton value="CHUA" [(ngModel)]="mainCurrent.DONG_BO"></p-radioButton>
+                <label>Chưa đồng bộ</label>
+            </div>
+        </div>
+        <div class="p-field">
+            <label for="name">Nguyên nhân chưa đồng bộ</label>
+            <input type="text" pInputText [(ngModel)]="mainCurrent.NGUYEN_NHAN" />
+        </div>
+        <div class="p-field">
+            <label for="name">Tình trạng vận hành</label>
+            <div class="p-field-radiobutton">
+                <p-radioButton value="DUNG" [(ngModel)]="mainCurrent.TINH_TRANG_VH"></p-radioButton>
+                <label>Đúng thời gian so với RTU_MAIN</label>
+            </div>
+            <div class="p-field-radiobutton">
+                <p-radioButton value="HIEU_CHINH" [(ngModel)]="mainCurrent.TINH_TRANG_VH"></p-radioButton>
+                <label>Hiệu chỉnh bằng tay theo thời gian RTU_MAIN</label>
+            </div>
+            <div class="p-field-radiobutton">
+                <p-radioButton value="CHUA" [(ngModel)]="mainCurrent.TINH_TRANG_VH"></p-radioButton>
+                <label>Chưa đưa vào vận hành</label>
+            </div>
+        </div>
+
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Hủy" icon="pi pi-times" class="p-button-secondary"
+            (click)="hideDialog()"></button>
+        <button pButton pRipple label="Lưu" icon="pi pi-check" class="p-button-info" (click)="saveItem()"></button>
+    </ng-template>
+</p-dialog>

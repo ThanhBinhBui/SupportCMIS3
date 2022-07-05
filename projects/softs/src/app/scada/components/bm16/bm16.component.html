@@ -1,0 +1,281 @@
+<p-toast key="tst"></p-toast>
+<p-confirmDialog header="Xác nhận" icon="pi pi-exclamation-triangle" acceptButtonStyleClass="ui-button-info"
+    acceptLabel="Đồng ý" rejectLabel="Hủy bỏ">
+</p-confirmDialog>
+<p-toolbar>
+    <div class="p-toolbar-group-left">
+        <span class="p-input-icon-left p-mb-2">
+            <i class="pi pi-search"></i>
+            <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                placeholder="Lọc..." />
+        </span>
+    </div>
+    <div class="p-toolbar-group-right">
+        <div class="p-formgroup-inline">
+            <div class="p-field">
+                <p-dropdown [options]="lstORG" [(ngModel)]="MA_DVIQLY" optionLabel="TEN_DVIQLY" optionValue="MA_DVIQLY"
+                    filter="true">
+                </p-dropdown>
+            </div>
+            <div class="p-field">
+                <p-calendar dateFormat="dd/mm/yy" dataType="string" [showIcon]="true" placeholder="Đến ngày"
+                    [selectOtherMonths]="true" [(ngModel)]="TO_DATE" firstDayOfWeek=1 inputStyleClass="calendarInput">
+                </p-calendar>
+            </div>
+            <button pButton pRipple (click)="search()" icon="pi pi-search"
+                class="p-button-success p-mt-1 p-mr-2"></button>
+            <button pButton pRipple (click)="exportExcel()" icon="pi pi-file-excel" class="p-button-help p-mt-1"
+                label="Xuất excel"></button>
+        </div>
+    </div>
+</p-toolbar>
+
+<p-table #dt [value]="lstMain" dataKey="STT" [rowHover]="true" [rows]="10" [paginator]="true" [filterDelay]="0"
+    [loading]="loading" [globalFilterFields]="['STT','MA_DVIQLY','TEN_DVIQLY','MA_TINH','TEN_TINH','DA_CHUYEN','CHUA_CHUYEN','DKX','CHUA_DKX','SPC_IEC_101',
+    'SPC_IEC_104','NLTT_NMDGIO_ICCP','NLTT_NMDGIO_IEC_104','NLTT_NMDGIO_CS','NLTT_NMDMATTROI_ICCP','NLTT_NMDMATTROI_IEC_104','NLTT_NMDMATTROI_CS','NLTT_NMTHUYDIEN_ICCP','NLTT_NMTHUYDIEN_IEC_104','NLTT_NMTHUYDIEN_CS',
+    'NLTT_NMNHIETDIEN_ICCP','NLTT_NMNHIETDIEN_IEC_104','NLTT_NMNHIETDIEN_CS','NLK_NGANHNGHE_ICCP','NLK_NGANHNGHE_IEC_104','NLK_NGANHNGHE_CS','REC_DNP3','REC_IEC_101','REC_IEC_104','LBS_IEC_101',
+    'LBS_IEC_104','FI_IEC_101','FI_IEC_104']"
+    currentPageReportTemplate="Hiển thị từ {first} đến {last} trên {totalRecords}" [responsive]="true"
+    [showCurrentPageReport]="true" [rowsPerPageOptions]="[5, 10, 20, { showAll: 'Tất cả' }]">
+    <ng-template pTemplate="header">
+        <tr class="trHeader">
+            <th pSortableColumn="STT" rowspan="3">STT
+                <p-sortIcon field="STT"></p-sortIcon>
+            </th>
+            <th pSortableColumn="TEN_TINH" rowspan="3">Đơn vị
+                <p-sortIcon field="TEN_TINH"></p-sortIcon>
+            </th>
+            <th colspan="6">Trạm 110kV</th>
+            <th colspan="15">Nhà máy điện</th>
+            <th colspan="7">Thiết bị 22kV</th>
+        </tr>
+        <tr>
+            <th colspan="2" class="headerRow2">TBA KNT</th>
+            <th colspan="2" class="headerRow2">Điều khiển xa</th>
+            <th colspan="2" class="headerRow2">Giao thức A2</th>
+            <th colspan="3" class="headerRow2">Gió</th>
+            <th colspan="3" class="headerRow2">Mặt trời</th>
+            <th colspan="3" class="headerRow2">Thủy điện</th>
+            <th colspan="3" class="headerRow2">Nhiệt điện</th>
+            <th colspan="3" class="headerRow2">Khác</th>
+            <th colspan="3" class="headerRow2">Recloser</th>
+            <th colspan="2" class="headerRow2">LBS</th>
+            <th colspan="2" class="headerRow2">FI</th>
+        </tr>
+        <tr class="trHeader">
+            <th pSortableColumn="DA_CHUYEN" class="headerRow3">Đã chuyển
+                <p-sortIcon field="DA_CHUYEN"></p-sortIcon>
+            </th>
+            <th pSortableColumn="CHUA_CHUYEN" class="headerRow3">Chưa chuyển
+                <p-sortIcon field="CHUA_CHUYEN"></p-sortIcon>
+            </th>
+            <th pSortableColumn="DKX" class="headerRow3">Đã ĐKX
+                <p-sortIcon field="DKX"></p-sortIcon>
+            </th>
+            <th pSortableColumn="CHUA_DKX" class="headerRow3">Chưa ĐKX
+                <p-sortIcon field="CHUA_DKX"></p-sortIcon>
+            </th>
+            <th pSortableColumn="SPC_IEC_101" class="headerRow3">IEC-101
+                <p-sortIcon field="SPC_IEC_101"></p-sortIcon>
+            </th>
+            <th pSortableColumn="SPC_IEC_104" class="headerRow3">IEC-104
+                <p-sortIcon field="SPC_IEC_104"></p-sortIcon>
+            </th>
+            <th pSortableColumn="NLTT_NMDGIO_ICCP" class="headerRow3">ICCP
+                <p-sortIcon field="NLTT_NMDGIO_ICCP"></p-sortIcon>
+            </th>
+            <th pSortableColumn="NLTT_NMDGIO_IEC_104" class="headerRow3">IEC-104
+                <p-sortIcon field="NLTT_NMDGIO_IEC_104"></p-sortIcon>
+            </th>
+            <th pSortableColumn="NLTT_NMDGIO_CS" class="headerRow3">Công suất
+                <p-sortIcon field="NLTT_NMDGIO_CS"></p-sortIcon>
+            </th>
+            <th pSortableColumn="NLTT_NMDMATTROI_ICCP" class="headerRow3">ICCP
+                <p-sortIcon field="NLTT_NMDMATTROI_ICCP"></p-sortIcon>
+            </th>
+            <th pSortableColumn="NLTT_NMDMATTROI_IEC_104" class="headerRow3">IEC-104
+                <p-sortIcon field="NLTT_NMDMATTROI_IEC_104"></p-sortIcon>
+            </th>
+            <th pSortableColumn="NLTT_NMDMATTROI_CS" class="headerRow3">Công suất
+                <p-sortIcon field="NLTT_NMDMATTROI_CS"></p-sortIcon>
+            </th>
+            <th pSortableColumn="NLTT_NMTHUYDIEN_ICCP" class="headerRow3">ICCP
+                <p-sortIcon field="NLTT_NMTHUYDIEN_ICCP"></p-sortIcon>
+            </th>
+            <th pSortableColumn="NLTT_NMTHUYDIEN_IEC_104" class="headerRow3">IEC-104
+                <p-sortIcon field="NLTT_NMTHUYDIEN_IEC_104"></p-sortIcon>
+            </th>
+            <th pSortableColumn="NLTT_NMTHUYDIEN_CS" class="headerRow3">Công suất
+                <p-sortIcon field="NLTT_NMTHUYDIEN_CS"></p-sortIcon>
+            </th>
+            <th pSortableColumn="NLTT_NMNHIETDIEN_ICCP" class="headerRow3">ICCP
+                <p-sortIcon field="NLTT_NMNHIETDIEN_ICCP"></p-sortIcon>
+            </th>
+            <th pSortableColumn="NLTT_NMNHIETDIEN_IEC_104" class="headerRow3">IEC-104
+                <p-sortIcon field="NLTT_NMNHIETDIEN_IEC_104"></p-sortIcon>
+            </th>
+            <th pSortableColumn="NLTT_NMNHIETDIEN_CS" class="headerRow3">Công suất
+                <p-sortIcon field="NLTT_NMNHIETDIEN_CS"></p-sortIcon>
+            </th>
+            <th pSortableColumn="NLK_NGANHNGHE_ICCP" class="headerRow3">ICCP
+                <p-sortIcon field="NLK_NGANHNGHE_ICCP"></p-sortIcon>
+            </th>
+            <th pSortableColumn="NLK_NGANHNGHE_IEC_104" class="headerRow3">IEC-104
+                <p-sortIcon field="NLK_NGANHNGHE_IEC_104"></p-sortIcon>
+            </th>
+            <th pSortableColumn="NLK_NGANHNGHE_CS" class="headerRow3">Công suất
+                <p-sortIcon field="NLK_NGANHNGHE_CS"></p-sortIcon>
+            </th>
+            <th pSortableColumn="REC_DNP3" class="headerRow3">DNP3
+                <p-sortIcon field="REC_DNP3"></p-sortIcon>
+            </th>
+            <th pSortableColumn="REC_IEC_101" class="headerRow3">IEC-101
+                <p-sortIcon field="REC_IEC_101"></p-sortIcon>
+            </th>
+            <th pSortableColumn="REC_IEC_104" class="headerRow3">IEC-104
+                <p-sortIcon field="REC_IEC_104"></p-sortIcon>
+            </th>
+            <th pSortableColumn="LBS_IEC_101" class="headerRow3">IEC-101
+                <p-sortIcon field="LBS_IEC_101"></p-sortIcon>
+            </th>
+            <th pSortableColumn="LBS_IEC_104" class="headerRow3">IEC-104
+                <p-sortIcon field="LBS_IEC_104"></p-sortIcon>
+            </th>
+            <th pSortableColumn="FI_IEC_101" class="headerRow3">IEC-101
+                <p-sortIcon field="FI_IEC_101"></p-sortIcon>
+            </th>
+            <th pSortableColumn="FI_IEC_104" class="headerRow3">IEC-104
+                <p-sortIcon field="FI_IEC_104"></p-sortIcon>
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-main>
+        <tr class="p-selectable-row" [style]="main.TEN_TINH.includes('Miền') ? 'font-weight: bold' : ''">
+            <td class="bodySTT">
+                <span class="p-column-title">STT</span>
+                {{main.STT}}
+            </td>
+            <td>
+                <span class="p-column-title">Đơn vị</span>
+                {{main.TEN_TINH}}
+            </td>
+            <td>
+                <span class="p-column-title">Đã chuyển</span>
+                {{main.DA_CHUYEN | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">Chưa chuyển</span>
+                {{main.CHUA_CHUYEN | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">Đã ĐKX</span>
+                {{main.DKX | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">Chưa ĐKX</span>
+                {{main.CHUA_DKX | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">IEC-101</span>
+                {{main.SPC_IEC_101 | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">IEC-104</span>
+                {{main.SPC_IEC_104 | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">ICCP</span>
+                {{main.NLTT_NMDGIO_ICCP | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">IEC-104</span>
+                {{main.NLTT_NMDGIO_IEC_104 | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">Công suất</span>
+                {{main.NLTT_NMDGIO_CS | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">ICCP</span>
+                {{main.NLTT_NMDMATTROI_ICCP | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">IEC-104</span>
+                {{main.NLTT_NMDMATTROI_IEC_104 | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">Công suất</span>
+                {{main.NLTT_NMDMATTROI_CS | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">ICCP</span>
+                {{main.NLTT_NMTHUYDIEN_ICCP | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">IEC-104</span>
+                {{main.NLTT_NMTHUYDIEN_IEC_104 | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">Công suất</span>
+                {{main.NLTT_NMTHUYDIEN_CS | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">ICCP</span>
+                {{main.NLTT_NMNHIETDIEN_ICCP | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">IEC-104</span>
+                {{main.NLTT_NMNHIETDIEN_IEC_104 | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">Công suất</span>
+                {{main.NLTT_NMNHIETDIEN_CS | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">ICCP</span>
+                {{main.NLK_NGANHNGHE_ICCP | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">IEC-104</span>
+                {{main.NLK_NGANHNGHE_IEC_104 | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">Công suất</span>
+                {{main.NLK_NGANHNGHE_CS | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">DNP3</span>
+                {{main.REC_DNP3 | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">IEC-101</span>
+                {{main.REC_IEC_101 | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">IEC-104</span>
+                {{main.REC_IEC_104 | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">IEC-101</span>
+                {{main.LBS_IEC_101 | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">IEC-104</span>
+                {{main.LBS_IEC_104 | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">IEC-101</span>
+                {{main.FI_IEC_101 | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">IEC-104</span>
+                {{main.FI_IEC_104 | number:'0.0-3':'vi'}}
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+        <tr>
+            <td colspan="30" style="text-align: center;">Không có dữ liệu</td>
+        </tr>
+    </ng-template>
+</p-table>

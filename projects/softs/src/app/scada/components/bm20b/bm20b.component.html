@@ -1,0 +1,153 @@
+<p-toast key="tst"></p-toast>
+<p-confirmDialog header="Xác nhận" icon="pi pi-exclamation-triangle" acceptButtonStyleClass="ui-button-info"
+    acceptLabel="Đồng ý" rejectLabel="Hủy bỏ">
+</p-confirmDialog>
+<p-toolbar>
+    <div class="p-toolbar-group-left">
+        <span class="p-input-icon-left p-mb-2">
+            <i class="pi pi-search"></i>
+            <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                placeholder="Lọc..." />
+        </span>
+    </div>
+    <div class="p-toolbar-group-right">
+        <div class="p-formgroup-inline">
+            <div class="p-field">
+                <p-dropdown [options]="lstORG" [(ngModel)]="MA_DVIQLY" optionLabel="TEN_DVIQLY" optionValue="MA_DVIQLY"
+                    filter="true">
+                </p-dropdown>
+            </div>
+            <div class="p-field">
+                <p-calendar dateFormat="dd/mm/yy" dataType="string" [showIcon]="true" placeholder="Đến ngày"
+                    [selectOtherMonths]="true" [(ngModel)]="TO_DATE" firstDayOfWeek=1 inputStyleClass="calendarInput">
+                </p-calendar>
+            </div>
+            <button pButton pRipple (click)="search()" icon="pi pi-search"
+                class="p-button-success p-mt-1 p-mr-2"></button>
+            <button pButton pRipple (click)="exportExcel()" icon="pi pi-file-excel" class="p-button-help p-mt-1"
+                label="Xuất excel"></button>
+        </div>
+    </div>
+</p-toolbar>
+<p-table #dt [value]="lstMain" dataKey="STT" [rowHover]="true" [rows]="10" [paginator]="true" [filterDelay]="0"
+    [loading]="loading"
+    [globalFilterFields]="['STT','MA_DVIQLY','TEN_DVIQLY','MA_TINH','TEN_TINH','Tong','DANGKETNOI_LK','DANGKETNOI','DU_DK_CAITAO','CHUA_DU_DK_CAITAO','REC_LBS_MATKN','REC_LBS_DKX','REC_DANGKN','REC_MATKN','LBS_DANGKN','LBS_MATKN']"
+    currentPageReportTemplate="Hiển thị từ {first} đến {last} trên {totalRecords}" [responsive]="true"
+    [showCurrentPageReport]="true" [rowsPerPageOptions]="[5, 10, 20, { showAll: 'Tất cả' }]">
+    <ng-template pTemplate="header">
+        <tr class="trHeader">
+            <th pSortableColumn="STT" class="headerSTT" rowspan="2">STT
+                <p-sortIcon field="STT"></p-sortIcon>
+            </th>
+            <th pSortableColumn="TEN_TINH" rowspan="2">Đơn vị
+                <p-sortIcon field="TEN_TINH"></p-sortIcon>
+            </th>
+            <th pSortableColumn="Tong" rowspan="2">Tổng số thiết bị RMU, LBS, Recloser, Compact, trạm cắt đang vận
+                hành trên lưới
+                <p-sortIcon field="Tong"></p-sortIcon>
+            </th>
+            <th colspan="2">Số thiết bị đã kết nối SCADA</th>
+            <th colspan="2">Số thiết bị chưa kết nối SCADA</th>
+            <th pSortableColumn="REC_LBS_MATKN" rowspan="2">Tổng số REC/LBS mất kết nối SCADA
+                <p-sortIcon field="REC_LBS_MATKN"></p-sortIcon>
+            </th>
+            <th pSortableColumn="REC_LBS_DKX" rowspan="2">Tổng thiết bị Rec/LBS hiện đang điều khiển xa
+                <p-sortIcon field="REC_LBS_DKX"></p-sortIcon>
+            </th>
+            <th colspan="2">Số lượng REC </th>
+            <th colspan="2">Số lượng LBS</th>
+        </tr>
+        <tr class="trHeader">
+            <th pSortableColumn="DANGKETNOI_LK" class="headerRow2">Lũy kế hiện tại
+                <p-sortIcon field="DANGKETNOI_LK"></p-sortIcon>
+            </th>
+            <th pSortableColumn="DANGKETNOI" class="headerRow2">Trong kỳ
+                <p-sortIcon field="DANGKETNOI"></p-sortIcon>
+            </th>
+            <th pSortableColumn="DU_DK_CAITAO" class="headerRow2">Số thiết bị RMU, LBS, Recloser, Compact, trạm cắt đủ
+                điều kiện cải tạo nhưng chưa lắp đặt SCADA
+                <p-sortIcon field="DU_DK_CAITAO"></p-sortIcon>
+            </th>
+            <th pSortableColumn="CHUA_DU_DK_CAITAO" class="headerRow2">Số thiết bị RMU, LBS, Recloser, Compact, trạm
+                cắt không đủ điều kiện cải tạo để lắp đặt SCADA
+                <p-sortIcon field="CHUA_DU_DK_CAITAO"></p-sortIcon>
+            </th>
+            <th pSortableColumn="REC_DANGKN" class="headerRow2">Đang kết nối
+                <p-sortIcon field="REC_DANGKN"></p-sortIcon>
+            </th>
+            <th pSortableColumn="REC_MATKN" class="headerRow2">Đang mất kết nối
+                <p-sortIcon field="REC_MATKN"></p-sortIcon>
+            </th>
+            <th pSortableColumn="LBS_DANGKN" class="headerRow2">Đang kết nối
+                <p-sortIcon field="LBS_DANGKN"></p-sortIcon>
+            </th>
+            <th pSortableColumn="LBS_MATKN" class="headerRow2">Đang mất kết nối
+                <p-sortIcon field="LBS_MATKN"></p-sortIcon>
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-main>
+        <tr class="p-selectable-row" [style]="main.TEN_TINH.includes('Miền') ? 'font-weight: bold' : ''">
+            <td class="bodySTT">
+                <span class="p-column-title">STT</span>
+                {{main.STT}}
+            </td>
+            <td>
+                <span class="p-column-title">Đơn vị</span>
+                {{main.TEN_TINH}}
+            </td>
+            <td>
+                <span class="p-column-title">Tổng số thiết bị RMU, LBS, Recloser, Compact, trạm cắt đang vận hành trên
+                    lưới</span>
+                {{main.Tong | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">Lũy kế hiện tại</span>
+                {{main.DANGKETNOI_LK | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">Trong kỳ</span>
+                {{main.DANGKETNOI | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">Số thiết bị RMU, LBS, Recloser, Compact, trạm cắt đủ điều kiện cải tạo
+                    nhưng chưa lắp đặt SCADA</span>
+                {{main.DU_DK_CAITAO | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">Số thiết bị RMU, LBS, Recloser, Compact, trạm cắt không đủ điều kiện cải
+                    tạo để lắp đặt SCADA</span>
+                {{main.CHUA_DU_DK_CAITAO | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">Tổng số REC/LBS mất kết nối SCADA</span>
+                {{main.REC_LBS_MATKN | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">Tổng thiết bị Rec/LBS hiện đang điều khiển xa </span>
+                {{main.REC_LBS_DKX | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">Số lượng REC đang kết nối</span>
+                {{main.REC_DANGKN | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">Số lượng REC đang mất kết nối</span>
+                {{main.REC_MATKN | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">Số lượng LBS đang kết nối</span>
+                {{main.LBS_DANGKN | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">Số lượng LBS đang mất kết nối</span>
+                {{main.LBS_MATKN | number:'0.0-3':'vi'}}
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+        <tr>
+            <td colspan="13" style="text-align: center;">Không có dữ liệu</td>
+        </tr>
+    </ng-template>
+</p-table>

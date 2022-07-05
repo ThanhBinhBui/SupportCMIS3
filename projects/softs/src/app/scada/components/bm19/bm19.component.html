@@ -1,0 +1,211 @@
+<p-toast key="tst"></p-toast>
+<p-confirmDialog header="Xác nhận" icon="pi pi-exclamation-triangle" acceptButtonStyleClass="ui-button-info"
+    acceptLabel="Đồng ý" rejectLabel="Hủy bỏ">
+</p-confirmDialog>
+<p-toolbar>
+    <div class="p-toolbar-group-left"></div>
+    <div class="p-toolbar-group-right">
+        <div class="p-formgroup-inline">
+            <div class="p-field">
+                <p-dropdown [options]="lstORG" [(ngModel)]="MA_DVIQLY" optionLabel="TEN_DVIQLY" optionValue="MA_DVIQLY"
+                    filter="true">
+                </p-dropdown>
+            </div>
+            <div class="p-field">
+                <p-calendar dateFormat="dd/mm/yy" dataType="string" [showIcon]="true" placeholder="Đến ngày"
+                    [selectOtherMonths]="true" [(ngModel)]="TO_DATE" firstDayOfWeek=1 inputStyleClass="calendarInput">
+                </p-calendar>
+            </div>
+            <button pButton pRipple (click)="search()" icon="pi pi-search"
+                class="p-button-success p-mt-1 p-mr-2"></button>
+            <button pButton pRipple (click)="exportExcel()" icon="pi pi-file-excel" class="p-button-help p-mt-1"
+                label="Xuất excel"></button>
+        </div>
+    </div>
+</p-toolbar>
+<div class="p-grid">
+    <div class="p-col-12 p-md-12 p-lg-12">
+        <p-table #dtMain [value]="lstMainGiaoThuc" [rowHover]="true" [rows]="10" [paginator]="true" [filterDelay]="0"
+            [loading]="loading"
+            [globalFilterFields]="['Loai','IEC_104','IEC_101','IEC_101_DA','DNP3','RTU_CMIC','Tong']"
+            currentPageReportTemplate="Hiển thị từ {first} đến {last} trên {totalRecords}" [responsive]="true"
+            [showCurrentPageReport]="true" [rowsPerPageOptions]="[5, 10, 20, { showAll: 'Tất cả' }]">
+            <ng-template pTemplate="header">
+                <tr class="trHeader">
+                    <th pSortableColumn="Loai" rowspan="2">Thiết bị đã kết nối SCADA
+                        <p-sortIcon field="TEN_TINH"></p-sortIcon>
+                    </th>
+                    <th colspan="6">Giao thức kết nối</th>
+                </tr>
+                <tr class="trHeader">
+                    <th pSortableColumn="IEC_104" class="headerRow2">104
+                        <p-sortIcon field="IEC_104"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="IEC_101" class="headerRow2">101
+                        <p-sortIcon field="IEC_101"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="IEC_101_DA" class="headerRow2">101-DA
+                        <p-sortIcon field="IEC_101_DA"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="DNP3" class="headerRow2">DNP3
+                        <p-sortIcon field="DNP3"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="RTU_CMIC" class="headerRow2">RTU_CMIC
+                        <p-sortIcon field="RTU_CMIC"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="Tong" class="headerRow2">Tổng
+                        <p-sortIcon field="Tong"></p-sortIcon>
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-main>
+                <tr class="p-selectable-row">
+                    <td>
+                        <span class="p-column-title">Thiết bị đã kết nối SCADA</span>
+                        {{main.Loai}}
+                    </td>
+                    <td style="text-align: center;">
+                        <span class="p-column-title">104</span>
+                        {{main.IEC_104}}
+                    </td>
+                    <td style="text-align: center;">
+                        <span class="p-column-title">101</span>
+                        {{main.IEC_101}}
+                    </td>
+                    <td style="text-align: center;">
+                        <span class="p-column-title">101-DA</span>
+                        {{main.IEC_101_DA}}
+                    </td>
+                    <td style="text-align: center;">
+                        <span class="p-column-title">DNP3</span>
+                        {{main.DNP3}}
+                    </td>
+                    <td style="text-align: center;">
+                        <span class="p-column-title">RTU_CMIC</span>
+                        {{main.RTU_CMIC}}
+                    </td>
+                    <td style="text-align: center;">
+                        <span class="p-column-title">Tổng</span>
+                        {{main.Tong}}
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="7" style="text-align: center;">Không có dữ liệu</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+    <div class="p-col-12 p-md-12 p-lg-4">
+        <p-table #dtMain1 [value]="lstMainNSX_SPC_LBS" [rowHover]="true" [rows]="10" [paginator]="true"
+            [filterDelay]="0" [loading]="loading" [globalFilterFields]="['Loai','SL']"
+            currentPageReportTemplate="Hiển thị từ {first} đến {last} trên {totalRecords}" [responsive]="true"
+            [showCurrentPageReport]="true" [rowsPerPageOptions]="[5, 10, 20, { showAll: 'Tất cả' }]">
+            <ng-template pTemplate="header">
+                <tr class="trHeader">
+                    <th colspan="2">EVN SPC</th>
+                </tr>
+                <tr class="trHeader">
+                    <th pSortableColumn="Loai" class="headerRow2">LBS-Nhà sx-Hiệu
+                        <p-sortIcon field="Loai"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="SL" class="headerRow2">Số lượng
+                        <p-sortIcon field="SL"></p-sortIcon>
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-main>
+                <tr class="p-selectable-row">
+                    <td>
+                        <span class="p-column-title">LBS-Nhà sx-Hiệu</span>
+                        {{main.Loai}}
+                    </td>
+                    <td style="text-align: center;">
+                        <span class="p-column-title">Số lượng</span>
+                        {{main.SL}}
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="2" style="text-align: center;">Không có dữ liệu</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+    <div class="p-col-12 p-md-12 p-lg-4">
+        <p-table #dtMain2 [value]="lstMainNSX_SPC_Rec" [rowHover]="true" [rows]="10" [paginator]="true"
+            [filterDelay]="0" [loading]="loading" [globalFilterFields]="['Loai','SL']"
+            currentPageReportTemplate="Hiển thị từ {first} đến {last} trên {totalRecords}" [responsive]="true"
+            [showCurrentPageReport]="true" [rowsPerPageOptions]="[5, 10, 20, { showAll: 'Tất cả' }]">
+            <ng-template pTemplate="header">
+                <tr class="trHeader">
+                    <th colspan="2">EVN SPC</th>
+                </tr>
+                <tr class="trHeader">
+                    <th pSortableColumn="Loai" class="headerRow2">Recloser-Nhà sx-Hiệu
+                        <p-sortIcon field="Loai"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="SL" class="headerRow2">Số lượng
+                        <p-sortIcon field="SL"></p-sortIcon>
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-main>
+                <tr class="p-selectable-row">
+                    <td>
+                        <span class="p-column-title">Recloser-Nhà sx-Hiệu</span>
+                        {{main.Loai}}
+                    </td>
+                    <td style="text-align: center;">
+                        <span class="p-column-title">Số lượng</span>
+                        {{main.SL}}
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="2" style="text-align: center;">Không có dữ liệu</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+    <div class="p-col-12 p-md-12 p-lg-4">
+        <p-table #dtMain3 [value]="lstMainNSX_KH_Rec" [rowHover]="true" [rows]="10" [paginator]="true" [filterDelay]="0"
+            [loading]="loading" [globalFilterFields]="['Loai','SL']"
+            currentPageReportTemplate="Hiển thị từ {first} đến {last} trên {totalRecords}" [responsive]="true"
+            [showCurrentPageReport]="true" [rowsPerPageOptions]="[5, 10, 20, { showAll: 'Tất cả' }]">
+            <ng-template pTemplate="header">
+                <tr class="trHeader">
+                    <th colspan="2">Khách hàng</th>
+                </tr>
+                <tr class="trHeader">
+                    <th pSortableColumn="Loai" class="headerRow2">Recloser-Nhà sx-Hiệu
+                        <p-sortIcon field="Loai"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="SL" class="headerRow2">Số lượng
+                        <p-sortIcon field="SL"></p-sortIcon>
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-main>
+                <tr class="p-selectable-row">
+                    <td>
+                        <span class="p-column-title">Recloser-Nhà sx-Hiệu</span>
+                        {{main.Loai}}
+                    </td>
+                    <td style="text-align: center;">
+                        <span class="p-column-title">Số lượng</span>
+                        {{main.SL}}
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="2" style="text-align: center;">Không có dữ liệu</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</div>

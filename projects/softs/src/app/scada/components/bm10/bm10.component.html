@@ -1,0 +1,113 @@
+<p-toast key="tst"></p-toast>
+<p-confirmDialog header="Xác nhận" icon="pi pi-exclamation-triangle" acceptButtonStyleClass="ui-button-info"
+    acceptLabel="Đồng ý" rejectLabel="Hủy bỏ">
+</p-confirmDialog>
+<p-toolbar>
+    <div class="p-toolbar-group-left">
+        <span class="p-input-icon-left p-mb-2">
+            <i class="pi pi-search"></i>
+            <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                placeholder="Lọc..." />
+        </span>
+    </div>
+    <div class="p-toolbar-group-right">
+        <div class="p-formgroup-inline">
+            <div class="p-field">
+                <p-dropdown [options]="lstORG" [(ngModel)]="MA_DVIQLY" optionLabel="TEN_DVIQLY" optionValue="MA_DVIQLY"
+                    filter="true">
+                </p-dropdown>
+            </div>
+            <div class="p-field">
+                <p-calendar dateFormat="dd/mm/yy" dataType="string" [showIcon]="true" placeholder="Ngày thực hiện"
+                    [selectOtherMonths]="true" [(ngModel)]="FROM_DATE" firstDayOfWeek=1 inputStyleClass="calendarInput">
+                </p-calendar>
+            </div>
+            <button pButton pRipple (click)="search()" icon="pi pi-search"
+                class="p-button-success p-mt-1 p-mr-2"></button>
+            <button pButton pRipple (click)="exportExcel()" icon="pi pi-file-excel" class="p-button-help p-mt-1"
+                label="Xuất excel"></button>
+        </div>
+    </div>
+</p-toolbar>
+<p-table #dt [value]="lstMain" dataKey="STT" [rowHover]="true" [rows]="10" [paginator]="true" [filterDelay]="0"
+    [loading]="loading"
+    [globalFilterFields]="['STT','TENTHIETBI','TENDV','DIENBIEN','NGUYENNHAN','KHU_VUC_MD','SO_KH_MD','TGIAN','P_TAI','UOC_SL_NG','SL','BATDAU','KETTHUC']"
+    currentPageReportTemplate="Hiển thị từ {first} đến {last} trên {totalRecords}" [responsive]="true"
+    [showCurrentPageReport]="true" [rowsPerPageOptions]="[5, 10, 20, { showAll: 'Tất cả' }]">
+    <ng-template pTemplate="header">
+        <tr class="trHeader">
+            <th pSortableColumn="STT" class="headerSTT">STT
+                <p-sortIcon field="STT"></p-sortIcon>
+            </th>
+            <th pSortableColumn="TenDonVi">Đơn vị
+                <p-sortIcon field="TenDonVi"></p-sortIcon>
+            </th>
+            <th pSortableColumn="CongSuatP">Công suất P
+                <p-sortIcon field="CongSuatP"></p-sortIcon>
+            </th>
+            <th pSortableColumn="CongSuatQ">Công suất Q
+                <p-sortIcon field="CongSuatQ"></p-sortIcon>
+            </th>
+            <th pSortableColumn="SOLAR110KV">SOLAR 110kV
+                <p-sortIcon field="SOLAR110KV"></p-sortIcon>
+            </th>
+            <th pSortableColumn="SOLAR22KV">SOLAR 22kV
+                <p-sortIcon field="SOLAR22KV"></p-sortIcon>
+            </th>
+            <th pSortableColumn="THUYDIEN110KV">THỦY ĐIỆN 110kV
+                <p-sortIcon field="THUYDIEN110KV"></p-sortIcon>
+            </th>
+            <th pSortableColumn="THUYDIEN22KV">THỦY ĐIỆN 22kV
+                <p-sortIcon field="THUYDIEN22KV"></p-sortIcon>
+            </th>
+            <th pSortableColumn="DIENGIO">ĐIỆN GIÓ
+                <p-sortIcon field="DIENGIO"></p-sortIcon>
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-main>
+        <tr class="p-selectable-row">
+            <td class="bodySTT">
+                <span class="p-column-title">STT</span>
+                {{main.STT}}
+            </td>
+            <td>
+                <span class="p-column-title">Đơn vị</span>
+                {{main.TenDonVi}}
+            </td>
+            <td>
+                <span class="p-column-title">Công suất P</span>
+                {{main.CongSuatP | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">Công suất Q</span>
+                {{main.CongSuatQ | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">SOLAR 110kV</span>
+                {{main.SOLAR110KV | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">SOLAR 22kV</span>
+                {{main.SOLAR22KV | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">THỦY ĐIỆN 110kV</span>
+                {{main.THUYDIEN110KV | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">THỦY ĐIỆN 22kV</span>
+                {{main.THUYDIEN22KV | number:'0.0-3':'vi'}}
+            </td>
+            <td>
+                <span class="p-column-title">ĐIỆN GIÓ</span>
+                {{main.DIENGIO | number:'0.0-3':'vi'}}
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+        <tr>
+            <td colspan="9" style="text-align: center;">Không có dữ liệu</td>
+        </tr>
+    </ng-template>
+</p-table>

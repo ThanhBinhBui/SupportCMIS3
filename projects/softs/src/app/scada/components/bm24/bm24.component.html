@@ -1,0 +1,696 @@
+<p-confirmDialog header="Xác nhận" icon="pi pi-exclamation-triangle" acceptButtonStyleClass="ui-button-info"
+    acceptLabel="Đồng ý" rejectLabel="Hủy bỏ">
+</p-confirmDialog>
+<p-toast></p-toast>
+<div class="card" *ngIf="dialogCa">
+    <p-fieldset [legend]="isUpdate?'Cập nhật thông tin ca':'Thêm mới thông tin ca'" class="p-field p-col-12 p-md-4"
+        [toggleable]="true">
+        <div class="p-fluid p-grid p-formgrid">
+            <div class="p-field p-col-12 p-md-6">
+                <label for="name">Ngày (*): </label>
+                <p-calendar [(ngModel)]="mainCaCurrent.NGAY" [showTime]="false" dateFormat="dd/mm/yy"></p-calendar>
+            </div>
+            <div class="p-field p-col-12 p-md-6">
+                <label for="name">Ca trực (*): </label>
+                <p-dropdown [options]="listDMCa" [(ngModel)]="selectedCaCurrent" placeholder="Chọn ca"
+                    optionLabel="LABEL_TIME" [showClear]="true"></p-dropdown>
+            </div>
+            <div class="p-field p-col-12 p-md-6">
+                <label for="name">Người giao (*):</label>
+                <p-multiSelect [options]="listUser" [(ngModel)]="mainCaCurrent.LIST_GIAO" defaultLabel="Chọn người giao"
+                    optionLabel="FULL_NAME" class="multiselect-custom">
+                    <ng-template let-item pTemplate="item">
+                        <div class="country-item">
+                            <!-- <img src="assets/demo/flags/flag_placeholder.png" [class]="'flag flag-' + country.code.toLowerCase()" /> -->
+                            <div>{{item.FULL_NAME}}</div>
+                        </div>
+                    </ng-template>
+                </p-multiSelect>
+            </div>
+            <div class="p-field p-col-12 p-md-6">
+                <label for="name">Người nhận (*):</label>
+                <p-multiSelect [options]="listUser" [(ngModel)]="mainCaCurrent.LIST_NHAN" defaultLabel="Chọn người nhận"
+                    optionLabel="FULL_NAME" class="multiselect-custom">
+                    <ng-template let-item pTemplate="item">
+                        <div class="country-item">
+                            <!-- <img src="assets/demo/flags/flag_placeholder.png" [class]="'flag flag-' + country.code.toLowerCase()" /> -->
+                            <div>{{item.FULL_NAME}}</div>
+                        </div>
+                    </ng-template>
+                </p-multiSelect>
+            </div>
+        </div>
+
+    </p-fieldset>
+    <div class="p-field p-col-12 p-md-12">
+        <button pButton pRipple label="Hủy" icon="pi pi-times" class="p-button-secondary"
+            (click)="hideDialogCa()"></button>
+        <button pButton pRipple label="Lưu" icon="pi pi-check" class="p-button-info" (click)="saveItemCa()"
+            style="margin-left: 20px;"></button>
+    </div>
+</div>
+<div class="card" *ngIf="!dialogCa&&!dialog&&!checkVisibleView()">
+    <div class="p-grid">
+        <div class="p-md-4 p-sm-4 p-d-flex p-jc-start">
+            <span class="p-input-icon-left">
+                <!-- <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                            placeholder="Lọc..." /> -->
+                <button pButton pRipple label="Thêm" icon="pi pi-plus" class="p-button-success p-mr-2 p-mb-2"
+                    (click)="openNewCa()"></button>
+            </span>
+        </div>
+        <!-- <div class="p-md-4 p-sm-4 p-d-flex p-jc-end">
+                    <p-dropdown inputId="ORG_CODE" [options]="lstORG" [(ngModel)]="selectedORG_CODE"
+                        optionLabel="ORG_NAME" optionValue="ORG_CODE" filter="true" (onChange)="search()">
+                    </p-dropdown>
+                </div> -->
+
+        <div class="p-md-8 p-sm-8 p-d-flex p-jc-end">
+            <div class="p-mb-2 p-mr-2">
+                <p-calendar dateFormat="dd/mm/yy" dataType="string" [showIcon]="true" placeholder="Từ Ngày"
+                    [selectOtherMonths]="true" [(ngModel)]="FROM_DATE_CA" firstDayOfWeek=1
+                    (onSelect)="onChangeDate(FROM_DATE_CA)" inputStyleClass="calendarInput">
+                </p-calendar>
+            </div>
+            <div class="p-mb-2 p-mr-2">
+                <p-calendar dateFormat="dd/mm/yy" dataType="string" [showIcon]="true" placeholder="Đến Ngày"
+                    [selectOtherMonths]="true" [(ngModel)]="TO_DATE_CA" firstDayOfWeek=1
+                    (onSelect)="onChangeDate(TO_DATE_CA)" inputStyleClass="calendarInput">
+                </p-calendar>
+            </div>
+            <div class="p-mb-2 p-mr-2">
+                <button pButton pRipple (click)="searchCa()" icon="pi pi-search"
+                    class="p-button-success p-mt-1"></button>
+            </div>
+            <!-- <div class="p-mb-2 p-mr-2">
+                <button pButton pRipple label="Export Excel" icon="pi pi-upload" class="p-button-help p-mt-1"
+                    (click)="exportExcel()"></button>
+                <button pButton pRipple label="Export PDF" icon="pi pi-upload" class="p-button-help p-mt-1"
+                    (click)="exportPDF()"></button>
+            </div> -->
+        </div>
+    </div>
+    <p-table id="Test1" #dt [value]="listMainCa" dataKey="STT" [rowHover]="true" [rows]="50" [paginator]="true"
+        [filterDelay]="0" [loading]="loadingCa" [globalFilterFields]="['TEN_TRAM','STT','TEN_DVIQLY']"
+        currentPageReportTemplate="Hiển thị từ {first} đến {last} trên {totalRecords}" [responsive]="true"
+        [showCurrentPageReport]="true">
+        <ng-template pTemplate="caption">
+
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr class="trHeader">
+                <th style="flex: 1;">Ngày</th>
+                <th style="flex: 1;">Ca trực</th>
+                <th style="flex: 2;">Người giao</th>
+                <th style="flex: 2;">Người nhận</th>
+                <th style="flex: 1;">Trạng thái</th>
+                <th style="flex: 1;"></th>
+            </tr>
+
+        </ng-template>
+        <ng-template pTemplate="body" let-main>
+            <tr>
+                <td>
+                    {{main.NGAY | date:'dd/MM/yyyy'}}
+                </td>
+                <td>
+                    {{main.LABEL_TIME}}
+                </td>
+                <td>
+                    {{main.LIST_GIAO}}
+                </td>
+                <td>
+                    {{main.LIST_NHAN}}
+                </td>
+                <td>
+                    <p-badge [style]="{cursor: 'pointer'}"
+                        value="{{checkNumber(main.STATUS_SIGNED)===0?'Khởi tạo':checkNumber(main.STATUS_SIGNED)===1?'1 người ký giao':checkNumber(main.STATUS_SIGNED)===2?'2 người ký giao':checkNumber(main.STATUS_SIGNED)===3?'1 người ký nhận':checkNumber(main.STATUS_SIGNED)===4?'Đã ký':'Không xác định'}}"
+                        size="large"
+                        [severity]="checkNumber(main.STATUS_SIGNED)===4?'success':checkNumber(main.STATUS_SIGNED)===0?'info':'warning'">
+                    </p-badge>
+                </td>
+                <td>
+                    <button pButton pRipple icon="pi pi-wallet" class="p-button-rounded p-button-success p-mr-2"
+                        (click)="selectedCaTyping(main)"></button>
+                    <!-- <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2"
+                        (click)="editItemCa(main)"></button> -->
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                        (click)="deleteItemCa(main)"></button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="6" style="text-align: center;">Không có dữ liệu</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+<div class="card" *ngIf="dialog">
+    <p-fieldset [legend]="isUpdate?'Cập Nhật Thông Tin':'Thêm Mới Thông Tin'" class="p-field p-col-12 p-md-4"
+        [toggleable]="true">
+        <div class="p-fluid p-grid p-formgrid">
+            <div class="p-field p-col-12 p-md-4">
+                <label for="name">Loại thông tin (*):</label>
+                <p-dropdown [options]="listCategory" [(ngModel)]="selectedCategory" placeholder="Chọn đối tượng"
+                    [showClear]="true"></p-dropdown>
+            </div>
+            <div class="p-field p-col-12 p-md-4" *ngIf="selectedCategory==='SU_KIEN'">
+                <label for="name">Thời gian bắt đầu (*):</label>
+                <p-calendar [(ngModel)]="mainCurrent.START_TIME" [showTime]="true" dateFormat="dd/mm/yy">
+                </p-calendar>
+            </div>
+            <div class="p-field p-col-12 p-md-4" *ngIf="selectedCategory==='SU_KIEN'">
+                <label for="name">Thời gian kết thúc (*):</label>
+                <p-calendar [(ngModel)]="mainCurrent.END_TIME" [showTime]="true" dateFormat="dd/mm/yy">
+                </p-calendar>
+            </div>
+            <div class="p-field p-col-12 p-md-6" *ngIf="selectedCategory==='SU_KIEN'">
+                <label for="name">TBA/NMĐ/TTĐK/REC/LBS: B3 (ASDU)/Tuyến SDH/IP (*):</label>
+                <!-- <input type="text" pInputText [(ngModel)]="mainCurrent.SU_KIEN" /> -->
+                <textarea [rows]="5" pInputTextarea [(ngModel)]="mainCurrent.TEN_TB"></textarea>
+            </div>
+            <div class="p-field p-col-12 p-md-6" *ngIf="selectedCategory==='SU_KIEN'">
+                <label for="name">Sự kiện/ dịch vụ ảnh hưởng (*):</label>
+                <!-- <input type="text" pInputText [(ngModel)]="mainCurrent.SU_KIEN" /> -->
+                <textarea [rows]="5" pInputTextarea [(ngModel)]="mainCurrent.SU_KIEN"></textarea>
+            </div>
+            <div class="p-field p-col-12 p-md-6" *ngIf="selectedCategory==='SU_KIEN'">
+                <label for="name">Quá trình xử lý (*):</label>
+                <!-- <input type="text" pInputText [(ngModel)]="mainCurrent.SU_KIEN" /> -->
+                <textarea [rows]="5" pInputTextarea [(ngModel)]="mainCurrent.QUA_TRINH"></textarea>
+            </div>
+            <div class="p-field p-col-12 p-md-6" *ngIf="selectedCategory==='SU_KIEN'">
+                <label for="name">Nguyên nhân (*):</label>
+                <!-- <input type="text" pInputText [(ngModel)]="mainCurrent.NGUYEN_NHAN" /> -->
+                <textarea [rows]="5" pInputTextarea [(ngModel)]="mainCurrent.NGUYEN_NHAN"></textarea>
+            </div>
+            <div class="p-field p-col-12 p-md-12" *ngIf="selectedCategory==='SU_KIEN'">
+                <label for="name">Phân loại sự kiện (*):</label>
+                <div class="p-field-radiobutton">
+                    <div class="p-md-2">
+                        <p-radioButton value="Lỗi kênh truyền VTDR" [(ngModel)]="mainCurrent.LOAI_SUKIEN">
+                        </p-radioButton>
+                        <label> Lỗi kênh truyền VTDR</label>
+                    </div>
+                    <div class="p-md-2">
+                        <p-radioButton value="Không có tín hiệu TRIP" [(ngModel)]="mainCurrent.LOAI_SUKIEN">
+                        </p-radioButton>
+                        <label> Không có tín hiệu TRIP</label>
+                    </div>
+                    <div class="p-md-2">
+                        <p-radioButton value="Sự cố VTDR, CNTT, TĐH" [(ngModel)]="mainCurrent.LOAI_SUKIEN">
+                        </p-radioButton>
+                        <label> Sự cố VTDR, CNTT, TĐH</label>
+                    </div>
+                    <div class="p-md-2">
+                        <p-radioButton value="Công tác SCADA" [(ngModel)]="mainCurrent.LOAI_SUKIEN"></p-radioButton>
+                        <label> Công tác SCADA</label>
+                    </div>
+                    <div class="p-md-2">
+                        <p-radioButton value="Khác" [(ngModel)]="mainCurrent.LOAI_SUKIEN"></p-radioButton>
+                        <label> Khác</label>
+                    </div>
+                </div>
+            </div>
+            <div class="p-field p-col-12 p-md-6" *ngIf="selectedCategory==='SU_KIEN'">
+                <label for="name">Đơn vị quản lý (*):</label>
+                <p-dropdown [options]="tinhs" [(ngModel)]="selectedDonViQuanLy" optionLabel="TEN_DVIQLY"
+                    optionValue="MA_DVIQLY" filter="true">
+                </p-dropdown>
+            </div>
+            <div class="p-field p-col-12 p-md-6" *ngIf="selectedCategory==='SU_KIEN'">
+                <label for="name">Thời gian xử lý:</label>
+                <!-- <input type="text" pInputText [(ngModel)]="mainCurrent.GHI_CHU" /> -->
+                <textarea [rows]="5" pInputTextarea [(ngModel)]="mainCurrent.THOI_GIAN"></textarea>
+            </div>
+            <div class="p-field p-col-12 p-md-6" *ngIf="selectedCategory==='SU_KIEN'">
+                <label for="name">Tiếp nhận thông tin đơn vị khác (*):</label>
+                <input type="text" pInputText [(ngModel)]="mainCurrent.TIEPNHAN_NGOAI" />
+            </div>
+            <div class="p-field p-col-12 p-md-6" *ngIf="selectedCategory==='SU_KIEN'">
+                <label for="name">Tiếp nhận thông tin TT SCADA (*):</label>
+                <input type="text" pInputText [(ngModel)]="mainCurrent.TIEPNHAN_SCADA" />
+            </div>
+            <div class="p-field p-col-12 p-md-6" *ngIf="selectedCategory==='SU_KIEN'">
+                <label for="name">Đơn vị xử lý (*):</label>
+                <p-dropdown [options]="tinhs" [(ngModel)]="selectedDonViQuanLyNgoai" optionLabel="TEN_DVIQLY"
+                    optionValue="MA_DVIQLY" filter="true">
+                </p-dropdown>
+            </div>
+            <div class="p-field p-col-12 p-md-6" *ngIf="selectedCategory==='SU_KIEN'">
+                <label for="name">Ghi chú:</label>
+                <!-- <input type="text" pInputText [(ngModel)]="mainCurrent.GHI_CHU" /> -->
+                <textarea [rows]="5" pInputTextarea [(ngModel)]="mainCurrent.GHI_CHU"></textarea>
+            </div>
+            <div class="p-field p-col-12 p-md-8" *ngIf="selectedCategory==='TINH_TRANG'">
+                <label for="name">Tình trạng (*):</label>
+                <!-- <input type="text" pInputText [(ngModel)]="contentTinhTrang" /> -->
+                <textarea [rows]="5" pInputTextarea [(ngModel)]="contentTinhTrang"></textarea>
+            </div>
+            <div class="p-field p-col-12 p-md-8" *ngIf="selectedCategory==='LUU_Y'">
+                <label for="name">Lưu ý (*):</label>
+                <!-- <input type="text" pInputText [(ngModel)]="contentLuuY" /> -->
+                <textarea [rows]="5" pInputTextarea [(ngModel)]="contentLuuY"></textarea>
+            </div>
+        </div>
+
+    </p-fieldset>
+    <div class="p-field p-col-12 p-md-12">
+        <button pButton pRipple label="Hủy" icon="pi pi-times" class="p-button-secondary"
+            (click)="hideDialog()"></button>
+        <button pButton pRipple label="Lưu" icon="pi pi-check" class="p-button-info" (click)="saveItem()"
+            style="margin-left: 20px;"></button>
+    </div>
+</div>
+<div class="card" *ngIf="checkVisibleView()&&!dialog&&!dialogCa">
+    <p-table id="Test1" #dt [value]="listMain" dataKey="STT" [rowHover]="true" [rows]="50" [paginator]="true"
+        [filterDelay]="0" [loading]="loadingSuKien" [globalFilterFields]="['TEN_TRAM','STT','TEN_DVIQLY']"
+        currentPageReportTemplate="Hiển thị từ {first} đến {last} trên {totalRecords}" [responsive]="true"
+        [showCurrentPageReport]="true" [scrollable]="true" [style]="{'width':'100%'}" scrollHeight="100%">
+        <ng-template pTemplate="caption">
+            <div class="p-grid">
+                <div class="p-md-4 p-sm-4 p-d-flex p-jc-start">
+                    <div class="p-mb-2 p-mr-2">
+                        <button pButton pRipple label="Thoát" icon="pi pi-times" class="p-button-secondary p-mt-1"
+                            (click)="hideVisibleView()"></button>
+                    </div>
+                    <div class="p-mb-2 p-mr-2">
+                        <button pButton pRipple label="Thêm" icon="pi pi-plus" class="p-button-success p-mt-1"
+                            *ngIf="checkVisibleThem()" (click)="openNew()"></button>
+                    </div>
+                    <div class="p-mb-2 p-mr-2">
+                        <button pButton pRipple label="Ký số giao" icon="pi pi-pencil" class="p-button-danger p-mt-1"
+                            *ngIf="checkVisibleKyGiao()" (click)="signEVNCA('GIAO')"></button>
+                    </div>
+                    <div class="p-mb-2 p-mr-2">
+                        <button pButton pRipple label="Ký số nhận" icon="pi pi-pencil" class="p-button-danger p-mt-1"
+                            *ngIf="checkVisibleKyNhan()" (click)="signEVNCA('NHAN')"></button>
+                    </div>
+                </div>
+                <div class="p-md-4 p-sm-4 p-d-flex p-jc-end">
+                </div>
+                <div class="p-md-4 p-sm-4 p-d-flex p-jc-end">
+                    <div class="p-mb-2 p-mr-2">
+                        <button pButton pRipple label="Tải Excel" icon="pi pi-download" class="p-button-help p-mt-1"
+                            *ngIf="listMain && listMain.length>0" (click)="exportExcel()"></button>
+                    </div>
+                    <div class="p-mb-2 p-mr-2">
+                        <button pButton pRipple label="Tải PDF" icon="pi pi-download" class="p-button-help p-mt-1"
+                            *ngIf="listMain && listMain.length>0" (click)="exportPDF()"></button>
+                    </div>
+                    <div class="p-mb-2 p-mr-2">
+                        <button pButton pRipple label="Tải file đã ký" icon="pi pi-download"
+                            class="p-button-help p-mt-1" *ngIf="checkVisibleDownloadSigned()"
+                            (click)="exportPDF_Signed()"></button>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="headergrouped">
+            <tr class="trHeader">
+                <th colspan="2" style="width: 300px;">Ngày Giờ</th>
+                <th rowspan="2" style="width: 300px;">TBA/NMĐ/TTĐK/REC/LBS: B3 (ASDU)/Tuyến SDH/IP</th>
+                <th rowspan="2" style="width: 150px;">ĐƠN VỊ QUẢN LÝ</th>
+                <th rowspan="2" style="width: 300px;">SỰ KIỆN/ DỊCH VỤ ẢNH HƯỞNG</th>
+                <th rowspan="2" style="width: 300px;">QUÁ TRÌNH XỬ LÝ</th>
+                <th rowspan="2" style="width: 300px;">NGUYÊN NHÂN</th>
+                <th rowspan="2" style="width: 150px;">PHÂN LOẠI SỰ KIỆN</th>
+                <th colspan="2" style="width: 300px;">TIÊP NHẬN THÔNG TIN</th>
+                <th rowspan="2" style="width: 150px;">ĐƠN VỊ XỬ LÝ</th>
+                <th rowspan="2" style="width: 300px;">THỜI GIAN XỬ LÝ</th>
+                <th rowspan="2" style="width: 300px;">GHI CHÚ/ĐÁNH GIÁ</th>
+                <th rowspan="2" style="width: 150px;"></th>
+            </tr>
+            <tr class="trHeader">
+                <th style="width: 150px;">Bắt đầu</th>
+                <th style="width: 150px;">Kết thúc</th>
+                <th style="width: 150px;">Đơn vị khác</th>
+                <th style="width: 150px;">TTĐH SCADA</th>
+            </tr>
+            <tr>
+                <th colspan="14">1. Sự kiện trong ca trực:</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-main>
+            <tr style="flex: 1;display: flex;">
+                <!-- <td class="bodySTT" style="flex: 1;align-items: center;justify-content: center;">{{main.ID}}</td> -->
+
+                <td style="flex:0.905;align-items: center;justify-content: flex-start;">
+                    {{main.START_TIME | date: 'dd/MM/yyyy hh:mm:ss a'}}</td>
+                <td style="flex:0.905;align-items: center;justify-content: flex-start;">
+                    {{main.END_TIME==='0001-01-01T00:00:00'?null:main.END_TIME | date: 'dd/MM/yyyy hh:mm:ss a'}}</td>
+                <td style="flex: 2.03942896;align-items: center;justify-content: flex-start;">
+                    {{main.TEN_TB}}</td>
+                <td style="flex:0.905;align-items: center;justify-content: flex-start;">
+                    {{getNameDonViQuanLy(main.DONVI_QUANLY)}}</td>
+                <td style="flex: 2.03942896;align-items: center;justify-content: flex-start;">
+                    {{main.SU_KIEN}}</td>
+                <td style="flex: 2.03942896;align-items: center;justify-content: flex-start;">
+                    {{main.QUA_TRINH}}</td>
+                <td style="flex: 2.03942896;align-items: center;justify-content: flex-start;">
+                    {{main.NGUYEN_NHAN}}</td>
+                <td style="flex:0.905;align-items: center;justify-content: center;">
+                    {{main.LOAI_SUKIEN}}</td>
+                <td style="flex:0.905;align-items: center;justify-content: flex-start;">
+                    {{main.TIEPNHAN_NGOAI}}</td>
+                <td style="flex:0.905;align-items: center;justify-content: flex-start;">
+                    {{main.TIEPNHAN_SCADA}}</td>
+                <td style="flex:0.905;align-items: center;justify-content: flex-start;">
+                    {{getNameDonViQuanLy(main.DONVI_XULY)}}</td>
+                <td style="flex: 2.03942896;align-items: center;justify-content: flex-start;">
+                    {{main.THOI_GIAN}}</td>
+                <td style="flex: 2.03942896;align-items: center;justify-content: flex-start;">
+                    {{main.GHI_CHU}}</td>
+                <td style="flex:0.905;align-items: center;justify-content: center;">
+                    <button *ngIf="checkVisibleThem()" pButton pRipple icon="pi pi-pencil"
+                        class="p-button-rounded p-button-success p-mr-2" (click)="editItem(main,'SU_KIEN')"></button>
+                    <button *ngIf="checkVisibleThem()" pButton pRipple icon="pi pi-trash"
+                        class="p-button-rounded p-button-warning" (click)="deleteItem(main)"></button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="18" style="align-items: center;justify-content: center;">Không có dữ liệu</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+<div class="card" *ngIf="checkVisibleView()&&!dialog&&!dialogCa">
+    <p-table #dt [value]="listTinhTrang" dataKey="STT" [rowHover]="true" [rows]="50" [paginator]="true"
+        [filterDelay]="0" [loading]="loadingTinhTrang" [globalFilterFields]="['CONTENT']"
+        currentPageReportTemplate="Hiển thị từ {first} đến {last} trên {totalRecords}" [responsive]="true"
+        [showCurrentPageReport]="true">
+
+        <ng-template pTemplate="colgroup" let-columns>
+            <colgroup>
+                <col style="width:450px">
+                <col style="width:150px">
+            </colgroup>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr class="trHeader">
+                <th>2. Tình trạng vận hành các thiết bị trong MCC, BCC:</th>
+                <th></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-main>
+            <tr class="p-selectable-row">
+                <td style="flex: 3;align-items: center;justify-content: flex-start;">
+                    {{main.CONTENT}}</td>
+                <td class="bodySTT" style="flex: 1;align-items: center;justify-content: center;">
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2"
+                        *ngIf="checkVisibleThem()" (click)="editItem(main,'TINH_TRANG')"></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                        *ngIf="checkVisibleThem()" (click)="deleteItem(main)"></button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="2" style="text-align: center;">Không có dữ liệu</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+<div class="card" *ngIf="checkVisibleView()&&!dialog&&!dialogCa">
+    <p-table #dt [value]="listLuuY" dataKey="STT" [rowHover]="true" [rows]="50" [paginator]="true" [filterDelay]="0"
+        [globalFilterFields]="['CONTENT']" [loading]="loadingLuuY"
+        currentPageReportTemplate="Hiển thị từ {first} đến {last} trên {totalRecords}" [responsive]="true"
+        [showCurrentPageReport]="true">
+
+        <ng-template pTemplate="colgroup" let-columns>
+            <colgroup>
+                <col style="width:450px">
+                <col style="width:150px">
+            </colgroup>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr class="trHeader">
+                <th>3. Các vấn đề lưu ý trong phiên giao-nhận ca:</th>
+                <th></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-main>
+            <tr class="p-selectable-row">
+                <!-- <td class="bodySTT" style="flex: 1;align-items: center;justify-content: center;">{{main.ID}}</td> -->
+                <td style="flex: 3;align-items: center;justify-content: flex-start;">
+                    {{main.CONTENT}}</td>
+                <td class="bodySTT" style="flex: 1;align-items: center;justify-content: center;">
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2"
+                        *ngIf="checkVisibleThem()" (click)="editItem(main,'LUU_Y')"></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                        *ngIf="checkVisibleThem()" (click)="deleteItem(main)"></button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="2" style="text-align: center;">Không có dữ liệu</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+<!-- <p-dialog [(visible)]="dialog" [style]="{height:'70%',width: '450px'}"
+    [header]="isUpdate?'Cập Nhật Thông Tin Sự Kiện':'Thêm Mới Thông Tin Sự Kiện'" (onHide)="hideDialog()" [modal]="true"
+    styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <div class="p-field p-col-12 p-md-4">
+            <label for="name">Loại thông tin (*):</label>
+            <p-dropdown [options]="listCategory" [(ngModel)]="selectedCategory" placeholder="Chọn đối tượng"
+                [showClear]="true"></p-dropdown>
+        </div>
+        <div class="p-field p-col-12 p-md-4" *ngIf="selectedCategory==='SU_KIEN'">
+            <label for="name">Thời gian bắt đầu (*):</label>
+            <p-calendar [(ngModel)]="mainCurrent.START_TIME" [showTime]="true" dateFormat="dd/mm/yy"></p-calendar>
+        </div>
+        <div class="p-field p-col-12 p-md-4" *ngIf="selectedCategory==='SU_KIEN'">
+            <label for="name">Thời gian kết thúc (*):</label>
+            <p-calendar [(ngModel)]="mainCurrent.END_TIME" [showTime]="true" dateFormat="dd/mm/yy"></p-calendar>
+        </div>
+        <div class="p-field p-col-12 p-md-4" *ngIf="selectedCategory==='SU_KIEN'">
+            <label for="name">Sự kiện (*):</label>
+            <input type="text" pInputText [(ngModel)]="mainCurrent.SU_KIEN" />
+        </div>
+        <div class="p-field p-col-12 p-md-4" *ngIf="selectedCategory==='SU_KIEN'">
+            <label for="name">Nguyên nhân (*):</label>
+            <input type="text" pInputText [(ngModel)]="mainCurrent.NGUYEN_NHAN" />
+        </div>
+        <div class="p-field p-col-12 p-md-4" *ngIf="selectedCategory==='SU_KIEN'">
+            <label for="name">Đơn vị quản lý (*):</label>
+            <p-autoComplete [(ngModel)]="selectedTinh" [suggestions]="filterTinhs" (completeMethod)="filterTinh($event)"
+                field="TEN_DVIQLY" [dropdown]="true">
+            </p-autoComplete>
+        </div>
+        <div class="p-field p-col-12 p-md-4" *ngIf="selectedCategory==='SU_KIEN'">
+            <label for="name">Tiếp nhận thông tin đơn vị ngoài (*):</label>
+            <input type="text" pInputText [(ngModel)]="mainCurrent.TIEPNHAN_NGOAI" />
+        </div>
+        <div class="p-field p-col-12 p-md-4" *ngIf="selectedCategory==='SU_KIEN'">
+            <label for="name">Tiếp nhận thông tin TT SCADA (*):</label>
+            <input type="text" pInputText [(ngModel)]="mainCurrent.TIEPNHAN_SCADA" />
+        </div>
+        <div class="p-field p-col-12 p-md-4" *ngIf="selectedCategory==='SU_KIEN'">
+            <label for="name">Phân loại sự kiện (*):</label>
+            <div class="p-field-radiobutton">
+                <p-radioButton value="HT_SCADA_SU_CO" [(ngModel)]="mainCurrent.LOAI_SUKIEN"></p-radioButton>
+                <label>HT SCADA sự cố</label>
+            </div>
+            <div class="p-field-radiobutton">
+                <p-radioButton value="HT_SCADA_HTBT" [(ngModel)]="mainCurrent.LOAI_SUKIEN"></p-radioButton>
+                <label>HT SCADA HTBT</label>
+            </div>
+            <div class="p-field-radiobutton">
+                <p-radioButton value="CUNG_CAP_DIEN_SU_CO" [(ngModel)]="mainCurrent.LOAI_SUKIEN"></p-radioButton>
+                <label>Cung cấp điện sự cố</label>
+            </div>
+            <div class="p-field-radiobutton">
+                <p-radioButton value="CUNG_CAP_DIEN_HTBT" [(ngModel)]="mainCurrent.LOAI_SUKIEN"></p-radioButton>
+                <label>Cung cấp điện HTBT</label>
+            </div>
+            <div class="p-field-radiobutton">
+                <p-radioButton value="CONG_TAC" [(ngModel)]="mainCurrent.LOAI_SUKIEN"></p-radioButton>
+                <label>Công tác</label>
+            </div>
+        </div>
+        <div class="p-field p-col-12 p-md-4" *ngIf="selectedCategory==='SU_KIEN'">
+            <label for="name">Trách nhiệm xử lý TT SCADA (*):</label>
+            <input type="text" pInputText [(ngModel)]="mainCurrent.TNXL_SCADA" />
+        </div>
+        <div class="p-field p-col-12 p-md-4" *ngIf="selectedCategory==='SU_KIEN'">
+            <label for="name">Trách nhiệm xử lý đơn vị ngoài (*):</label>
+            <p-autoComplete [(ngModel)]="selectedTinhDonViNgoai" [suggestions]="filterTinhsDonViNgoai"
+                (completeMethod)="filterTinhDonViNgoai($event)" field="TEN_DVIQLY" [dropdown]="true">
+            </p-autoComplete>
+        </div>
+        <div class="p-field p-col-12 p-md-4" *ngIf="selectedCategory==='SU_KIEN'">
+            <label for="name">Kết quả đã xử lý (*):</label>
+            <div class="p-field-radiobutton">
+                <p-radioButton value="1" [(ngModel)]="mainCurrent.KQ_DAXULY"></p-radioButton>
+                <label>Đã xử lý</label>
+            </div>
+            <div class="p-field-radiobutton">
+                <p-radioButton value="0" [(ngModel)]="mainCurrent.KQ_DAXULY"></p-radioButton>
+                <label>Còn tồn tại</label>
+            </div>
+        </div>
+        <div class="p-field p-col-12 p-md-4" *ngIf="selectedCategory==='SU_KIEN'">
+            <label for="name">Kết quả xử lý còn tồn tại</label>
+            <input type="text" pInputText [(ngModel)]="mainCurrent.KQ_TONTAI" />
+        </div>
+        <div class="p-field p-col-12 p-md-4" *ngIf="selectedCategory==='SU_KIEN'">
+            <label for="name">Ghi chú</label>
+            <input type="text" pInputText [(ngModel)]="mainCurrent.GHI_CHU" />
+        </div>
+        <div class="p-field p-col-12 p-md-4" *ngIf="selectedCategory==='TINH_TRANG'">
+            <label for="name">Tình trạng (*):</label>
+            <input type="text" pInputText [(ngModel)]="contentTinhTrang" />
+        </div>
+        <div class="p-field p-col-12 p-md-4" *ngIf="selectedCategory==='LUU_Y'">
+            <label for="name">Lưu ý (*):</label>
+            <input type="text" pInputText [(ngModel)]="contentLuuY" />
+        </div>
+        <div class="p-field" *ngIf="!selectedCategory">
+            <label for="name"> </label>
+        </div>
+        <div class="p-field" *ngIf="!selectedCategory">
+            <label for="name"> </label>
+        </div>
+        <div class="p-field" *ngIf="!selectedCategory">
+            <label for="name"> </label>
+        </div>
+        <div class="p-field" *ngIf="!selectedCategory">
+            <label for="name"> </label>
+        </div>
+        <div class="p-field" *ngIf="!selectedCategory">
+            <label for="name"> </label>
+        </div>
+        <div class="p-field" *ngIf="!selectedCategory">
+            <label for="name"> </label>
+        </div>
+        <div class="p-field" *ngIf="!selectedCategory">
+            <label for="name"> </label>
+        </div>
+        <div class="p-field" *ngIf="!selectedCategory">
+            <label for="name"> </label>
+        </div>
+        <div class="p-field" *ngIf="!selectedCategory">
+            <label for="name"> </label>
+        </div>
+        <div class="p-field" *ngIf="!selectedCategory">
+            <label for="name"> </label>
+        </div>
+        <div class="p-field" *ngIf="!selectedCategory">
+            <label for="name"> </label>
+        </div>
+        <div class="p-field" *ngIf="selectedCategory==='TINH_TRANG'">
+            <label for="name"> </label>
+        </div>
+        <div class="p-field" *ngIf="selectedCategory==='TINH_TRANG'">
+            <label for="name"> </label>
+        </div>
+        <div class="p-field" *ngIf="selectedCategory==='TINH_TRANG'">
+            <label for="name"> </label>
+        </div>
+        <div class="p-field" *ngIf="selectedCategory==='TINH_TRANG'">
+            <label for="name"> </label>
+        </div>
+        <div class="p-field" *ngIf="selectedCategory==='TINH_TRANG'">
+            <label for="name"> </label>
+        </div>
+        <div class="p-field" *ngIf="selectedCategory==='TINH_TRANG'">
+            <label for="name"> </label>
+        </div>
+        <div class="p-field" *ngIf="selectedCategory==='TINH_TRANG'">
+            <label for="name"> </label>
+        </div>
+        <div class="p-field" *ngIf="selectedCategory==='TINH_TRANG'">
+            <label for="name"> </label>
+        </div>
+        <div class="p-field" *ngIf="selectedCategory==='LUU_Y'">
+            <label for="name"> </label>
+        </div>
+        <div class="p-field" *ngIf="selectedCategory==='LUU_Y'">
+            <label for="name"> </label>
+        </div>
+        <div class="p-field" *ngIf="selectedCategory==='LUU_Y'">
+            <label for="name"> </label>
+        </div>
+        <div class="p-field" *ngIf="selectedCategory==='LUU_Y'">
+            <label for="name"> </label>
+        </div>
+        <div class="p-field" *ngIf="selectedCategory==='LUU_Y'">
+            <label for="name"> </label>
+        </div>
+        <div class="p-field" *ngIf="selectedCategory==='LUU_Y'">
+            <label for="name"> </label>
+        </div>
+        <div class="p-field" *ngIf="selectedCategory==='LUU_Y'">
+            <label for="name"> </label>
+        </div>
+        <div class="p-field" *ngIf="selectedCategory==='LUU_Y'">
+            <label for="name"> </label>
+        </div>
+
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Hủy" icon="pi pi-times" class="p-button-secondary"
+            (click)="hideDialog()"></button>
+        <button pButton pRipple label="Lưu" icon="pi pi-check" class="p-button-info" (click)="saveItem()"></button>
+    </ng-template>
+</p-dialog> -->
+<!-- <p-dialog [(visible)]="dialogCa" [style]="{height:'70%',width: '450px'}"
+    [header]="isUpdate?'Cập nhật thông tin ca':'Thêm mới thông tin ca'" (onHide)="hideDialog()" [modal]="true"
+    styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <div class="p-field">
+            <label for="name">Ngày (*): </label>
+            <p-calendar [(ngModel)]="mainCaCurrent.NGAY" [showTime]="false" dateFormat="dd/mm/yy"></p-calendar>
+        </div>
+        <div class="p-field">
+            <label for="name">Ca trực (*): </label>
+            <p-dropdown [options]="listDMCa" [(ngModel)]="selectedCaCurrent" placeholder="Chọn ca"
+                optionLabel="LABEL_TIME" [showClear]="true"></p-dropdown>
+        </div>
+        <div class="p-field">
+            <label for="name">Người giao (*):</label>
+            <p-multiSelect [options]="listUser" [(ngModel)]="mainCaCurrent.LIST_GIAO" defaultLabel="Chọn người giao"
+                optionLabel="FULL_NAME" class="multiselect-custom">
+                <ng-template let-item pTemplate="item">
+                    <div class="country-item">
+                     <img src="assets/demo/flags/flag_placeholder.png" [class]="'flag flag-' + country.code.toLowerCase()" />
+<div>{{item.FULL_NAME}}</div>
+</div>
+</ng-template>
+</p-multiSelect>
+</div>
+<div class="p-field">
+    <label for="name">Người nhận (*):</label>
+    <p-multiSelect [options]="listUser" [(ngModel)]="mainCaCurrent.LIST_NHAN" defaultLabel="Chọn người nhận"
+        optionLabel="FULL_NAME" class="multiselect-custom">
+        <ng-template let-item pTemplate="item">
+            <div class="country-item">
+                <img src="assets/demo/flags/flag_placeholder.png" [class]="'flag flag-' + country.code.toLowerCase()" />
+                <div>{{item.FULL_NAME}}</div>
+            </div>
+        </ng-template>
+    </p-multiSelect>
+</div>
+</ng-template>
+<ng-template pTemplate="footer">
+    <button pButton pRipple label="Hủy" icon="pi pi-times" class="p-button-secondary" (click)="hideDialogCa()"></button>
+    <button pButton pRipple label="Lưu" icon="pi pi-check" class="p-button-info" (click)="saveItemCa()"></button>
+</ng-template>
+</p-dialog> -->
+
+<p-dialog header="Đang xử lý..." [(visible)]="loadingModal" [closeOnEscape]="false" closable="false" modal="true"
+    closeIcon="null">
+    <div class="p-md-12" style="justify-content: center;align-items: center;">
+        <p-progressSpinner [style]="{width: '80px', height: '80px'}" styleClass="custom-spinner" strokeWidth="8"
+            animationDuration=".5s"></p-progressSpinner>
+    </div>
+
+    <!-- <p-progressBar mode="indeterminate" [style]="{'height': '6px'}"></p-progressBar> -->
+</p-dialog>
